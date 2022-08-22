@@ -14,4 +14,8 @@
     <ProjectReference Include="..\TradingView.BLL\TradingView.BLL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+
 </Project>
