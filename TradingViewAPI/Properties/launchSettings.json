@@ -1,4 +1,4 @@
-﻿{
+{
   "$schema": "https://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
@@ -11,13 +11,15 @@
   "profiles": {
     "TradingViewAPI": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7287;http://localhost:5287",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "PUBLISHABLE_TOKEN": "Tpk_aae23baa9af74779993006fb85d15f0f",
+        "SECRET_TOKEN": "Tsk_8b25dd39c0814f408f80d35c3ae48c0c"
+      },
+      "applicationUrl": "https://localhost:7287;http://localhost:5287",
+      "dotnetRunMessages": true
     },
     "IIS Express": {
       "commandName": "IISExpress",
