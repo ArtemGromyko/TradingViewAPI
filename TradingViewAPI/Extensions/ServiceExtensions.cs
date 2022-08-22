@@ -22,10 +22,19 @@ public static class ServiceExtensions
         services.AddScoped<IHistoricalPricesService, HistoricalPricesService>();
     }
 
-    public static void ConfigureSections(this IServiceCollection services, IConfiguration configuration)
+    public static void ConfigureMongoDBCollections(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<BookStoreDatabaseSettings>(configuration.GetSection("BookStoreDatabase"));
+        services.Configure<BookStoreDatabaseSettings>(configuration
+            .GetSection("BookStoreDatabase"));
         services.Configure<FundamentalsStoreDatabaseSettings>(configuration
             .GetSection("FundamentalseStoreDatabse"));
+        services.Configure<SymbolsCollectionSettings>(configuration
+            .GetSection("SymbolsCollection"));
+        services.Configure<DividendsCollectionSettings>(configuration
+            .GetSection("DividendsCollection"));
+        services.Configure<ExchangesCollectionSettings>(configuration
+            .GetSection("ExchangesCollection"));
+        services.Configure<HistoricalPricesCollectionSettings>(configuration
+            .GetSection("HistoricalPricesCollection"));
     }
 }
