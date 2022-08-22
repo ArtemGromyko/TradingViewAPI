@@ -4,6 +4,7 @@ using TradingView.BLL.Services;
 using TradingView.DAL.Contracts;
 using TradingView.DAL.Repositories;
 using TradingView.DAL.Settings;
+using TradingViewAPI.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,15 +13,9 @@ var configuration = builder.Configuration;
 
 // Add services to the container.
 
-services.Configure<BookStoreDatabaseSettings>(configuration.GetSection("BookStoreDatabase"));
-services.Configure<FundamentalsStoreDatabaseSettings>(configuration
-    .GetSection("FundamentalseStoreDatabse"));
-
-services.AddScoped<IBookRepository, BookRepository>();
-services.AddScoped<IFundamentalsRepository, FundamentalsRepository>();
-
-services.AddScoped<IBookService, BookService>();
-services.AddScoped<IFundamentalsRepository, FundamentalsRepository>();
+services.ConfigureSections(configuration);
+services.ConfigureRepositories();
+services.ConfigureServices();
 
 services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
