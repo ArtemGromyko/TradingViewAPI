@@ -11,13 +11,15 @@ public static class ServiceExtensions
 {
     public static void ConfigureRepositories(this IServiceCollection services)
     {
-        services.AddScoped<IBookRepository, BookRepository>();
-        services.AddScoped<IFundamentalsRepository, FundamentalsRepository>();
+        services.AddScoped<ISymbolsRepository, SymbolsRepository>();
+        services.AddScoped<IDividendsRepository, DividendsRepository>();
+        services.AddScoped<IExchangesRepository, ExchangesRepository>();
+        services.AddScoped<IHistoricalPricesRepository, HistoricalPricesRepository>();
     }
 
     public static void ConfigureServices(this IServiceCollection services)
     {
-        services.AddScoped<IBookService, BookService>();
+        services.AddScoped<IHistoricalPricesService, HistoricalPricesService>();
     }
 
     public static void ConfigureSections(this IServiceCollection services, IConfiguration configuration)
