@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using TradingView.DAL.Contracts;
 
-namespace TradingView.DAL.Repositories
+namespace TradingView.DAL.Repositories;
+
+public class RepositoryBase<T> : IRepositoryBase<T> where T : class
 {
-    internal class RepositoryBase
+    public Task AddCollectionAsync(IEnumerable<T> collection)
     {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<T>> GetAllAsync()
+    {
+        throw new NotImplementedException();
     }
 }

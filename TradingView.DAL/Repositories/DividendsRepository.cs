@@ -21,6 +21,7 @@ public class DividendsRepository : IDividendsRepository
         _dividendsCollection = mongoDatabase.GetCollection<DividendInfo>(
             bookStoreDatabaseSettings.Value.DividendsCollectionName);
     }
+
     public async Task AddDividendsCollection(IEnumerable<DividendInfo> collection) =>
         await _dividendsCollection.InsertManyAsync(collection);
 
