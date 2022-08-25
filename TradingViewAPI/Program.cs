@@ -7,7 +7,7 @@ var configuration = builder.Configuration;
 
 // Add services to the container.
 
-services.ConfigureMongoDBCollections(configuration);
+services.ConfigureMongoDBConnection(configuration);
 services.ConfigureRepositories();
 services.ConfigureServices();
 

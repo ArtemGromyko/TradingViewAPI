@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using TradingView.DAL.Contracts;
 using TradingView.DAL.Entities;
@@ -8,8 +9,8 @@ namespace TradingView.DAL.Repositories;
 
 public class HistoricalPricesRepository : RepositoryBase<HistoricalPrice>, IHistoricalPricesRepository
 {
-    public HistoricalPricesRepository(IOptions<DatabaseSettings> settings)
-         : base(settings, "HistoricalPricesCollection")
+    public HistoricalPricesRepository(IOptions<DatabaseSettings> settings, IConfiguration configuration)
+        : base(settings, configuration["MongoDBCollectionNames:HistoricalPricesCollectionName"])
     {
     }
 

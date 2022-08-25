@@ -1,5 +1,4 @@
-﻿using BookStoreApi.Models;
-using TradingView.BLL.Contracts;
+﻿using TradingView.BLL.Contracts;
 using TradingView.BLL.Services;
 using TradingView.DAL.Contracts;
 using TradingView.DAL.Repositories;
@@ -23,19 +22,9 @@ public static class ServiceExtensions
         services.AddHttpClient<IHistoricalPricesService, HistoricalPricesService>();
     }
 
-    public static void ConfigureMongoDBCollections(this IServiceCollection services, IConfiguration configuration)
+    public static void ConfigureMongoDBConnection(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<BookStoreDatabaseSettings>(configuration
-            .GetSection("BookStoreDatabase"));
-        services.Configure<FundamentalsStoreDatabaseSettings>(configuration
-            .GetSection("FundamentalseStoreDatabse"));
-        services.Configure<SymbolsCollectionSettings>(configuration
-            .GetSection("SymbolsCollection"));
-        services.Configure<DividendsCollectionSettings>(configuration
-            .GetSection("DividendsCollection"));
-        services.Configure<ExchangesCollectionSettings>(configuration
-            .GetSection("ExchangesCollection"));
-        services.Configure<HistoricalPricesCollectionSettings>(configuration
-            .GetSection("HistoricalPricesCollection"));
+        services.Configure<DatabaseSettings>(configuration
+            .GetSection("DatabaseSettings"));
     }
 }
