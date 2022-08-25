@@ -20,6 +20,7 @@ public static class ServiceExtensions
     public static void ConfigureServices(this IServiceCollection services)
     {
         services.AddScoped<IHistoricalPricesService, HistoricalPricesService>();
+        services.AddHttpClient<IHistoricalPricesService, HistoricalPricesService>();
     }
 
     public static void ConfigureMongoDBCollections(this IServiceCollection services, IConfiguration configuration)

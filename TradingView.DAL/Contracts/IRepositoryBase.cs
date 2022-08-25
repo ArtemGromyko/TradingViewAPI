@@ -1,7 +1,7 @@
 ﻿namespace TradingView.DAL.Contracts;
 
-public interface IRepositoryBase<T>
+public interface IRepositoryBase<TEntity>
 {
-    Task<List<T>> GetAllAsync();
-    Task AddCollectionAsync(IEnumerable<T> collection);
+    Task<List<TEntity>> GetAllAsync();
+    Task AddCollectionAsync(IEnumerable<TEntity> collection);
 }

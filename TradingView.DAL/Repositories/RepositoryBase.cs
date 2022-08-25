@@ -1,16 +1,29 @@
-﻿using TradingView.DAL.Contracts;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
+using TradingView.DAL.Contracts;
+using TradingView.DAL.Settings;
 
 namespace TradingView.DAL.Repositories;
 
-public class RepositoryBase<T> : IRepositoryBase<T> where T : class
+public class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : class
 {
-    public Task AddCollectionAsync(IEnumerable<T> collection)
+    private readonly IMongoCollection<TEntity> _collection;
+
+    public RepositoryBase(IOptions<DatabaseSettings> settings, string collectionName)
     {
-        throw new NotImplementedException();
+        var mongoClient = new MongoClient(
+            settings.Value.ConnectionString);
+
+        var mongoDatabase = mongoClient.GetDatabase(
+            settings.Value.DatabaseName);
+
+        _collection = mongoDatabase.GetCollection<TEntity>(collectionName);
     }
 
-    public Task<List<T>> GetAllAsync()
-    {
-        throw new NotImplementedException();
-    }
+    public async Task AddCollectionAsync(IEnumerable<TEntity> collection) =>
+        await _collection.InsertManyAsync(collection);
+
+    public async Task<List<TEntity>> GetAllAsync() =>
+        await _collection.AsQueryable().ToListAsync();
 }

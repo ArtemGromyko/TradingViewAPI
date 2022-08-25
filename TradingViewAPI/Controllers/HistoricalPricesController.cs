@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TradingView.BLL.Contracts;
 using TradingView.DAL.Entities;
 
 namespace TradingViewAPI.Controllers
@@ -7,6 +8,13 @@ namespace TradingViewAPI.Controllers
     [ApiController]
     public class HistoricalPricesController : ControllerBase
     {
+        private readonly IHistoricalPricesService _historicalPricesService;
+
+        public HistoricalPricesController(IHistoricalPricesService historicalPricesService)
+        {
+            _historicalPricesService = historicalPricesService;
+        }
+
         [HttpGet("historical-prices/{symbol}")]
         public async Task<IActionResult> GetHistoricalPricesAsync(string symbol)
         {

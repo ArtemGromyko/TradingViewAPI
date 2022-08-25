@@ -1,9 +1,3 @@
-using BookStoreApi.Models;
-using TradingView.BLL.Contracts;
-using TradingView.BLL.Services;
-using TradingView.DAL.Contracts;
-using TradingView.DAL.Repositories;
-using TradingView.DAL.Settings;
 using TradingViewAPI.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
