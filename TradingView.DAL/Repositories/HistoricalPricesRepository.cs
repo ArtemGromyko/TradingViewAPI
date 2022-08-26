@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
-using MongoDB.Driver;
 using TradingView.DAL.Contracts;
 using TradingView.DAL.Entities;
 using TradingView.DAL.Settings;
@@ -13,10 +12,4 @@ public class HistoricalPricesRepository : RepositoryBase<HistoricalPrice>, IHist
         : base(settings, configuration["MongoDBCollectionNames:HistoricalPricesCollectionName"])
     {
     }
-
-    public async Task AddHistoricalPricesCollection(IEnumerable<HistoricalPrice> collection) =>
-        await AddCollectionAsync(collection);
-
-    public async Task<List<HistoricalPrice>> GetAllHistoricalPricesAsync() =>
-        await GetAllAsync();
 }

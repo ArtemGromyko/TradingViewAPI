@@ -1,7 +1,11 @@
-﻿namespace TradingView.DAL.Contracts;
+﻿using System.Linq.Expressions;
+
+namespace TradingView.DAL.Contracts;
 
 public interface IRepositoryBase<TEntity>
 {
-    Task<List<TEntity>> GetAllAsync();
-    Task AddCollectionAsync(IEnumerable<TEntity> collection);
+    Task AddCollectionAsync(IEnumerable<TEntity> collection, CancellationToken ct = default);
+    Task AddAsync(TEntity entity, CancellationToken ct = default);
+    Task<List<TEntity>> GetAllAsync(CancellationToken ct = default);
+    Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> expression, CancellationToken ct = default);
 }

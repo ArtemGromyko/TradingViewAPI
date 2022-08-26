@@ -2,8 +2,6 @@
 
 namespace TradingView.DAL.Contracts;
 
-public interface IExchangesRepository
+public interface IExchangesRepository : IRepositoryBase<ExchangeInfo>
 {
-    public Task<List<ExchangeInfo>> GetAllExchangesAsync();
-    public Task AddExchangesCollection(IEnumerable<ExchangeInfo> collection);
 }

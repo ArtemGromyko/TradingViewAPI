@@ -2,8 +2,6 @@
 
 namespace TradingView.DAL.Contracts;
 
-public interface ISymbolsRepository
+public interface ISymbolsRepository : IRepositoryBase<SymbolInfo>
 {
-    public Task<List<SymbolInfo>> GetAllSymbolsAsync();
-    public Task AddSymbolsCollection(IEnumerable<SymbolInfo> collection);
 }
