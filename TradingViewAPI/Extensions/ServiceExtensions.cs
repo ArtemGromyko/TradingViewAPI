@@ -16,10 +16,14 @@ public static class ServiceExtensions
         services.AddScoped<IHistoricalPricesRepository, HistoricalPricesRepository>();
     }
 
-    public static void ConfigureServices(this IServiceCollection services)
+    public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddHttpClient(configuration["HttpClientName"], client =>
+        {
+            client.BaseAddress = new Uri(configuration["IEXCloudUrls:baseUrl"]);
+        });
+
         services.AddScoped<IHistoricalPricesService, HistoricalPricesService>();
-        services.AddHttpClient<IHistoricalPricesService, HistoricalPricesService>();
     }
 
     public static void ConfigureMongoDBConnection(this IServiceCollection services, IConfiguration configuration)
