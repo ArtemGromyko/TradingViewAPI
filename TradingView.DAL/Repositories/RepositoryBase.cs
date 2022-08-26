@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
+using System.Linq.Expressions;
 using TradingView.DAL.Contracts;
 using TradingView.DAL.Settings;
 
@@ -21,9 +22,15 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : 
         _collection = mongoDatabase.GetCollection<TEntity>(collectionName);
     }
 
-    public async Task AddCollectionAsync(IEnumerable<TEntity> collection) =>
-        await _collection.InsertManyAsync(collection);
+    public async Task AddCollectionAsync(IEnumerable<TEntity> collection, CancellationToken ct = default) =>
+        await _collection.InsertManyAsync(collection, cancellationToken: ct);
 
-    public async Task<List<TEntity>> GetAllAsync() =>
-        await _collection.AsQueryable().ToListAsync();
+    public async Task AddAsync(TEntity entity, CancellationToken ct = default) =>
+        await _collection.InsertOneAsync(entity, ct);
+
+    public async Task<List<TEntity>> GetAllAsync(CancellationToken ct = default) =>
+        await _collection.AsQueryable().ToListAsync(ct);
+
+    public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> expression, CancellationToken ct = default) =>
+        await _collection.AsQueryable().FirstAsync(expression, ct);
 }

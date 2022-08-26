@@ -12,10 +12,4 @@ public class SymbolsRepository : RepositoryBase<SymbolInfo>, ISymbolsRepository
         : base(settings, configurationq["MongoDBCollectionNames:SymbolsCollectionName"])
     {
     }
-
-    public async Task AddSymbolsCollection(IEnumerable<SymbolInfo> collection) =>
-        await AddCollectionAsync(collection);
-
-    public async Task<List<SymbolInfo>> GetAllSymbolsAsync() =>
-        await GetAllAsync();
 }

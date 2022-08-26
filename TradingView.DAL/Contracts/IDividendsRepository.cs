@@ -2,8 +2,6 @@
 
 namespace TradingView.DAL.Contracts;
 
-public interface IDividendsRepository
+public interface IDividendsRepository : IRepositoryBase<DividendInfo>
 {
-    public Task<List<DividendInfo>> GetAllDividendsAsync();
-    public Task AddDividendsCollection(IEnumerable<DividendInfo> collection);
 }

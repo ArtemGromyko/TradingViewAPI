@@ -2,8 +2,6 @@
 
 namespace TradingView.DAL.Contracts;
 
-public interface IHistoricalPricesRepository
+public interface IHistoricalPricesRepository : IRepositoryBase<HistoricalPrice>
 {
-    public Task<List<HistoricalPrice>> GetAllHistoricalPricesAsync();
-    public Task AddHistoricalPricesCollection(IEnumerable<HistoricalPrice> collection);
 }
