@@ -5,4 +5,8 @@ namespace TradingViewAPI.Controllers;
 [ApiController]
 public class StockProfileController : ControllerBase
 {
+    public StockProfileController()
+    {
+
+    }
 }
