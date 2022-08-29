@@ -1,7 +1,11 @@
 ﻿using TradingView.BLL.Contracts;
+using TradingView.BLL.Contracts.StockProfile;
 using TradingView.BLL.Services;
+using TradingView.BLL.Services.StockProfile;
 using TradingView.DAL.Contracts;
+using TradingView.DAL.Contracts.StockProfile;
 using TradingView.DAL.Repositories;
+using TradingView.DAL.Repositories.StockProfile;
 using TradingView.DAL.Settings;
 
 namespace TradingViewAPI.Extensions;
@@ -14,6 +18,12 @@ public static class ServiceExtensions
         services.AddScoped<IDividendsRepository, DividendsRepository>();
         services.AddScoped<IExchangesRepository, ExchangesRepository>();
         services.AddScoped<IHistoricalPricesRepository, HistoricalPricesRepository>();
+        services.AddScoped<ICEOCompensationRepository, CEOCompensationRepository>();
+        services.AddScoped<IInsiderRosterRepository, InsiderRosterRepository>();
+        services.AddScoped<IInsiderSummaryRepository, InsiderSummaryRepository>();
+        services.AddScoped<IInsiderTransactionsRepository, InsiderTransactionsRepository>();
+        services.AddScoped<ILogoRepository, LogoRepository>();
+        services.AddScoped<IСompanyRepository, СompanyRepository>();
     }
 
     public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
@@ -24,6 +34,9 @@ public static class ServiceExtensions
         });
 
         services.AddScoped<IHistoricalPricesService, HistoricalPricesService>();
+        services.AddScoped<ILogoService, LogoService>();
+        services.AddScoped<ICEOCompensationService, CEOCompensationService>();
+        services.AddScoped<IСompanyService, СompanyService>();
     }
 
     public static void ConfigureMongoDBConnection(this IServiceCollection services, IConfiguration configuration)
