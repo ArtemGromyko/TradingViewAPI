@@ -1,7 +1,8 @@
-﻿using TradingView.BLL.Contracts;
-using TradingView.BLL.Services;
+﻿using TradingView.BLL.Contracts.RealTime;
+using TradingView.BLL.Services.RealTime;
 using TradingView.DAL.Contracts;
-using TradingView.DAL.Repositories;
+using TradingView.DAL.Contracts.RealTime;
+using TradingView.DAL.Repositories.RealTime;
 using TradingView.DAL.Settings;
 
 namespace TradingViewAPI.Extensions;
@@ -23,6 +24,7 @@ public static class ServiceExtensions
             client.BaseAddress = new Uri(configuration["IEXCloudUrls:baseUrl"]);
         });
 
+        services.AddScoped<IRealTimeService, RealTimeService>();
         services.AddScoped<IHistoricalPricesService, HistoricalPricesService>();
     }
 

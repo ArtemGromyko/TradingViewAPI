@@ -1,31 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TradingView.BLL.Contracts;
-using TradingView.DAL.Entities;
+using TradingView.BLL.Contracts.RealTime;
+using TradingView.DAL.Entities.RealTime;
 
 namespace TradingViewAPI.Controllers
 {
     [Route("api")]
     [ApiController]
-    public class HistoricalPricesController : ControllerBase
+    public class RealTimeController : ControllerBase
     {
         private readonly IHistoricalPricesService _historicalPricesService;
 
-        public HistoricalPricesController(IHistoricalPricesService historicalPricesService)
+        public RealTimeController(IHistoricalPricesService historicalPricesService)
         {
             _historicalPricesService = historicalPricesService;
         }
 
         [HttpGet("historical-prices/{symbol}")]
-        public async Task<IActionResult> GetHistoricalPricesAsync(string symbol)
+        public async Task<IActionResult> GetHistoricalPricesListAsync(string symbol)
         {
-            using var client = new HttpClient();
+            var historicalPrices = await _historicalPricesService.GetHistoricalPricesListAsync(symbol);
 
-            var response = await client
-                .GetAsync($"https://sandbox.iexapis.com/stable/stock/{symbol}/chart/max?token=Tpk_aae23baa9af74779993006fb85d15f0f");
-
-            var res = await response.Content.ReadAsAsync<IEnumerable<HistoricalPrice>>();
-
-            return Ok(res);
+            return Ok(historicalPrices);
         }
 
         [HttpGet("symbols")]

@@ -1,4 +1,4 @@
-﻿using TradingView.DAL.Entities;
+﻿using TradingView.DAL.Entities.RealTime;
 
 namespace TradingView.DAL.Contracts;
 
