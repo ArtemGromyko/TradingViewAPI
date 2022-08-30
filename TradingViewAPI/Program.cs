@@ -9,7 +9,7 @@ var configuration = builder.Configuration;
 
 services.ConfigureMongoDBConnection(configuration);
 services.ConfigureRepositories();
-services.ConfigureServices();
+services.ConfigureServices(configuration);
 
 services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
