@@ -1,5 +1,9 @@
-﻿namespace TradingView.DAL.Entities.RealTime;
-public class HistoricalPrice
+﻿using MongoDB.Bson.Serialization.Attributes;
+
+namespace TradingView.DAL.Entities.RealTime;
+
+[BsonNoId]
+public class HistoricalPrice : EntityBase
 {
     public double Close { get; set; }
     public double High { get; set; }
@@ -8,6 +12,7 @@ public class HistoricalPrice
     public string? PriceDate { get; set; }
     public string? Symbol { get; set; }
     public double Volume { get; set; }
+    [BsonElement("HistoricalPriceId")]
     public string? Id { get; set; }
     public string? Key { get; set; }
     public string? Subkey { get; set; }

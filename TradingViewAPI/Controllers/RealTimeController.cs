@@ -9,18 +9,28 @@ namespace TradingViewAPI.Controllers
     public class RealTimeController : ControllerBase
     {
         private readonly IHistoricalPricesService _historicalPricesService;
+        private readonly IQuotesService _quotesService;
 
-        public RealTimeController(IHistoricalPricesService historicalPricesService)
+        public RealTimeController(IHistoricalPricesService historicalPricesService, IQuotesService quotesService)
         {
             _historicalPricesService = historicalPricesService;
+            _quotesService = quotesService;
         }
 
-        [HttpGet("historical-prices/{symbol}")]
+        [HttpGet("{symbol}/historical-prices")]
         public async Task<IActionResult> GetHistoricalPricesListAsync(string symbol)
         {
             var historicalPrices = await _historicalPricesService.GetHistoricalPricesListAsync(symbol);
 
             return Ok(historicalPrices);
+        }
+
+        [HttpGet("{symbol}/quote")]
+        public async Task<IActionResult> GetQuoteync(string symbol)
+        {
+            var quote = await _quotesService.GetQuoteAsync(symbol);
+
+            return Ok(quote);
         }
 
         [HttpGet("symbols")]
@@ -36,7 +46,7 @@ namespace TradingViewAPI.Controllers
             return Ok(res);
         }
 
-        [HttpGet("dividends/{symbol}")]
+        [HttpGet("{symbol}/dividends")]
         public async Task<IActionResult> GetDividendsAsync(string symbol)
         {
             using var client = new HttpClient();

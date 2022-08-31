@@ -14,7 +14,9 @@ public static class ServiceExtensions
         services.AddScoped<ISymbolsRepository, SymbolsRepository>();
         services.AddScoped<IDividendsRepository, DividendsRepository>();
         services.AddScoped<IExchangesRepository, ExchangesRepository>();
+
         services.AddScoped<IHistoricalPricesRepository, HistoricalPricesRepository>();
+        services.AddScoped<IQuotesRepository, QuotesRepository>();
     }
 
     public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
@@ -26,6 +28,7 @@ public static class ServiceExtensions
 
         services.AddScoped<IRealTimeService, RealTimeService>();
         services.AddScoped<IHistoricalPricesService, HistoricalPricesService>();
+        services.AddScoped<IQuotesService, QuotesService>();
     }
 
     public static void ConfigureMongoDBConnection(this IServiceCollection services, IConfiguration configuration)
