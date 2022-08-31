@@ -10,11 +10,13 @@ namespace TradingViewAPI.Controllers
     {
         private readonly IHistoricalPricesService _historicalPricesService;
         private readonly IQuotesService _quotesService;
+        private readonly IIntradayPricesService _intradayPricesService;
 
-        public RealTimeController(IHistoricalPricesService historicalPricesService, IQuotesService quotesService)
+        public RealTimeController(IHistoricalPricesService historicalPricesService, IQuotesService quotesService, IIntradayPricesService intradayPricesService)
         {
             _historicalPricesService = historicalPricesService;
             _quotesService = quotesService;
+            _intradayPricesService = intradayPricesService;
         }
 
         [HttpGet("{symbol}/historical-prices")]
@@ -31,6 +33,14 @@ namespace TradingViewAPI.Controllers
             var quote = await _quotesService.GetQuoteAsync(symbol);
 
             return Ok(quote);
+        }
+
+        [HttpGet("{symbol}/intraday-prices")]
+        public async Task<IActionResult> GetIntradayPricesAsync(string symbol)
+        {
+            var intradayPrices = await _intradayPricesService.GetIntradayPricesListAsync(symbol);
+
+            return Ok(intradayPrices);
         }
 
         [HttpGet("symbols")]
