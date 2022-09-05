@@ -1,5 +1,5 @@
 ﻿namespace TradingView.DAL.Entities.StockProfileEntities;
-public class InsiderSummaryItem
+public class InsiderSummaryItem : EntityBase
 {
     public string FullName { get; set; }
     public int NetTransacted { get; set; }

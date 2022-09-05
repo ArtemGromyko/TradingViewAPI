@@ -1,5 +1,5 @@
 ﻿namespace TradingView.DAL.Entities.StockProfileEntities;
-public class CEOCompensation
+public class CEOCompensation : EntityBase
 {
     public string Symbol { get; set; }
     public string Name { get; set; }

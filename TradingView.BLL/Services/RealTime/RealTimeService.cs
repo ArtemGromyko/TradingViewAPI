@@ -47,7 +47,7 @@ public class RealTimeService : IRealTimeService
     public async Task<List<HistoricalPrice>> GetAllHistoricalPricesAsync(string symbol)
     {
         var historicalPrices = await _historicalPricesRepository.GetAllAsync();
-        if(historicalPrices.Count == 0)
+        if (historicalPrices.Count == 0)
         {
             var url = $"{_configuration["IEXCloudUrls:version"]}" +
                 $"{string.Format(_configuration["IEXCloudUrls:historicalPricesUrl"], symbol)}" +

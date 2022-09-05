@@ -1,5 +1,5 @@
 ﻿namespace TradingView.DAL.Entities.StockProfileEntities;
-public class Company
+public class Company : EntityBase
 {
     public string Symbol { get; set; }
     public string CompanyName { get; set; }

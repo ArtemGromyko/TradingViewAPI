@@ -1,15 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
-using MongoDB.Driver;
 using TradingView.BLL.Contracts.StockProfile;
 using TradingView.DAL.Contracts.StockProfile;
-using TradingView.DAL.Entities;
 using TradingView.DAL.Entities.StockProfileEntities;
 
 namespace TradingView.BLL.Services.StockProfile;
 public class СompanyService : IСompanyService
 {
-
-
     private readonly ICompanyRepository _companyRepository;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IConfiguration _configuration;
@@ -27,9 +23,9 @@ public class СompanyService : IСompanyService
         _httpClient = _httpClientFactory.CreateClient(configuration["HttpClientName"]);
     }
 
-    public async Task<Company> GetCompanyAsync(string symbol, CancellationToken ct = default)
+    public async Task<Company> GetAsync(string symbol, CancellationToken ct = default)
     {
-        var company = await _companyRepository.GetAsync(x => x.Symbol == symbol, ct);
+        var company = await _companyRepository.GetAsync(x => x.Symbol.ToUpper() == symbol.ToUpper(), ct);
         if (company == null)
         {
             return await GetCompanyApiAsync(symbol, ct);

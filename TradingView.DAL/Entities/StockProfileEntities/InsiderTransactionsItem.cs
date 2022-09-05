@@ -1,5 +1,5 @@
 ﻿namespace TradingView.DAL.Entities.StockProfileEntities;
-public class InsiderTransactionsItem
+public class InsiderTransactionsItem : EntityBase
 {
     public double? ConversionOrExercisePrice { get; set; }
     public char DirectIndirect { get; set; }
