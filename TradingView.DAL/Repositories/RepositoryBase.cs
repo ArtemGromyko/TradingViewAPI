@@ -26,7 +26,7 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : 
         await _collection.InsertManyAsync(collection, cancellationToken: ct);
 
     public async Task AddAsync(TEntity entity, CancellationToken ct = default) =>
-        await _collection.InsertOneAsync(entity, ct);
+        await _collection.InsertOneAsync(entity, cancellationToken: ct);
 
     public async Task<List<TEntity>> GetAllAsync(CancellationToken ct = default) =>
         await _collection.AsQueryable().ToListAsync(ct);

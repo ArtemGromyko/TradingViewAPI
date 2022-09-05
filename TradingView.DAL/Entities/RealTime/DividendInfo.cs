@@ -1,4 +1,4 @@
-﻿namespace TradingView.DAL.Entities;
+﻿namespace TradingView.DAL.Entities.RealTime;
 
 
 public class DividendInfo

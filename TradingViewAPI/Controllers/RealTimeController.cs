@@ -1,31 +1,46 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TradingView.BLL.Contracts;
-using TradingView.DAL.Entities;
+using TradingView.BLL.Contracts.RealTime;
+using TradingView.DAL.Entities.RealTime;
 
 namespace TradingViewAPI.Controllers
 {
     [Route("api")]
     [ApiController]
-    public class HistoricalPricesController : ControllerBase
+    public class RealTimeController : ControllerBase
     {
         private readonly IHistoricalPricesService _historicalPricesService;
+        private readonly IQuotesService _quotesService;
+        private readonly IIntradayPricesService _intradayPricesService;
 
-        public HistoricalPricesController(IHistoricalPricesService historicalPricesService)
+        public RealTimeController(IHistoricalPricesService historicalPricesService, IQuotesService quotesService, IIntradayPricesService intradayPricesService)
         {
             _historicalPricesService = historicalPricesService;
+            _quotesService = quotesService;
+            _intradayPricesService = intradayPricesService;
         }
 
-        [HttpGet("historical-prices/{symbol}")]
-        public async Task<IActionResult> GetHistoricalPricesAsync(string symbol)
+        [HttpGet("{symbol}/historical-prices")]
+        public async Task<IActionResult> GetHistoricalPricesListAsync(string symbol)
         {
-            using var client = new HttpClient();
+            var historicalPrices = await _historicalPricesService.GetHistoricalPricesListAsync(symbol);
 
-            var response = await client
-                .GetAsync($"https://sandbox.iexapis.com/stable/stock/{symbol}/chart/max?token=Tpk_aae23baa9af74779993006fb85d15f0f");
+            return Ok(historicalPrices);
+        }
 
-            var res = await response.Content.ReadAsAsync<IEnumerable<HistoricalPrice>>();
+        [HttpGet("{symbol}/quote")]
+        public async Task<IActionResult> GetQuoteync(string symbol)
+        {
+            var quote = await _quotesService.GetQuoteAsync(symbol);
 
-            return Ok(res);
+            return Ok(quote);
+        }
+
+        [HttpGet("{symbol}/intraday-prices")]
+        public async Task<IActionResult> GetIntradayPricesAsync(string symbol)
+        {
+            var intradayPrices = await _intradayPricesService.GetIntradayPricesListAsync(symbol);
+
+            return Ok(intradayPrices);
         }
 
         [HttpGet("symbols")]
@@ -41,7 +56,7 @@ namespace TradingViewAPI.Controllers
             return Ok(res);
         }
 
-        [HttpGet("dividends/{symbol}")]
+        [HttpGet("{symbol}/dividends")]
         public async Task<IActionResult> GetDividendsAsync(string symbol)
         {
             using var client = new HttpClient();
