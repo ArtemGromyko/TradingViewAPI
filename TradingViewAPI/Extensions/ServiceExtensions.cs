@@ -18,6 +18,7 @@ public static class ServiceExtensions
         services.AddScoped<IHistoricalPricesRepository, HistoricalPricesRepository>();
         services.AddScoped<IQuotesRepository, QuotesRepository>();
         services.AddScoped<IIntradayPricesRepository, IntradayPricesRepository>();
+        services.AddScoped<ILargestTradesRepository, LargestTradesRepository>();
     }
 
     public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
@@ -31,6 +32,7 @@ public static class ServiceExtensions
         services.AddScoped<IHistoricalPricesService, HistoricalPricesService>();
         services.AddScoped<IQuotesService, QuotesService>();
         services.AddScoped<IIntradayPricesService, IntradayPricesService>();
+        services.AddScoped<ILargestTradesService, LargestTradesService>();
     }
 
     public static void ConfigureMongoDBConnection(this IServiceCollection services, IConfiguration configuration)

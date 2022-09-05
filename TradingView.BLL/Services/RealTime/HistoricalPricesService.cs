@@ -34,10 +34,10 @@ public class HistoricalPricesService : IHistoricalPricesService
                 $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
 
             var response = await _httpClient.GetAsync(url);
-            var res = await response.Content.ReadAsAsync<IEnumerable<HistoricalPrice>>();
+            var res = await response.Content.ReadAsAsync<List<HistoricalPrice>>();
 
             await _historicalPricesRepository.AddCollectionAsync(res);
-            historicalPrices = res.ToList();
+            historicalPrices = res;
         }
 
         return historicalPrices;

@@ -11,12 +11,15 @@ namespace TradingViewAPI.Controllers
         private readonly IHistoricalPricesService _historicalPricesService;
         private readonly IQuotesService _quotesService;
         private readonly IIntradayPricesService _intradayPricesService;
+        private readonly ILargestTradesService _largestTradesService;
 
-        public RealTimeController(IHistoricalPricesService historicalPricesService, IQuotesService quotesService, IIntradayPricesService intradayPricesService)
+        public RealTimeController(IHistoricalPricesService historicalPricesService, IQuotesService quotesService,
+            IIntradayPricesService intradayPricesService, ILargestTradesService largestTradesService)
         {
             _historicalPricesService = historicalPricesService;
             _quotesService = quotesService;
             _intradayPricesService = intradayPricesService;
+            _largestTradesService = largestTradesService;
         }
 
         [HttpGet("{symbol}/historical-prices")]
@@ -41,6 +44,14 @@ namespace TradingViewAPI.Controllers
             var intradayPrices = await _intradayPricesService.GetIntradayPricesListAsync(symbol);
 
             return Ok(intradayPrices);
+        }
+
+        [HttpGet("{symbol}/largest-trades")]
+        public async Task<IActionResult> GetLargestTradesAsync(string symbol)
+        {
+            var largestTrades = await _largestTradesService.GetLargestTradesListAsync(symbol);
+
+            return Ok(largestTrades);
         }
 
         [HttpGet("symbols")]
