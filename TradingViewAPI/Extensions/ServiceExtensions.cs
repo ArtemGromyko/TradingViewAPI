@@ -45,6 +45,7 @@ public static class ServiceExtensions
         services.AddScoped<ILogoService, LogoService>();
         services.AddScoped<ICEOCompensationService, CEOCompensationService>();
         services.AddScoped<IСompanyService, СompanyService>();
+        services.AddScoped<IInsiderRosterService, InsiderRosterService>();
     }
 
     public static void ConfigureMongoDBConnection(this IServiceCollection services, IConfiguration configuration)

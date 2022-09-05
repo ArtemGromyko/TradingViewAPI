@@ -40,7 +40,7 @@ public class СompanyService : IСompanyService
                $"{string.Format(_configuration["IEXCloudUrls:companyUrl"], symbol)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
 
-        var response = await _httpClient.GetAsync(url);
+        var response = await _httpClient.GetAsync(url, ct);
         var res = await response.Content.ReadAsAsync<Company>();
 
         await _companyRepository.AddAsync(res);

@@ -40,7 +40,7 @@ public class CEOCompensationService : ICEOCompensationService
                $"{string.Format(_configuration["IEXCloudUrls:ceoCompensationUrl"], symbol)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
 
-        var response = await _httpClient.GetAsync(url);
+        var response = await _httpClient.GetAsync(url, ct);
         var res = await response.Content.ReadAsAsync<CEOCompensation>();
 
         await _CEOCompensationRepository.AddAsync(res);
