@@ -25,13 +25,13 @@ public class CEOCompensationService : ICEOCompensationService
 
     public async Task<CEOCompensation> GetAsync(string symbol, CancellationToken ct = default)
     {
-        var company = await _CEOCompensationRepository.GetAsync(x => x.Symbol.ToUpper() == symbol.ToUpper(), ct);
-        if (company == null)
+        var result = await _CEOCompensationRepository.GetAsync(x => x.Symbol.ToUpper() == symbol.ToUpper(), ct);
+        if (result == null)
         {
             return await GetApiAsync(symbol, ct);
         }
 
-        return company;
+        return result;
     }
 
     private async Task<CEOCompensation> GetApiAsync(string symbol, CancellationToken ct = default)

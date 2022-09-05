@@ -8,4 +8,5 @@ public interface IRepositoryBase<TEntity>
     Task AddAsync(TEntity entity, CancellationToken ct = default);
     Task<List<TEntity>> GetAllAsync(CancellationToken ct = default);
     Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> expression, CancellationToken ct = default);
+    Task<List<TEntity>> GetCollectionAsync(Expression<Func<TEntity, bool>> expression, CancellationToken ct = default);
 }

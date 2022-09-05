@@ -2,50 +2,48 @@
 using TradingView.BLL.Contracts.StockProfile;
 using TradingView.DAL.Contracts.StockProfile;
 using TradingView.DAL.Entities.StockProfileEntities;
-using TradingView.DAL.Repositories.StockProfile;
 
 namespace TradingView.BLL.Services.StockProfile;
-public class LogoService : ILogoService
+public class InsiderSummaryService : IInsiderSummaryService
 {
-    private readonly ILogoRepository _logoRepository;
+    private readonly IInsiderSummaryRepository _insiderSummaryRepository;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IConfiguration _configuration;
 
     private readonly HttpClient _httpClient;
 
-    public LogoService(ILogoRepository logoRepository,
+    public InsiderSummaryService(IInsiderSummaryRepository insiderSummaryRepository,
         IHttpClientFactory httpClientFactory,
         IConfiguration configuration)
     {
-        _logoRepository = logoRepository ?? throw new ArgumentNullException(nameof(CEOCompensationRepository));
+        _insiderSummaryRepository = insiderSummaryRepository ?? throw new ArgumentNullException(nameof(insiderSummaryRepository));
         _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
         _httpClient = _httpClientFactory.CreateClient(configuration["HttpClientName"]);
     }
 
-    public async Task<Logo> GetAsync(string symbol, CancellationToken ct = default)
+    public async Task<List<InsiderSummaryItem>> GetAsync(string symbol, CancellationToken ct = default)
     {
-        var result = await _logoRepository.GetAsync(x => x.Symbol.ToUpper() == symbol.ToUpper(), ct);
-        if (result == null)
+        var result = await _insiderSummaryRepository.GetCollectionAsync(x => x.Symbol.ToUpper() == symbol.ToUpper(), ct);
+        if (result.Count == 0)
         {
-            return await GetApiAsync(symbol, ct);
+            return await GetCompanyApiAsync(symbol, ct);
         }
 
         return result;
     }
 
-    private async Task<Logo> GetApiAsync(string symbol, CancellationToken ct = default)
+    private async Task<List<InsiderSummaryItem>> GetCompanyApiAsync(string symbol, CancellationToken ct = default)
     {
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
-               $"{string.Format(_configuration["IEXCloudUrls:logoUrl"], symbol)}" +
+               $"{string.Format(_configuration["IEXCloudUrls:insiderSummaryUrl"], symbol)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
 
         var response = await _httpClient.GetAsync(url, ct);
-        var res = await response.Content.ReadAsAsync<Logo>();
+        var res = await response.Content.ReadAsAsync<List<InsiderSummaryItem>>();
 
-        res.Symbol = symbol.ToUpper();
-        await _logoRepository.AddAsync(res);
+        await _insiderSummaryRepository.AddCollectionAsync(res);
 
         return res;
     }
