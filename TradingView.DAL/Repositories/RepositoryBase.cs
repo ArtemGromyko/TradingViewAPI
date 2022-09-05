@@ -32,5 +32,5 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : 
         await _collection.AsQueryable().ToListAsync(ct);
 
     public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> expression, CancellationToken ct = default) =>
-        await _collection.AsQueryable().FirstAsync(expression, ct);
+        await _collection.AsQueryable().FirstOrDefaultAsync(expression, ct);
 }

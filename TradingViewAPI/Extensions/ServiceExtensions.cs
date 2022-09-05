@@ -23,7 +23,7 @@ public static class ServiceExtensions
         services.AddScoped<IInsiderSummaryRepository, InsiderSummaryRepository>();
         services.AddScoped<IInsiderTransactionsRepository, InsiderTransactionsRepository>();
         services.AddScoped<ILogoRepository, LogoRepository>();
-        services.AddScoped<IСompanyRepository, СompanyRepository>();
+        services.AddScoped<ICompanyRepository, CompanyRepository>();
     }
 
     public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)

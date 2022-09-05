@@ -5,9 +5,9 @@ using TradingView.DAL.Entities.StockProfileEntities;
 using TradingView.DAL.Settings;
 
 namespace TradingView.DAL.Repositories.StockProfile;
-public class СompanyRepository : RepositoryBase<Сompany>, IСompanyRepository
+public class CompanyRepository : RepositoryBase<Company>, ICompanyRepository
 {
-    public СompanyRepository(IOptions<DatabaseSettings> settings, IConfiguration configuration)
+    public CompanyRepository(IOptions<DatabaseSettings> settings, IConfiguration configuration)
         : base(settings, configuration["MongoDBCollectionNames:CompanyCollectionName"])
     {
     }
