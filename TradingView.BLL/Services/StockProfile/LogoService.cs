@@ -5,7 +5,7 @@ using TradingView.DAL.Entities.StockProfileEntities;
 namespace TradingView.BLL.Services.StockProfile;
 public class LogoService : ILogoService 
 {
-    public readonly ILogoRepository _logoRepository;
+    private readonly ILogoRepository _logoRepository;
 
     public LogoService(ILogoRepository logoRepository)
     {

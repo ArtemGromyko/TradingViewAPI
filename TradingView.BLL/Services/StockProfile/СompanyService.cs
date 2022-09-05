@@ -5,7 +5,8 @@ using TradingView.DAL.Entities.StockProfileEntities;
 namespace TradingView.BLL.Services.StockProfile;
 public class СompanyService : IСompanyService
 {
-    public readonly IСompanyRepository _companyRepository;
+    private readonly IСompanyRepository _companyRepository;
+
     public СompanyService(IСompanyRepository companyRepository)
     {
         _companyRepository = companyRepository ?? throw new ArgumentNullException(nameof(companyRepository));
