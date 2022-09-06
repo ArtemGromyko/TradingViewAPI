@@ -1,11 +1,15 @@
 ﻿using TradingView.BLL.Contracts.RealTime;
+using TradingView.BLL.Contracts.StockFundamentals;
 using TradingView.BLL.Contracts.StockProfile;
 using TradingView.BLL.Services.RealTime;
+using TradingView.BLL.Services.StockFundamentals;
 using TradingView.BLL.Services.StockProfile;
 using TradingView.DAL.Contracts;
 using TradingView.DAL.Contracts.RealTime;
+using TradingView.DAL.Contracts.StockFundamentals;
 using TradingView.DAL.Contracts.StockProfile;
 using TradingView.DAL.Repositories.RealTime;
+using TradingView.DAL.Repositories.StockFundamentals;
 using TradingView.DAL.Repositories.StockProfile;
 using TradingView.DAL.Settings;
 
@@ -30,6 +34,8 @@ public static class ServiceExtensions
         services.AddScoped<IInsiderSummaryRepository, InsiderSummaryRepository>();
         services.AddScoped<IInsiderTransactionsRepository, InsiderTransactionsRepository>();
         services.AddScoped<IPeerGroupRepository, PeerGroupRepository>();
+
+        services.AddScoped<IBalanceSheetRepository, BalanceSheetRepository>();
     }
 
     public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
@@ -51,6 +57,8 @@ public static class ServiceExtensions
         services.AddScoped<IInsiderSummaryService, InsiderSummaryService>();
         services.AddScoped<IInsiderTransactionsService, InsiderTransactionsService>();
         services.AddScoped<IPeerGroupService, PeerGroupService>();
+
+        services.AddScoped<IBalanceSheetService, BalanceSheetService>();
     }
 
     public static void ConfigureMongoDBConnection(this IServiceCollection services, IConfiguration configuration)

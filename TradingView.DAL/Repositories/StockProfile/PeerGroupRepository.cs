@@ -8,7 +8,7 @@ namespace TradingView.DAL.Repositories.StockProfile;
 public class PeerGroupRepository : RepositoryBase<PeerGroup>, IPeerGroupRepository
 {
     public PeerGroupRepository(IOptions<DatabaseSettings> settings, IConfiguration configuration)
-     : base(settings, configuration["MongoDBCollectionNames:PeerGroupCollectioName"])
+     : base(settings, configuration["MongoDBCollectionNames:PeerGroupCollectionName"])
     {
     }
 }
