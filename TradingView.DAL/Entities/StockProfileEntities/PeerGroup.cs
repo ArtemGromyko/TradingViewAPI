@@ -1,6 +1,6 @@
 ﻿namespace TradingView.DAL.Entities.StockProfileEntities;
-public class InsiderRoster : EntityBase
+public class PeerGroup : EntityBase
 {
     public string Symbol { get; set; }
-    public List<InsiderRosterItem> Items { get; set; }
+    public List<string> Items { get; set; }
 }

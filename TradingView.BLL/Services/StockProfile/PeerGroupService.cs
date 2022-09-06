@@ -4,28 +4,28 @@ using TradingView.DAL.Contracts.StockProfile;
 using TradingView.DAL.Entities.StockProfileEntities;
 
 namespace TradingView.BLL.Services.StockProfile;
-public class InsiderRosterService : IInsiderRosterService
+public class PeerGroupService : IPeerGroupService
 {
-    private readonly IInsiderRosterRepository _insiderRosterRepository;
+    private readonly IPeerGroupRepository _peerGroupRepository;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IConfiguration _configuration;
 
     private readonly HttpClient _httpClient;
 
-    public InsiderRosterService(IInsiderRosterRepository insiderRosterRepository,
+    public PeerGroupService(IPeerGroupRepository peerGroupRepository,
         IHttpClientFactory httpClientFactory,
         IConfiguration configuration)
     {
-        _insiderRosterRepository = insiderRosterRepository ?? throw new ArgumentNullException(nameof(insiderRosterRepository));
+        _peerGroupRepository = peerGroupRepository ?? throw new ArgumentNullException(nameof(peerGroupRepository));
         _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
         _httpClient = _httpClientFactory.CreateClient(configuration["HttpClientName"]);
     }
 
-    public async Task<InsiderRoster> GetAsync(string symbol, CancellationToken ct = default)
+    public async Task<PeerGroup> GetAsync(string symbol, CancellationToken ct = default)
     {
-        var result = await _insiderRosterRepository.GetAsync(x => x.Symbol.ToUpper() == symbol.ToUpper(), ct);
+        var result = await _peerGroupRepository.GetAsync(x => x.Symbol.ToUpper() == symbol.ToUpper(), ct);
         if (result == null)
         {
             return await GetCompanyApiAsync(symbol, ct);
@@ -34,21 +34,21 @@ public class InsiderRosterService : IInsiderRosterService
         return result;
     }
 
-    private async Task<InsiderRoster> GetCompanyApiAsync(string symbol, CancellationToken ct = default)
+    private async Task<PeerGroup> GetCompanyApiAsync(string symbol, CancellationToken ct = default)
     {
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
-               $"{string.Format(_configuration["IEXCloudUrls:insiderRosterUrl"], symbol)}" +
+               $"{string.Format(_configuration["IEXCloudUrls:peerGroupsUrl"], symbol)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
 
         var response = await _httpClient.GetAsync(url, ct);
-        var res = await response.Content.ReadAsAsync<IEnumerable<InsiderRosterItem>>();
+        var res = await response.Content.ReadAsAsync<IEnumerable<string>>();
 
-        var roster = new InsiderRoster()
+        var roster = new PeerGroup()
         {
             Symbol = symbol,
             Items = res.ToList()
         };
-        await _insiderRosterRepository.AddAsync(roster);
+        await _peerGroupRepository.AddAsync(roster);
 
         return roster;
     }

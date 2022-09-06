@@ -29,6 +29,7 @@ public static class ServiceExtensions
         services.AddScoped<IInsiderRosterRepository, InsiderRosterRepository>();
         services.AddScoped<IInsiderSummaryRepository, InsiderSummaryRepository>();
         services.AddScoped<IInsiderTransactionsRepository, InsiderTransactionsRepository>();
+        services.AddScoped<IPeerGroupRepository, PeerGroupRepository>();
     }
 
     public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
@@ -49,6 +50,7 @@ public static class ServiceExtensions
         services.AddScoped<IInsiderRosterService, InsiderRosterService>();
         services.AddScoped<IInsiderSummaryService, InsiderSummaryService>();
         services.AddScoped<IInsiderTransactionsService, InsiderTransactionsService>();
+        services.AddScoped<IPeerGroupService, PeerGroupService>();
     }
 
     public static void ConfigureMongoDBConnection(this IServiceCollection services, IConfiguration configuration)
