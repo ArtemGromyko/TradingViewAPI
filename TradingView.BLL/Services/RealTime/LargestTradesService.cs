@@ -12,7 +12,7 @@ public class LargestTradesService : ILargestTradesService
     private readonly HttpClient _httpClient;
 
     public LargestTradesService(ILargestTradesRepository largestTradesRepository, IConfiguration configuration,
-        IHttpClientFactory httpClientFactory, HttpClient httpClient)
+        IHttpClientFactory httpClientFactory)
     {
         _largestTradesRepository = largestTradesRepository;
         _configuration = configuration;

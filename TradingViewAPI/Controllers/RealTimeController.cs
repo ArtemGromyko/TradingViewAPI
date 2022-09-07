@@ -12,14 +12,23 @@ namespace TradingViewAPI.Controllers
         private readonly IQuotesService _quotesService;
         private readonly IIntradayPricesService _intradayPricesService;
         private readonly ILargestTradesService _largestTradesService;
+        private readonly IOHLCService _ohlcService;
+        private readonly IPreviousDayPriceService _previousDayPriceService;
+        private readonly IPriceOnlyService _priceOnlyService;
+        private readonly IVolumeByVenueService _volumeByVenueService;
 
         public RealTimeController(IHistoricalPricesService historicalPricesService, IQuotesService quotesService,
-            IIntradayPricesService intradayPricesService, ILargestTradesService largestTradesService)
+            IIntradayPricesService intradayPricesService, ILargestTradesService largestTradesService, IOHLCService ohlcService,
+            IPreviousDayPriceService previousDayPriceService, IPriceOnlyService priceOnlyService, IVolumeByVenueService volumeByVenueService)
         {
             _historicalPricesService = historicalPricesService;
             _quotesService = quotesService;
             _intradayPricesService = intradayPricesService;
             _largestTradesService = largestTradesService;
+            _ohlcService = ohlcService;
+            _previousDayPriceService = previousDayPriceService;
+            _priceOnlyService = priceOnlyService;
+            _volumeByVenueService = volumeByVenueService;
         }
 
         [HttpGet("{symbol}/historical-prices")]
@@ -52,6 +61,38 @@ namespace TradingViewAPI.Controllers
             var largestTrades = await _largestTradesService.GetLargestTradesListAsync(symbol);
 
             return Ok(largestTrades);
+        }
+
+        [HttpGet("{symbol}/ohlc")]
+        public async Task<IActionResult> GetOHLCAsync(string symbol)
+        {
+            var ohlc = await _ohlcService.GetOHLCAsync(symbol);
+
+            return Ok(ohlc);
+        }
+
+        [HttpGet("{symbol}/previous-day-price")]
+        public async Task<IActionResult> GetPreviousDayPriceAsync(string symbol)
+        {
+            var previousDayPrice = await _previousDayPriceService.GetPreviousDayPriceAsync(symbol);
+
+            return Ok(previousDayPrice);
+        }
+
+        [HttpGet("{symbol}/price")]
+        public async Task<IActionResult> GetPriceOnlyAsync(string symbol)
+        {
+            var priceOnly = await _priceOnlyService.GetPriceOnlyAsync(symbol);
+
+            return Ok(priceOnly);
+        }
+
+        [HttpGet("{symbol}/volume-by-venue")]
+        public async Task<IActionResult> GetVolumeByVenueAsync(string symbol)
+        {
+            var volumesByVenue = await _volumeByVenueService.GetVolumesByVenueAsync(symbol);
+
+            return Ok(volumesByVenue);
         }
 
         [HttpGet("symbols")]
