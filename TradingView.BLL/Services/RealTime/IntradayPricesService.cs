@@ -23,6 +23,7 @@ public class IntradayPricesService : IIntradayPricesService
         _httpClientFactory = httpClientFactory;
         _httpClient = _httpClientFactory.CreateClient(_configuration["HttpClientName"]);
     }
+
     public async Task<List<IntradayPrice>> GetIntradayPricesListAsync(string symbol)
     {
         var intradayPrices = await _intradayPricesRepository.GetAllAsync();
@@ -33,10 +34,10 @@ public class IntradayPricesService : IIntradayPricesService
                 $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
 
             var response = await _httpClient.GetAsync(url);
-            var res = await response.Content.ReadAsAsync<IEnumerable<IntradayPrice>>();
+            var res = await response.Content.ReadAsAsync<List<IntradayPrice>>();
 
             await _intradayPricesRepository.AddCollectionAsync(res);
-            intradayPrices = res.ToList();
+            intradayPrices = res;
         }
 
         return intradayPrices;
