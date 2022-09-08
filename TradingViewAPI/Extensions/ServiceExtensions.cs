@@ -26,6 +26,10 @@ public static class ServiceExtensions
         services.AddScoped<IHistoricalPricesRepository, HistoricalPricesRepository>();
         services.AddScoped<IQuotesRepository, QuotesRepository>();
         services.AddScoped<IIntradayPricesRepository, IntradayPricesRepository>();
+        services.AddScoped<ILargestTradesRepository, LargestTradesRepository>();
+        services.AddScoped<IOHLCRepository, OHLCRepository>();
+        services.AddScoped<IPreviousDayPriceRepository, PreviousDayPriceRepository>();
+        services.AddScoped<IVolumeByVenueRepository, VolumeByVenueRepository>();
 
         services.AddScoped<ILogoRepository, LogoRepository>();
         services.AddScoped<ICompanyRepository, CompanyRepository>();
@@ -53,6 +57,11 @@ public static class ServiceExtensions
         services.AddScoped<IHistoricalPricesService, HistoricalPricesService>();
         services.AddScoped<IQuotesService, QuotesService>();
         services.AddScoped<IIntradayPricesService, IntradayPricesService>();
+        services.AddScoped<ILargestTradesService, LargestTradesService>();
+        services.AddScoped<IOHLCService, OHLCService>();
+        services.AddScoped<IPreviousDayPriceService, PreviousDayPriceService>();
+        services.AddScoped<IPriceOnlyService, PriceOnlyService>();
+        services.AddScoped<IVolumeByVenueService, VolumeByVenueService>();
         services.AddScoped<ILogoService, LogoService>();
         services.AddScoped<ICEOCompensationService, CEOCompensationService>();
         services.AddScoped<IСompanyService, СompanyService>();

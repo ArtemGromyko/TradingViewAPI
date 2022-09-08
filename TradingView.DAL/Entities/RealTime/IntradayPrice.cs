@@ -10,9 +10,9 @@ public class IntradayPrice : EntityBase
     public float Low { get; set; }
     public float Open { get; set; }
     public float Close { get; set; }
-    public decimal? Average { get; set; }
-    public decimal? Volume { get; set; }
-    public decimal? Notional { get; set; }
+    public double? Average { get; set; }
+    public double? Volume { get; set; }
+    public double? Notional { get; set; }
     public int? NumberOfTrades { get; set; }
 }
 
