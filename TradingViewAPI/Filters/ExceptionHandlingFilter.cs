@@ -25,10 +25,6 @@ public class ExceptionHandlingFilter : IAsyncExceptionFilter
 
         switch (context.Exception)
         {
-            case NotFoundException:
-                statusCode = HttpStatusCode.NotFound;
-                apiError.Code = ApiErrorCode.NotFound;
-                break;
             case ValidationException:
                 statusCode = HttpStatusCode.BadRequest;
                 apiError.Code = ApiErrorCode.ValidationFailed;

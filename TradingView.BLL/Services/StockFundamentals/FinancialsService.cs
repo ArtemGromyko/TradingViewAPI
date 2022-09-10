@@ -2,6 +2,7 @@
 using TradingView.BLL.Contracts.StockFundamentals;
 using TradingView.DAL.Contracts.StockFundamentals;
 using TradingView.DAL.Entities.StockFundamentals;
+using TradingView.Models.Exceptions;
 
 namespace TradingView.BLL.Services.StockFundamentals;
 public class FinancialsService : IFinancialsService
@@ -41,6 +42,11 @@ public class FinancialsService : IFinancialsService
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
 
         var response = await _httpClient.GetAsync(url, ct);
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new ApiException().Create(response);
+        }
+
         var res = await response.Content.ReadAsAsync<FinancialsEntity>();
 
         await _financialsRepository.AddAsync(res);

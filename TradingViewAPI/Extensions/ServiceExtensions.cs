@@ -46,6 +46,8 @@ public static class ServiceExtensions
         services.AddScoped<IReportedFinancialsRepository, ReportedFinancialsRepository>();
         services.AddScoped<IIncomeStatementRepository, IncomeStatementRepository>();
         services.AddScoped<ISplitRepository, SplitRepository>();
+        services.AddScoped<IExpirationRepository, ExpirationRepository>();
+        services.AddScoped<IOptionRepository, OptionRepository>();
     }
 
     public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
@@ -79,6 +81,8 @@ public static class ServiceExtensions
         services.AddScoped<IReportedFinancialsService, ReportedFinancialsService>();
         services.AddScoped<IIncomeStatementService, IncomeStatementService>();
         services.AddScoped<ISplitService, SplitService>();
+        services.AddScoped<IOptionService, OptionService>();
+        services.AddScoped<IEarningsService, EarningsService>();
     }
 
     public static void ConfigureMongoDBConnection(this IServiceCollection services, IConfiguration configuration)

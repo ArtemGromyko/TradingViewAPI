@@ -2,6 +2,7 @@
 using TradingView.BLL.Contracts.StockFundamentals;
 using TradingView.DAL.Contracts.StockFundamentals;
 using TradingView.DAL.Entities.StockFundamentals;
+using TradingView.Models.Exceptions;
 
 namespace TradingView.BLL.Services.StockFundamentals;
 public class SplitService : ISplitService
@@ -34,6 +35,17 @@ public class SplitService : ISplitService
         return result;
     }
 
+    public async Task<List<SplitEntity>> GetAsync(string symbol, string range, CancellationToken ct = default)
+    {
+        var result = await _splitRepository.GetCollectionAsync(x => x.Symbol.ToUpper() == symbol.ToUpper(), ct);
+        if (result.Count == 0)
+        {
+            return await GetApiAsync(symbol, ct);
+        }
+
+        return result;
+    }
+
     private async Task<List<SplitEntity>> GetApiAsync(string symbol, CancellationToken ct = default)
     {
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
@@ -41,6 +53,10 @@ public class SplitService : ISplitService
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
 
         var response = await _httpClient.GetAsync(url, ct);
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new ApiException().Create(response);
+        }
         var res = await response.Content.ReadAsAsync<List<SplitEntity>>();
 
         await _splitRepository.AddCollectionAsync(res);

@@ -2,6 +2,7 @@
 using TradingView.BLL.Contracts.StockFundamentals;
 using TradingView.DAL.Contracts.StockFundamentals;
 using TradingView.DAL.Entities.StockFundamentals;
+using TradingView.Models.Exceptions;
 
 namespace TradingView.BLL.Services.StockFundamentals;
 public class EarningsService : IEarningsService
@@ -34,6 +35,17 @@ public class EarningsService : IEarningsService
         return result;
     }
 
+    public async Task<EarningsEntity> GetAsync(string symbol, int last, CancellationToken ct = default)
+    {
+        var result = await _earningsRepository.GetAsync(x => x.Symbol.ToUpper() == symbol.ToUpper(), ct);
+        if (result == null)
+        {
+            return await GetApiAsync(symbol, ct);
+        }
+
+        return result;
+    }
+
     private async Task<EarningsEntity> GetApiAsync(string symbol, CancellationToken ct = default)
     {
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
@@ -41,6 +53,11 @@ public class EarningsService : IEarningsService
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
 
         var response = await _httpClient.GetAsync(url, ct);
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new ApiException().Create(response);
+        }
+
         var res = await response.Content.ReadAsAsync<EarningsEntity>();
 
         await _earningsRepository.AddAsync(res);
