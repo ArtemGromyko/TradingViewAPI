@@ -2,6 +2,7 @@
 using TradingView.BLL.Contracts.StockProfile;
 using TradingView.DAL.Contracts.StockProfile;
 using TradingView.DAL.Entities.StockProfileEntities;
+using TradingView.Models.Exceptions;
 
 namespace TradingView.BLL.Services.StockProfile;
 public class CEOCompensationService : ICEOCompensationService
@@ -25,7 +26,7 @@ public class CEOCompensationService : ICEOCompensationService
 
     public async Task<CEOCompensation> GetAsync(string symbol, CancellationToken ct = default)
     {
-        var result = await _CEOCompensationRepository.GetAsync(x => x.Symbol.ToUpper() == symbol.ToUpper(), ct);
+        CEOCompensation result = null;// await _CEOCompensationRepository.GetAsync(x => x.Symbol.ToUpper() == symbol.ToUpper(), ct);
         if (result == null)
         {
             return await GetApiAsync(symbol, ct);
@@ -41,9 +42,14 @@ public class CEOCompensationService : ICEOCompensationService
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
 
         var response = await _httpClient.GetAsync(url, ct);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new ApiException().Create(response);
+        }
         var res = await response.Content.ReadAsAsync<CEOCompensation>();
 
-        await _CEOCompensationRepository.AddAsync(res);
+        //await _CEOCompensationRepository.AddAsync(res);   
 
         return res;
     }

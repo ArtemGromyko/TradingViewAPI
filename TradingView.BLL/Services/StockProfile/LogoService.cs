@@ -3,6 +3,7 @@ using TradingView.BLL.Contracts.StockProfile;
 using TradingView.DAL.Contracts.StockProfile;
 using TradingView.DAL.Entities.StockProfileEntities;
 using TradingView.DAL.Repositories.StockProfile;
+using TradingView.Models.Exceptions;
 
 namespace TradingView.BLL.Services.StockProfile;
 public class LogoService : ILogoService
@@ -42,6 +43,10 @@ public class LogoService : ILogoService
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
 
         var response = await _httpClient.GetAsync(url, ct);
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new ApiException().Create(response);
+        }
         var res = await response.Content.ReadAsAsync<Logo>();
 
         res.Symbol = symbol.ToUpper();

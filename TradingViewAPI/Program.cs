@@ -1,4 +1,5 @@
 using TradingViewAPI.Extensions;
+using TradingViewAPI.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,12 @@ services.ConfigureMongoDBConnection(configuration);
 services.ConfigureRepositories();
 services.ConfigureServices(configuration);
 
-services.AddControllers();
+services.AddControllers(x =>
+{
+    x.AllowEmptyInputInBodyModelBinding = true;
+    x.Filters.Add(typeof(ExceptionHandlingFilter));
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
