@@ -2,6 +2,7 @@
 using TradingView.BLL.Contracts.RealTime;
 using TradingView.DAL.Contracts.RealTime;
 using TradingView.DAL.Entities.RealTime;
+using TradingView.DAL.Entities.RealTime.LargestTrade;
 
 namespace TradingView.BLL.Services.RealTime;
 
@@ -20,22 +21,24 @@ public class LargestTradesService : ILargestTradesService
         _httpClient = httpClientFactory.CreateClient(_configuration["HttpClientName"]);
     }
 
-    public async Task<List<LargestTrade>> GetLargestTradesListAsync(string symbol)
+    public async Task<List<LargestTradeItem>> GetLargestTradesListAsync(string symbol)
     {
-        var largestTrades = await _largestTradesRepository.GetAllAsync();
-        if (largestTrades.Count == 0)
+        var largestTrade = await _largestTradesRepository.GetAsync((lt) => lt.Symbol!.Equals(symbol));
+        if (largestTrade is null)
         {
             var url = $"{_configuration["IEXCloudUrls:version"]}" +
                 $"{string.Format(_configuration["IEXCloudUrls:largestTradesUrl"], symbol)}" +
                 $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
 
             var response = await _httpClient.GetAsync(url);
-            var res = await response.Content.ReadAsAsync<List<LargestTrade>>();
-
-            await _largestTradesRepository.AddCollectionAsync(res);
-            largestTrades = res;
+            var largestTradeItems = await response.Content.ReadAsAsync<List<LargestTradeItem>>();
+            
+            var newLargestTrade = new LargestTrade { Symbol = symbol, Items = largestTradeItems };
+            await _largestTradesRepository.AddAsync(newLargestTrade);
+            
+            return largestTradeItems;
         }
 
-        return largestTrades;
+        return largestTrade.Items!;
     }
 }

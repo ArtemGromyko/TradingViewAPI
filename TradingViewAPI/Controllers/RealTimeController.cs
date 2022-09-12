@@ -16,10 +16,13 @@ namespace TradingViewAPI.Controllers
         private readonly IPreviousDayPriceService _previousDayPriceService;
         private readonly IPriceOnlyService _priceOnlyService;
         private readonly IVolumeByVenueService _volumeByVenueService;
+        private readonly IBookService _bookService;
+        private readonly IDelayedQuoteService _delayedQuoteService;
 
         public RealTimeController(IHistoricalPricesService historicalPricesService, IQuotesService quotesService,
             IIntradayPricesService intradayPricesService, ILargestTradesService largestTradesService, IOHLCService ohlcService,
-            IPreviousDayPriceService previousDayPriceService, IPriceOnlyService priceOnlyService, IVolumeByVenueService volumeByVenueService)
+            IPreviousDayPriceService previousDayPriceService, IPriceOnlyService priceOnlyService, IVolumeByVenueService volumeByVenueService,
+            IBookService bookService, IDelayedQuoteService delayedQuoteService)
         {
             _historicalPricesService = historicalPricesService;
             _quotesService = quotesService;
@@ -29,6 +32,8 @@ namespace TradingViewAPI.Controllers
             _previousDayPriceService = previousDayPriceService;
             _priceOnlyService = priceOnlyService;
             _volumeByVenueService = volumeByVenueService;
+            _bookService = bookService;
+            _delayedQuoteService = delayedQuoteService;
         }
 
         [HttpGet("{symbol}/historical-prices")]
@@ -93,6 +98,22 @@ namespace TradingViewAPI.Controllers
             var volumesByVenue = await _volumeByVenueService.GetVolumesByVenueAsync(symbol);
 
             return Ok(volumesByVenue);
+        }
+
+        [HttpGet("{symbol}/book")]
+        public async Task<IActionResult> GetBookAsync(string symbol)
+        {
+            var book = await _bookService.GetBookAsync(symbol);
+
+            return Ok(book);
+        }
+
+        [HttpGet("{symbol}/delayed-quote")]
+        public async Task<IActionResult> GetDelayedQuoteAsync(string symbol)
+        {
+            var delayedQuote = await _delayedQuoteService.GetDelayedQuoteAsync(symbol);
+
+            return Ok(delayedQuote);
         }
 
         [HttpGet("symbols")]

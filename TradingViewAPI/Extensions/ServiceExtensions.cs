@@ -30,6 +30,9 @@ public static class ServiceExtensions
         services.AddScoped<IOHLCRepository, OHLCRepository>();
         services.AddScoped<IPreviousDayPriceRepository, PreviousDayPriceRepository>();
         services.AddScoped<IVolumeByVenueRepository, VolumeByVenueRepository>();
+        services.AddScoped<IBookRepository, BookRepository>();
+        services.AddScoped<IDelayedQuoteRepository, DelayedQuoteRepository>();
+        services.AddScoped<IPriceOnlyRepository, PriceOnlyRepository>();
 
         services.AddScoped<ILogoRepository, LogoRepository>();
         services.AddScoped<ICompanyRepository, CompanyRepository>();
@@ -61,6 +64,8 @@ public static class ServiceExtensions
         services.AddScoped<ILogoService, LogoService>();
         services.AddScoped<ICEOCompensationService, CEOCompensationService>();
         services.AddScoped<IСompanyService, СompanyService>();
+        services.AddScoped<IBookService, BookService>();
+        services.AddScoped<IDelayedQuoteService, DelayedQuoteService>();
 
         services.AddScoped<IInsiderRosterService, InsiderRosterService>();
         services.AddScoped<IInsiderSummaryService, InsiderSummaryService>();

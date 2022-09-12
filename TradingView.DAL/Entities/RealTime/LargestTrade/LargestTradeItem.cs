@@ -1,7 +1,6 @@
-﻿namespace TradingView.DAL.Entities.RealTime;
+﻿namespace TradingView.DAL.Entities.RealTime.LargestTrade;
 
-
-public class LargestTrade : EntityBase
+public class LargestTradeItem
 {
     public float Price { get; set; }
     public int Size { get; set; }
@@ -10,4 +9,3 @@ public class LargestTrade : EntityBase
     public string? VenueName { get; set; }
     public string? Venue { get; set; }
 }
-

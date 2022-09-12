@@ -1,4 +1,4 @@
-﻿using TradingView.DAL.Entities.RealTime;
+﻿using TradingView.DAL.Entities.RealTime.IntradayPrice;
 
 namespace TradingView.DAL.Contracts.RealTime;
 
