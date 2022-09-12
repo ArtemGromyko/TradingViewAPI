@@ -4,10 +4,17 @@ using TradingView.BLL.Contracts.StockProfile;
 using TradingView.BLL.Services.RealTime;
 using TradingView.BLL.Services.StockFundamentals;
 using TradingView.BLL.Services.StockProfile;
+using TradingView.DAL.ApiServices;
 using TradingView.DAL.Contracts;
+using TradingView.DAL.Contracts.ApiServices;
+using TradingView.DAL.Contracts.Jobs.Action;
 using TradingView.DAL.Contracts.RealTime;
 using TradingView.DAL.Contracts.StockFundamentals;
 using TradingView.DAL.Contracts.StockProfile;
+using TradingView.DAL.Jobs;
+using TradingView.DAL.Jobs.Actions;
+using TradingView.DAL.Jobs.Jobs;
+using TradingView.DAL.Jobs.Schedulers;
 using TradingView.DAL.Repositories.RealTime;
 using TradingView.DAL.Repositories.StockFundamentals;
 using TradingView.DAL.Repositories.StockProfile;
@@ -17,6 +24,29 @@ namespace TradingViewAPI.Extensions;
 
 public static class ServiceExtensions
 {
+    public static void ConfigureJobs(this IServiceCollection services)
+    {
+        services.AddTransient<JobFactory>();
+        services.AddScoped<CEOCompensationJob>();
+        services.AddScoped<ICEOCompensationAction, CEOCompensationAction>();
+    }
+
+    public static void StartJobs(this WebApplication host)
+    {
+        using (var scope = host.Services.CreateScope())
+        {
+            var serviceProvider = scope.ServiceProvider;
+            try
+            {
+                CEOCompensationScheduler.Start(serviceProvider);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+    }
+
     public static void ConfigureRepositories(this IServiceCollection services)
     {
         services.AddScoped<ISymbolsRepository, SymbolsRepository>();
@@ -85,6 +115,9 @@ public static class ServiceExtensions
         services.AddScoped<IOptionService, OptionService>();
         services.AddScoped<IEarningsService, EarningsService>();
         services.AddScoped<IDividendService, DividendService>();
+
+        services.AddScoped<IStockFundamentalsApiService, StockFundamentalsApiService>();
+        services.AddScoped<IStockProfileApiService, StockProfileApiService>();
     }
 
     public static void ConfigureMongoDBConnection(this IServiceCollection services, IConfiguration configuration)

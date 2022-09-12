@@ -29,13 +29,13 @@ public class InsiderRosterService : IInsiderRosterService
         var result = await _insiderRosterRepository.GetAsync(x => x.Symbol.ToUpper() == symbol.ToUpper(), ct);
         if (result == null)
         {
-            return await GetCompanyApiAsync(symbol, ct);
+            return await GetInsiderRosterApiAsync(symbol, ct);
         }
 
         return result;
     }
 
-    private async Task<InsiderRoster> GetCompanyApiAsync(string symbol, CancellationToken ct = default)
+    private async Task<InsiderRoster> GetInsiderRosterApiAsync(string symbol, CancellationToken ct = default)
     {
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
                $"{string.Format(_configuration["IEXCloudUrls:insiderRosterUrl"], symbol)}" +

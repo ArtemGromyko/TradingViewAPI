@@ -5,12 +5,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 var services = builder.Services;
 var configuration = builder.Configuration;
-
+var host = builder.Host;
 // Add services to the container.
 
 services.ConfigureMongoDBConnection(configuration);
 services.ConfigureRepositories();
 services.ConfigureServices(configuration);
+services.ConfigureJobs();
 
 services.AddControllers(x =>
 {
@@ -36,5 +37,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.StartJobs();
 
 app.Run();
