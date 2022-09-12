@@ -8,7 +8,7 @@ namespace TradingView.DAL.Repositories.StockFundamentals;
 public class DividendRepository : RepositoryBase<Dividend>, IDividendRepository
 {
     public DividendRepository(IOptions<DatabaseSettings> settings, IConfiguration configuration)
-       : base(settings, configuration["MongoDBCollectionNames:EarningsCollectionName"])
+       : base(settings, configuration["MongoDBCollectionNames:DividendCollectionName"])
     {
     }
 }

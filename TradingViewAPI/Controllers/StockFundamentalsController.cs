@@ -14,6 +14,7 @@ public class StockFundamentalsController : ControllerBase
     private readonly ISplitService _splitService;
     private readonly IOptionService _optionService;
     private readonly IEarningsService _earningsService;
+    private readonly IDividendService _idividendService;
 
     public StockFundamentalsController(IBalanceSheetService balanceSheetService,
         ICashFlowService cashFlowService,
@@ -22,7 +23,8 @@ public class StockFundamentalsController : ControllerBase
         IIncomeStatementService incomeStatementService,
         ISplitService splitService,
         IOptionService optionService,
-        IEarningsService earningsService)
+        IEarningsService earningsService,
+        IDividendService idividendService)
     {
         _balanceSheetService = balanceSheetService ?? throw new ArgumentNullException(nameof(balanceSheetService));
         _cashFlowService = cashFlowService ?? throw new ArgumentNullException(nameof(cashFlowService));
@@ -32,6 +34,7 @@ public class StockFundamentalsController : ControllerBase
         _splitService = splitService ?? throw new ArgumentNullException(nameof(splitService));
         _optionService = optionService ?? throw new ArgumentNullException(nameof(optionService));
         _earningsService = earningsService ?? throw new ArgumentNullException(nameof(earningsService));
+        _idividendService = idividendService ?? throw new ArgumentNullException(nameof(idividendService));
     }
 
     [HttpGet("{symbol}/balance-sheet")]
@@ -76,11 +79,11 @@ public class StockFundamentalsController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("{symbol}/splits/{range}/end")]
+    [HttpGet("{symbol}/splits/{range}")]
     public async Task<IActionResult> GetSplitsAsync(string symbol, string range, CancellationToken ct = default)
     {
-        // var result = await _splitService.GetAsync(symbol,  ct);
-        return Ok();//result);
+        var result = await _splitService.GetAsync(symbol, range, ct);
+        return Ok(result);
     }
 
     [HttpGet("{symbol}/options")]
@@ -104,7 +107,7 @@ public class StockFundamentalsController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("{symbol}/earnings/{last}/end")]
+    [HttpGet("{symbol}/earnings/{last}")]
     public async Task<IActionResult> GetEarningsAsync(string symbol, int last, CancellationToken ct = default)
     {
         var result = await _earningsService.GetAsync(symbol, last, ct);
@@ -115,6 +118,13 @@ public class StockFundamentalsController : ControllerBase
     public async Task<IActionResult> GetEarningsAsync(string symbol, CancellationToken ct = default)
     {
         var result = await _earningsService.GetAsync(symbol, ct);
+        return Ok(result);
+    }
+
+    [HttpGet("{symbol}/dividends/{range}")]
+    public async Task<IActionResult> GetDividendsAsync(string symbol, string range, CancellationToken ct = default)
+    {
+        var result = await _idividendService.GetAsync(symbol, range, ct);
         return Ok(result);
     }
 }

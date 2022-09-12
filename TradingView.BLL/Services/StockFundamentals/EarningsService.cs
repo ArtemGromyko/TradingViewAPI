@@ -40,7 +40,7 @@ public class EarningsService : IEarningsService
         var result = await _earningsRepository.GetAsync(x => x.Symbol.ToUpper() == symbol.ToUpper(), ct);
         if (result == null)
         {
-            return await GetApiAsync(symbol, ct);
+            return await GetApiAsync(symbol, last, ct);
         }
 
         return result;
@@ -50,6 +50,24 @@ public class EarningsService : IEarningsService
     {
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
                $"{string.Format(_configuration["IEXCloudUrls:earningsUrl"], symbol)}" +
+               $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
+
+        var response = await _httpClient.GetAsync(url, ct);
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new ApiException().Create(response);
+        }
+
+        var res = await response.Content.ReadAsAsync<EarningsEntity>();
+
+        await _earningsRepository.AddAsync(res);
+
+        return res;
+    }
+    private async Task<EarningsEntity> GetApiAsync(string symbol, int last, CancellationToken ct = default)
+    {
+        var url = $"{_configuration["IEXCloudUrls:version"]}" +
+               $"{string.Format(_configuration["IEXCloudUrls:earningsRangeUrl"], symbol, last)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
 
         var response = await _httpClient.GetAsync(url, ct);

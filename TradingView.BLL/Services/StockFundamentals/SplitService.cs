@@ -40,7 +40,7 @@ public class SplitService : ISplitService
         var result = await _splitRepository.GetCollectionAsync(x => x.Symbol.ToUpper() == symbol.ToUpper(), ct);
         if (result.Count == 0)
         {
-            return await GetApiAsync(symbol, ct);
+            return await GetApiAsync(symbol, range, ct);
         }
 
         return result;
@@ -50,6 +50,24 @@ public class SplitService : ISplitService
     {
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
                $"{string.Format(_configuration["IEXCloudUrls:splitUrl"], symbol)}" +
+               $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
+
+        var response = await _httpClient.GetAsync(url, ct);
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new ApiException().Create(response);
+        }
+        var res = await response.Content.ReadAsAsync<List<SplitEntity>>();
+
+        await _splitRepository.AddCollectionAsync(res);
+
+        return res;
+    }
+
+    private async Task<List<SplitEntity>> GetApiAsync(string symbol, string range, CancellationToken ct = default)
+    {
+        var url = $"{_configuration["IEXCloudUrls:version"]}" +
+               $"{string.Format(_configuration["IEXCloudUrls:splitRangeUrl"], symbol, range)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
 
         var response = await _httpClient.GetAsync(url, ct);
