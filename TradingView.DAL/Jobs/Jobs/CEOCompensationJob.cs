@@ -1,24 +1,25 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Quartz;
-using TradingView.DAL.Contracts.Jobs.Action;
+using TradingView.DAL.Contracts.ApiServices;
 
 namespace TradingView.DAL.Jobs.Jobs;
 public class CEOCompensationJob : IJob
 {
-    private readonly IServiceScopeFactory serviceScopeFactory;
+    private readonly IServiceScopeFactory _serviceScopeFactory;
 
     public CEOCompensationJob(IServiceScopeFactory serviceScopeFactory)
     {
-        this.serviceScopeFactory = serviceScopeFactory;
+        _serviceScopeFactory = serviceScopeFactory;
     }
 
     public async Task Execute(IJobExecutionContext context)
     {
-        using (var scope = serviceScopeFactory.CreateScope())
+        using (var scope = _serviceScopeFactory.CreateScope())
         {
-            var emailsender = scope.ServiceProvider.GetService<ICEOCompensationAction>();
+            var ApiService = scope.ServiceProvider.GetService<IStockProfileApiService>();
 
-            await emailsender.SendEmailAsync("example@gmail.com", "example", "hello");
+            // await ApiService.GetLogoApiAsync()
+            Console.WriteLine("fshkdsj_----------------------------------------------" + DateTime.Now);
 
         }
     }

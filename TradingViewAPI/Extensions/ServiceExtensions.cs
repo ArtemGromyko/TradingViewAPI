@@ -7,12 +7,10 @@ using TradingView.BLL.Services.StockProfile;
 using TradingView.DAL.ApiServices;
 using TradingView.DAL.Contracts;
 using TradingView.DAL.Contracts.ApiServices;
-using TradingView.DAL.Contracts.Jobs.Action;
 using TradingView.DAL.Contracts.RealTime;
 using TradingView.DAL.Contracts.StockFundamentals;
 using TradingView.DAL.Contracts.StockProfile;
 using TradingView.DAL.Jobs;
-using TradingView.DAL.Jobs.Actions;
 using TradingView.DAL.Jobs.Jobs;
 using TradingView.DAL.Jobs.Schedulers;
 using TradingView.DAL.Repositories.RealTime;
@@ -28,7 +26,6 @@ public static class ServiceExtensions
     {
         services.AddTransient<JobFactory>();
         services.AddScoped<CEOCompensationJob>();
-        services.AddScoped<ICEOCompensationAction, CEOCompensationAction>();
     }
 
     public static void StartJobs(this WebApplication host)

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -18,6 +18,12 @@
     <PackageReference Include="MongoDB.Driver" Version="2.17.1" />
     <PackageReference Include="Quartz" Version="3.4.0" />
     <PackageReference Include="VSLee.IEXSharp" Version="2.9.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Jobs\Jobs\RealTime\" />
+    <Folder Include="Jobs\Jobs\StockProfile\" />
+    <Folder Include="Jobs\Jobs\StockFundamentals\" />
   </ItemGroup>
 
 </Project>
