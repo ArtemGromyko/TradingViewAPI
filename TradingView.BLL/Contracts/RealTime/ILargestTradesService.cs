@@ -1,8 +1,8 @@
-﻿using TradingView.DAL.Entities.RealTime;
+﻿using TradingView.DAL.Entities.RealTime.LargestTrade;
 
 namespace TradingView.BLL.Contracts.RealTime;
 
 public interface ILargestTradesService
 {
-    Task<List<LargestTrade>> GetLargestTradesListAsync(string symbol);
+    Task<List<LargestTradeItem>> GetLargestTradesListAsync(string symbol);
 }

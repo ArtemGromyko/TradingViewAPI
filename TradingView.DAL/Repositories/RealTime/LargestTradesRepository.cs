@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using TradingView.DAL.Contracts.RealTime;
-using TradingView.DAL.Entities.RealTime;
+using TradingView.DAL.Entities.RealTime.LargestTrade;
 using TradingView.DAL.Settings;
 
 namespace TradingView.DAL.Repositories.RealTime;

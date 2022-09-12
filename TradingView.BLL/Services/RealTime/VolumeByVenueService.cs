@@ -38,6 +38,6 @@ public class VolumeByVenueService : IVolumeByVenueService
             return volumesByVenue;
         }
 
-        return volumeByVenue.Items ?? throw new NullReferenceException();
+        return volumeByVenue.Items!;
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using TradingView.BLL.Contracts.RealTime;
 using TradingView.DAL.Contracts.RealTime;
-using TradingView.DAL.Entities.RealTime;
+using TradingView.DAL.Entities.RealTime.IntradayPrice;
 
 namespace TradingView.BLL.Services.RealTime;
 
@@ -15,7 +15,7 @@ public class IntradayPricesService : IIntradayPricesService
     private readonly HttpClient _httpClient;
 
     public IntradayPricesService(IIntradayPricesRepository intradayPricesRepository, IConfiguration configuration,
-        IHttpClientFactory httpClientFactory, HttpClient httpClient)
+        IHttpClientFactory httpClientFactory)
     {
         _intradayPricesRepository = intradayPricesRepository;
         _configuration = configuration;
@@ -24,22 +24,24 @@ public class IntradayPricesService : IIntradayPricesService
         _httpClient = _httpClientFactory.CreateClient(_configuration["HttpClientName"]);
     }
 
-    public async Task<List<IntradayPrice>> GetIntradayPricesListAsync(string symbol)
+    public async Task<List<IntradayPriceItem>> GetIntradayPricesListAsync(string symbol)
     {
-        var intradayPrices = await _intradayPricesRepository.GetAllAsync();
-        if (intradayPrices.Count == 0)
+        var intradayPrice = await _intradayPricesRepository.GetAsync((ip) => ip.Symbol!.Equals(symbol));
+        if (intradayPrice is null)
         {
             var url = $"{_configuration["IEXCloudUrls:version"]}" +
                 $"{string.Format(_configuration["IEXCloudUrls:intradayPricesUrl"], symbol)}" +
                 $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
 
             var response = await _httpClient.GetAsync(url);
-            var res = await response.Content.ReadAsAsync<List<IntradayPrice>>();
+            var intradayPriceItems = await response.Content.ReadAsAsync<List<IntradayPriceItem>>();
 
-            await _intradayPricesRepository.AddCollectionAsync(res);
-            intradayPrices = res;
+            var newIntradayPrice = new IntradayPrice { Symbol = symbol, Items = intradayPriceItems };
+            await _intradayPricesRepository.AddAsync(newIntradayPrice);
+            
+            return intradayPriceItems;
         }
 
-        return intradayPrices;
+        return intradayPrice.Items!;
     }
 }

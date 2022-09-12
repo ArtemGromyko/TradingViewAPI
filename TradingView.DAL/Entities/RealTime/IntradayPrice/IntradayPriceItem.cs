@@ -1,7 +1,6 @@
-﻿namespace TradingView.DAL.Entities.RealTime;
+﻿namespace TradingView.DAL.Entities.RealTime.IntradayPrice;
 
-
-public class IntradayPrice : EntityBase
+public class IntradayPriceItem
 {
     public string? Date { get; set; }
     public string? Minute { get; set; }
@@ -15,4 +14,3 @@ public class IntradayPrice : EntityBase
     public double? Notional { get; set; }
     public int? NumberOfTrades { get; set; }
 }
-
