@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TradingView.DAL.Contracts;
+﻿using TradingView.DAL.Contracts;
 using TradingView.DAL.Contracts.ApiServices;
 using TradingView.DAL.Contracts.RealTime;
 
@@ -22,14 +17,14 @@ public class RealTimeApiService : IRealTimeApiService
     private readonly IVolumeByVenueRepository _volumeByVenueRepository;
 
     public RealTimeApiService(ISymbolsRepository symbolsRepository,
-        IDividendsRepository dividendsRepository, 
+        IDividendsRepository dividendsRepository,
         IExchangesRepository exchangesRepository,
-        IHistoricalPricesRepository historicalPricesRepository, 
-        IQuotesRepository quotesRepository, 
+        IHistoricalPricesRepository historicalPricesRepository,
+        IQuotesRepository quotesRepository,
         IIntradayPricesRepository intradayPricesRepository,
-        ILargestTradesRepository largestTradesRepository, 
+        ILargestTradesRepository largestTradesRepository,
         IOHLCRepository ioHLCRepository,
-        IPreviousDayPriceRepository previousDayPriceRepository, 
+        IPreviousDayPriceRepository previousDayPriceRepository,
         IVolumeByVenueRepository volumeByVenueRepository)
     {
         _symbolsRepository = symbolsRepository ?? throw new ArgumentNullException(nameof(symbolsRepository));

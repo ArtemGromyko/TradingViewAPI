@@ -11,8 +11,8 @@ using TradingView.DAL.Contracts.RealTime;
 using TradingView.DAL.Contracts.StockFundamentals;
 using TradingView.DAL.Contracts.StockProfile;
 using TradingView.DAL.Jobs;
-using TradingView.DAL.Jobs.Jobs;
-using TradingView.DAL.Jobs.Schedulers;
+using TradingView.DAL.Jobs.Jobs.StockProfile;
+using TradingView.DAL.Jobs.Schedulers.StockProfile;
 using TradingView.DAL.Repositories.RealTime;
 using TradingView.DAL.Repositories.StockFundamentals;
 using TradingView.DAL.Repositories.StockProfile;
@@ -25,7 +25,14 @@ public static class ServiceExtensions
     public static void ConfigureJobs(this IServiceCollection services)
     {
         services.AddTransient<JobFactory>();
+
         services.AddScoped<CEOCompensationJob>();
+        services.AddScoped<PeerGroupJob>();
+        services.AddScoped<LogoJob>();
+        services.AddScoped<InsiderSummaryJob>();
+        services.AddScoped<InsiderTransactionsJob>();
+        services.AddScoped<InsiderRosterJob>();
+        services.AddScoped<CompanyJob>();
     }
 
     public static void StartJobs(this WebApplication host)
@@ -36,6 +43,12 @@ public static class ServiceExtensions
             try
             {
                 CEOCompensationScheduler.Start(serviceProvider);
+                PeerGroupScheduler.Start(serviceProvider);
+                LogoScheduler.Start(serviceProvider);
+                InsiderSummaryScheduler.Start(serviceProvider);
+                InsiderTransactionsScheduler.Start(serviceProvider);
+                InsiderRosterScheduler.Start(serviceProvider);
+                CompanyScheduler.Start(serviceProvider);
             }
             catch (Exception)
             {

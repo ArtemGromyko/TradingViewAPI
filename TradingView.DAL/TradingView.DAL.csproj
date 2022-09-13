@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <Folder Include="Jobs\Jobs\RealTime\" />
-    <Folder Include="Jobs\Jobs\StockProfile\" />
     <Folder Include="Jobs\Jobs\StockFundamentals\" />
   </ItemGroup>
 
