@@ -44,8 +44,10 @@ public class StockProfileApiService : IStockProfileApiService
         _httpClient = _httpClientFactory.CreateClient(configuration["HttpClientName"]);
     }
 
-    public async Task<CEOCompensation> GetCEOCompensationApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<CEOCompensation> GetCEOCompensationApiAsync(CancellationToken ct = default)
     {
+        string symbol = null;
+
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
                $"{string.Format(_configuration["IEXCloudUrls:ceoCompensationUrl"], symbol)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
@@ -63,8 +65,9 @@ public class StockProfileApiService : IStockProfileApiService
         return res;
     }
 
-    public async Task<InsiderRoster> GetInsiderRosterApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<InsiderRoster> GetInsiderRosterApiAsync(CancellationToken ct = default)
     {
+        string symbol = null;
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
                $"{string.Format(_configuration["IEXCloudUrls:insiderRosterUrl"], symbol)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
@@ -87,8 +90,9 @@ public class StockProfileApiService : IStockProfileApiService
         return roster;
     }
 
-    public async Task<List<InsiderSummaryItem>> GetInsiderSummaryApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<List<InsiderSummaryItem>> GetInsiderSummaryApiAsync(CancellationToken ct = default)
     {
+        string symbol = null;
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
                $"{string.Format(_configuration["IEXCloudUrls:insiderSummaryUrl"], symbol)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
@@ -105,8 +109,9 @@ public class StockProfileApiService : IStockProfileApiService
         return res;
     }
 
-    public async Task<List<InsiderTransactionsItem>> GetInsiderTransactionsApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<List<InsiderTransactionsItem>> GetInsiderTransactionsApiAsync(CancellationToken ct = default)
     {
+        string symbol = null;
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
                $"{string.Format(_configuration["IEXCloudUrls:insiderTransactionsUrl"], symbol)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
@@ -123,8 +128,9 @@ public class StockProfileApiService : IStockProfileApiService
         return res;
     }
 
-    public async Task<Logo> GetLogoApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<Logo> GetLogoApiAsync(CancellationToken ct = default)
     {
+        string symbol = null;
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
                $"{string.Format(_configuration["IEXCloudUrls:logoUrl"], symbol)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
@@ -142,8 +148,9 @@ public class StockProfileApiService : IStockProfileApiService
         return res;
     }
 
-    public async Task<PeerGroup> GetPeerGroupApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<PeerGroup> GetPeerGroupApiAsync(CancellationToken ct = default)
     {
+        string symbol = null;
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
                $"{string.Format(_configuration["IEXCloudUrls:peerGroupsUrl"], symbol)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
@@ -165,8 +172,9 @@ public class StockProfileApiService : IStockProfileApiService
         return roster;
     }
 
-    public async Task<Company> GetCompanyApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<Company> GetCompanyApiAsync(CancellationToken ct = default)
     {
+        string symbol = null;
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
                $"{string.Format(_configuration["IEXCloudUrls:companyUrl"], symbol)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";

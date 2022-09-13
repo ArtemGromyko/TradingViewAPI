@@ -16,11 +16,8 @@ public class CEOCompensationJob : IJob
     {
         using (var scope = _serviceScopeFactory.CreateScope())
         {
-            var ApiService = scope.ServiceProvider.GetService<IStockProfileApiService>();
-
-            // await ApiService.GetLogoApiAsync()
-            Console.WriteLine("CEOCompensationJob---------------------------------------------" + DateTime.Now);
-
+            var apiService = scope.ServiceProvider.GetService<IStockProfileApiService>();
+            await apiService.GetCEOCompensationApiAsync();
         }
     }
 }

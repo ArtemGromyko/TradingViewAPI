@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 using Quartz.Impl;
+using TradingView.DAL.Jobs.Jobs.StockFundamentals;
 
 namespace TradingView.DAL.Jobs.Schedulers.StockFundamentals;
 public static class ReportedFinancialsScheduler
@@ -15,7 +16,7 @@ public static class ReportedFinancialsScheduler
         ITrigger trigger = TriggerBuilder.Create()
             .WithIdentity("InsiderSummaryTrigger", "default")
             .StartNow()
-            .WithCronSchedule("0 0 4,8 ? * * *"/*, x => x.InTimeZone(TimeZoneInfo.Utc)*/) //Quarterly
+            .WithCronSchedule("0 0 4,8 ? * * *", x => x.InTimeZone(TimeZoneInfo.Utc)) //Quarterly------------------
             .Build();
 
         await scheduler.ScheduleJob(jobDetail, trigger);

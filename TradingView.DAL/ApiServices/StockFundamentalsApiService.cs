@@ -53,8 +53,9 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
         _httpClient = _httpClientFactory.CreateClient(configuration["HttpClientName"]);
     }
 
-    public async Task<BalanceSheetEntity> GetBalanceSheetApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<BalanceSheetEntity> GetBalanceSheetApiAsync(CancellationToken ct = default)
     {
+        string symbol = "AAPL";
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
                $"{string.Format(_configuration["IEXCloudUrls:balanceSheetUrl"], symbol)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
@@ -72,8 +73,9 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
         return res;
     }
 
-    public async Task<CashFlowEntity> GetCashFlowApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<CashFlowEntity> GetCashFlowApiAsync(CancellationToken ct = default)
     {
+        string symbol = "AAPL";
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
                $"{string.Format(_configuration["IEXCloudUrls:cashFlowUrl"], symbol)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
@@ -91,8 +93,9 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
         return res;
     }
 
-    public async Task<List<Dividend>> GeDividendtApiAsync(string symbol, string range, CancellationToken ct = default)
+    public async Task<List<Dividend>> GeDividendtApiAsync(string range, CancellationToken ct = default)
     {
+        string symbol = "AAPL";
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
                $"{string.Format(_configuration["IEXCloudUrls:dividendUrl"], symbol, range)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
@@ -110,8 +113,9 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
         return res;
     }
 
-    public async Task<EarningsEntity> GetEarningsApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<EarningsEntity> GetEarningsApiAsync(CancellationToken ct = default)
     {
+        string symbol = "AAPL";
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
                $"{string.Format(_configuration["IEXCloudUrls:earningsUrl"], symbol)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
@@ -129,8 +133,9 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
         return res;
     }
 
-    public async Task<EarningsEntity> GetEarningsApiAsync(string symbol, int last, CancellationToken ct = default)
+    public async Task<EarningsEntity> GetEarningsApiAsync(int last, CancellationToken ct = default)
     {
+        string symbol = "AAPL";
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
                $"{string.Format(_configuration["IEXCloudUrls:earningsRangeUrl"], symbol, last)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
@@ -148,8 +153,9 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
         return res;
     }
 
-    public async Task<FinancialsEntity> GetFinancialsApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<FinancialsEntity> GetFinancialsApiAsync(CancellationToken ct = default)
     {
+        string symbol = "AAPL";
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
                $"{string.Format(_configuration["IEXCloudUrls:financialsUrl"], symbol)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
@@ -167,8 +173,9 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
         return res;
     }
 
-    public async Task<IncomeStatement> GetIncomeStatementApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<IncomeStatement> GetIncomeStatementApiAsync(CancellationToken ct = default)
     {
+        string symbol = "AAPL";
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
                $"{string.Format(_configuration["IEXCloudUrls:incomeStatementUrl"], symbol)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
@@ -186,8 +193,9 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
         return res;
     }
 
-    public async Task<OptionEntity> GetOptionApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<OptionEntity> GetOptionApiAsync(CancellationToken ct = default)
     {
+        string symbol = "AAPL";
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
                $"{string.Format(_configuration["IEXCloudUrls:optionUrl"], symbol)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
@@ -209,8 +217,9 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
         return option;
     }
 
-    public async Task<List<Expiration>> GetExpirationApiAsync(string symbol, string expiration, CancellationToken ct = default)
+    public async Task<List<Expiration>> GetExpirationApiAsync(string expiration, CancellationToken ct = default)
     {
+        string symbol = "AAPL";
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
                $"{string.Format(_configuration["IEXCloudUrls:optionExpirationUrl"], symbol, expiration)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
@@ -228,8 +237,9 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
         return res;
     }
 
-    public async Task<List<ReportedFinancials>> GetReportedFinancialsApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<List<ReportedFinancials>> GetReportedFinancialsApiAsync(CancellationToken ct = default)
     {
+        string symbol = "AAPL";
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
                $"{string.Format(_configuration["IEXCloudUrls:reportedFinancialsUrl"], symbol)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
@@ -247,8 +257,9 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
         return res;
     }
 
-    public async Task<List<SplitEntity>> GetSplitApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<List<SplitEntity>> GetSplitApiAsync(CancellationToken ct = default)
     {
+        string symbol = "AAPL";
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
                $"{string.Format(_configuration["IEXCloudUrls:splitUrl"], symbol)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
@@ -265,8 +276,9 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
         return res;
     }
 
-    public async Task<List<SplitEntity>> GetSplitApiAsync(string symbol, string range, CancellationToken ct = default)
+    public async Task<List<SplitEntity>> GetSplitApiAsync(string range, CancellationToken ct = default)
     {
+        string symbol = "AAPL";
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
                $"{string.Format(_configuration["IEXCloudUrls:splitRangeUrl"], symbol, range)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";

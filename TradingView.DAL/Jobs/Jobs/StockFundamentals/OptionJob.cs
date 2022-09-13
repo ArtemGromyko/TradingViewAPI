@@ -16,11 +16,8 @@ public class OptionJob : IJob
     {
         using (var scope = _serviceScopeFactory.CreateScope())
         {
-            var ApiService = scope.ServiceProvider.GetService<IStockProfileApiService>();
-
-            // await ApiService.GetLogoApiAsync()
-            Console.WriteLine("OptionJob---------------------------------------------" + DateTime.Now);
-
+            var apiService = scope.ServiceProvider.GetService<IStockFundamentalsApiService>();
+            await apiService.GetOptionApiAsync();
         }
     }
 }
