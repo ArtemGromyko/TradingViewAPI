@@ -10,7 +10,6 @@ using TradingView.DAL.Contracts.RealTime;
 namespace TradingView.DAL.ApiServices;
 public class RealTimeApiService : IRealTimeApiService
 {
-    private readonly ISymbolsRepository _symbolsRepository;
     private readonly IDividendsRepository _dividendsRepository;
     private readonly IExchangesRepository _exchangesRepository;
     private readonly IHistoricalPricesRepository _historicalPricesRepository;
@@ -21,8 +20,7 @@ public class RealTimeApiService : IRealTimeApiService
     private readonly IPreviousDayPriceRepository _previousDayPriceRepository;
     private readonly IVolumeByVenueRepository _volumeByVenueRepository;
 
-    public RealTimeApiService(ISymbolsRepository symbolsRepository,
-        IDividendsRepository dividendsRepository, 
+    public RealTimeApiService(IDividendsRepository dividendsRepository, 
         IExchangesRepository exchangesRepository,
         IHistoricalPricesRepository historicalPricesRepository, 
         IQuotesRepository quotesRepository, 
@@ -32,7 +30,6 @@ public class RealTimeApiService : IRealTimeApiService
         IPreviousDayPriceRepository previousDayPriceRepository, 
         IVolumeByVenueRepository volumeByVenueRepository)
     {
-        _symbolsRepository = symbolsRepository ?? throw new ArgumentNullException(nameof(symbolsRepository));
         _dividendsRepository = dividendsRepository ?? throw new ArgumentNullException(nameof(dividendsRepository));
         _exchangesRepository = exchangesRepository ?? throw new ArgumentNullException(nameof(exchangesRepository));
         _historicalPricesRepository = historicalPricesRepository ?? throw new ArgumentNullException(nameof(historicalPricesRepository));

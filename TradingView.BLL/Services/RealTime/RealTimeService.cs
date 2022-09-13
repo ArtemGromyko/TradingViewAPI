@@ -9,7 +9,6 @@ namespace TradingView.BLL.Services.RealTime;
 public class RealTimeService : IRealTimeService
 {
     private readonly IDividendsRepository _dividendsRepository;
-    private readonly ISymbolsRepository _symbolsRepository;
     private readonly IExchangesRepository _exchangesRepository;
     private readonly IHistoricalPricesRepository _historicalPricesRepository;
 
@@ -19,14 +18,13 @@ public class RealTimeService : IRealTimeService
     private readonly HttpClient _httpClient;
 
     public RealTimeService(IDividendsRepository dividendsRepository,
-    ISymbolsRepository symbolsRepository, IExchangesRepository exchangesRepository,
+    IExchangesRepository exchangesRepository,
     IHistoricalPricesRepository historicalPricesRepository, IHttpClientFactory httpClientFactory,
     IConfiguration configuration)
     {
         _configuration = configuration;
 
         _dividendsRepository = dividendsRepository;
-        _symbolsRepository = symbolsRepository;
         _exchangesRepository = exchangesRepository;
         _historicalPricesRepository = historicalPricesRepository;
         _httpClientFactory = httpClientFactory;
@@ -63,8 +61,4 @@ public class RealTimeService : IRealTimeService
         return historicalPrices;
     }
 
-    public Task<List<SymbolInfo>> GetAllSymbolsAsync()
-    {
-        throw new NotImplementedException();
-    }
 }
