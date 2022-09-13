@@ -1,5 +1,5 @@
 using TradingViewAPI.Extensions;
-using TradingViewAPI.Filters;
+using TradingViewAPI.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +16,6 @@ services.ConfigureJobs();
 services.AddControllers(x =>
 {
     x.AllowEmptyInputInBodyModelBinding = true;
-    x.Filters.Add(typeof(ExceptionHandlingFilter));
 });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -31,6 +30,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 
