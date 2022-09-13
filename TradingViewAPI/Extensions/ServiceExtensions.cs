@@ -11,7 +11,9 @@ using TradingView.DAL.Contracts.RealTime;
 using TradingView.DAL.Contracts.StockFundamentals;
 using TradingView.DAL.Contracts.StockProfile;
 using TradingView.DAL.Jobs;
+using TradingView.DAL.Jobs.Jobs.StockFundamentals;
 using TradingView.DAL.Jobs.Jobs.StockProfile;
+using TradingView.DAL.Jobs.Schedulers.StockFundamentals;
 using TradingView.DAL.Jobs.Schedulers.StockProfile;
 using TradingView.DAL.Repositories.RealTime;
 using TradingView.DAL.Repositories.StockFundamentals;
@@ -33,6 +35,18 @@ public static class ServiceExtensions
         services.AddScoped<InsiderTransactionsJob>();
         services.AddScoped<InsiderRosterJob>();
         services.AddScoped<CompanyJob>();
+
+
+        services.AddScoped<ReportedFinancialsJob>();
+        services.AddScoped<IncomeStatementJob>();
+        services.AddScoped<OptionJob>();
+        services.AddScoped<FinancialsJob>();
+        services.AddScoped<ExpirationJob>();
+        services.AddScoped<CashFlowJob>();
+        services.AddScoped<DividendJob>();
+        services.AddScoped<EarningsJob>();
+        services.AddScoped<SplitJob>();
+
     }
 
     public static void StartJobs(this WebApplication host)
@@ -49,6 +63,16 @@ public static class ServiceExtensions
                 InsiderTransactionsScheduler.Start(serviceProvider);
                 InsiderRosterScheduler.Start(serviceProvider);
                 CompanyScheduler.Start(serviceProvider);
+
+                ReportedFinancialsScheduler.Start(serviceProvider);
+                IncomeStatementScheduler.Start(serviceProvider);
+                OptionScheduler.Start(serviceProvider);
+                FinancialsScheduler.Start(serviceProvider);
+                ExpirationScheduler.Start(serviceProvider);
+                CashFlowScheduler.Start(serviceProvider);
+                DividendScheduler.Start(serviceProvider);
+                EarningsScheduler.Start(serviceProvider);
+                SplitScheduler.Start(serviceProvider);
             }
             catch (Exception)
             {
