@@ -16,7 +16,7 @@ public static class CompanyScheduler
         ITrigger trigger = TriggerBuilder.Create()
             .WithIdentity("CompanyTrigger", "default")
             .StartNow()
-            .WithCronSchedule("0 0 4,8 ? * * *"/*, x => x.InTimeZone(TimeZoneInfo.Utc)*/) //Updates at 4am and 5am UTC every day
+            .WithCronSchedule("0 0 4,5 ? * * *", x => x.InTimeZone(TimeZoneInfo.Utc)) //Updates at 4am and 5am UTC every day
             .Build();
 
         await scheduler.ScheduleJob(jobDetail, trigger);

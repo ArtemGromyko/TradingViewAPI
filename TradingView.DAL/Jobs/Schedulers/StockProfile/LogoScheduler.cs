@@ -16,7 +16,7 @@ public static class LogoScheduler
         ITrigger trigger = TriggerBuilder.Create()
             .WithIdentity("LogoTrigger", "default")
             .StartNow()
-            .WithCronSchedule("0 0 4,8 ? * * *"/*, x => x.InTimeZone(TimeZoneInfo.Utc)*/) //8am UTC daily
+            .WithCronSchedule("0 0 8 ? * * *", x => x.InTimeZone(TimeZoneInfo.Utc)) //8am UTC daily
             .Build();
 
         await scheduler.ScheduleJob(jobDetail, trigger);

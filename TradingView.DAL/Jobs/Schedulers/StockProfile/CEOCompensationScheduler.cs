@@ -17,9 +17,6 @@ public static class CEOCompensationScheduler
             .WithIdentity("CEOCompensationTrigger", "default")
             .StartNow()
             .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(13, 1)) //1am daily
-            /*x => x
-            .WithIntervalInSeconds(5)
-            .RepeatForever()*/
             .Build();
 
         await scheduler.ScheduleJob(jobDetail, trigger);
