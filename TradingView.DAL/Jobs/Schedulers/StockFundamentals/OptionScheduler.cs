@@ -14,7 +14,7 @@ public static class OptionScheduler
 
         IJobDetail jobDetail = JobBuilder.Create<OptionJob>().Build();
         ITrigger trigger = TriggerBuilder.Create()
-            .WithIdentity("InsiderSummaryTrigger", "default")
+            .WithIdentity("OptionTrigger", "default")
             .StartNow()
             .WithCronSchedule("30 30 13 ? * MON,TUE,WED,THU,FRI *", x => x.InTimeZone(TimeZoneInfo.Utc)) //9:30am ET Mon-Fri
             .Build();

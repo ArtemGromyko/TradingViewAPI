@@ -14,7 +14,7 @@ public static class DividendScheduler
 
         IJobDetail jobDetail = JobBuilder.Create<DividendJob>().Build();
         ITrigger trigger = TriggerBuilder.Create()
-            .WithIdentity("InsiderSummaryTrigger", "default")
+            .WithIdentity("DividendTrigger", "default")
             .StartNow()
             .WithCronSchedule("30 0 9 ? * * *", x => x.InTimeZone(TimeZoneInfo.Utc)) //Updated at 9am UTC every day
             .Build();

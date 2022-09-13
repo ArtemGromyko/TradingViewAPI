@@ -14,7 +14,7 @@ public static class PeerGroupScheduler
 
         IJobDetail jobDetail = JobBuilder.Create<PeerGroupJob>().Build();
         ITrigger trigger = TriggerBuilder.Create()
-            .WithIdentity("LogoTrigger", "default")
+            .WithIdentity("PeerGroupTrigger", "default")
             .StartNow()
             .WithCronSchedule("0 0 8 ? * * *", x => x.InTimeZone(TimeZoneInfo.Utc)) //8am UTC daily
             .Build();

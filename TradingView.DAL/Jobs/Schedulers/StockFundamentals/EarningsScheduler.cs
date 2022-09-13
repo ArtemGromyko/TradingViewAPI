@@ -14,7 +14,7 @@ public static class EarningsScheduler
 
         IJobDetail jobDetail = JobBuilder.Create<EarningsJob>().Build();
         ITrigger trigger = TriggerBuilder.Create()
-            .WithIdentity("InsiderSummaryTrigger", "default")
+            .WithIdentity("EarningsTrigger", "default")
             .StartNow()
             .WithCronSchedule("30 0 9,11,12 ? * * *", x => x.InTimeZone(TimeZoneInfo.Utc)) //Updates at 9am, 11am, 12pm UTC every day
             .Build();

@@ -14,7 +14,7 @@ public static class ReportedFinancialsScheduler
 
         IJobDetail jobDetail = JobBuilder.Create<ReportedFinancialsJob>().Build();
         ITrigger trigger = TriggerBuilder.Create()
-            .WithIdentity("InsiderSummaryTrigger", "default")
+            .WithIdentity("ReportedFinancialsTrigger", "default")
             .StartNow()
             .WithCronSchedule("0 0 4,8 ? * * *", x => x.InTimeZone(TimeZoneInfo.Utc)) //Quarterly------------------
             .Build();

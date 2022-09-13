@@ -14,7 +14,7 @@ public static class CashFlowScheduler
 
         IJobDetail jobDetail = JobBuilder.Create<CashFlowJob>().Build();
         ITrigger trigger = TriggerBuilder.Create()
-            .WithIdentity("InsiderSummaryTrigger", "default")
+            .WithIdentity("CashFlowTrigger", "default")
             .StartNow()
             .WithCronSchedule("30 0 8,9 ? * * *", x => x.InTimeZone(TimeZoneInfo.Utc)) //Updates at 8am, 9am UTC daily
             .Build();
