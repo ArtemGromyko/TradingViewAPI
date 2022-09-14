@@ -15,7 +15,7 @@ public class RealTimeApiService : IRealTimeApiService
     private readonly IPreviousDayPriceRepository _previousDayPriceRepository;
     private readonly IVolumeByVenueRepository _volumeByVenueRepository;
 
-    public RealTimeApiService(ISymbolsRepository symbolsRepository,
+    public RealTimeApiService(ISymbolRepository symbolsRepository,
         IDividendsRepository dividendsRepository,
         IExchangesRepository exchangesRepository,
         IHistoricalPricesRepository historicalPricesRepository,
