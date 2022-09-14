@@ -1,6 +1,8 @@
-﻿using TradingView.BLL.Contracts.RealTime;
+﻿using TradingView.BLL.Contracts;
+using TradingView.BLL.Contracts.RealTime;
 using TradingView.BLL.Contracts.StockFundamentals;
 using TradingView.BLL.Contracts.StockProfile;
+using TradingView.BLL.Services;
 using TradingView.BLL.Services.RealTime;
 using TradingView.BLL.Services.StockFundamentals;
 using TradingView.BLL.Services.StockProfile;
@@ -11,6 +13,9 @@ using TradingView.DAL.Contracts.RealTime;
 using TradingView.DAL.Contracts.StockFundamentals;
 using TradingView.DAL.Contracts.StockProfile;
 using TradingView.DAL.Jobs;
+using TradingView.DAL.Jobs.Jobs;
+using TradingView.DAL.Jobs.Schedulers;
+using TradingView.DAL.Repositories;
 using TradingView.DAL.Jobs.Jobs.StockFundamentals;
 using TradingView.DAL.Jobs.Jobs.StockProfile;
 using TradingView.DAL.Jobs.Schedulers.StockFundamentals;
@@ -83,7 +88,6 @@ public static class ServiceExtensions
 
     public static void ConfigureRepositories(this IServiceCollection services)
     {
-        services.AddScoped<ISymbolsRepository, SymbolsRepository>();
         services.AddScoped<IDividendsRepository, DividendsRepository>();
         services.AddScoped<IExchangesRepository, ExchangesRepository>();
 
@@ -116,6 +120,8 @@ public static class ServiceExtensions
         services.AddScoped<IExpirationRepository, ExpirationRepository>();
         services.AddScoped<IOptionRepository, OptionRepository>();
         services.AddScoped<IDividendRepository, DividendRepository>();
+
+        services.AddScoped<ISymbolRepository, SymbolRepository>();
     }
 
     public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
@@ -157,6 +163,8 @@ public static class ServiceExtensions
 
         services.AddScoped<IStockFundamentalsApiService, StockFundamentalsApiService>();
         services.AddScoped<IStockProfileApiService, StockProfileApiService>();
+
+        services.AddScoped<ISymbolService, SymbolService>();
     }
 
     public static void ConfigureMongoDBConnection(this IServiceCollection services, IConfiguration configuration)

@@ -5,7 +5,7 @@ public static class ApiExceptionExtensions
 
     public static ApiException Create(this ApiException item, HttpResponseMessage response)
     {
-        return new ApiException(response.ReasonPhrase)
+        return new ApiException(response.ReasonPhrase!)
         {
             ErrorMessage = ErrorMsgUnknownError,
             Code = (ApiErrorCode)response.StatusCode,
@@ -34,7 +34,7 @@ public static class ApiExceptionExtensions
             };
         }
 
-        return new ApiException(apiError.Message)
+        return new ApiException(apiError.Message!)
         {
             Code = apiError.Code,
             ErrorMessage = apiError.ToString()

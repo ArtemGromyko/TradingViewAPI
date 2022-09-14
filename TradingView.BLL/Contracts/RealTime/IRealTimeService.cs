@@ -6,6 +6,5 @@ public interface IRealTimeService
 {
     Task<List<DividendInfo>> GetAllDividendsAsync();
     Task<List<HistoricalPrice>> GetAllHistoricalPricesAsync(string symbol);
-    Task<List<SymbolInfo>> GetAllSymbolsAsync();
     Task<List<ExchangeInfo>> GetAllExchanges();
 }

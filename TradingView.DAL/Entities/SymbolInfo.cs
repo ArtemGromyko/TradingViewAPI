@@ -1,6 +1,6 @@
-﻿namespace TradingView.DAL.Entities.RealTime;
+﻿namespace TradingView.DAL.Entities;
 
-public class SymbolInfo
+public class SymbolInfo : EntityBase
 {
     public string? Symbol { get; set; }
     public string? Exchange { get; set; }
@@ -19,4 +19,3 @@ public class SymbolInfo
     public string? Cik { get; set; }
     public string? Lei { get; set; }
 }
-

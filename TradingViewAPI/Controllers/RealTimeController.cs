@@ -116,19 +116,6 @@ namespace TradingViewAPI.Controllers
             return Ok(delayedQuote);
         }
 
-        [HttpGet("symbols")]
-        public async Task<IActionResult> GetAllSymbolsAsync()
-        {
-            using var client = new HttpClient();
-
-            var response = await client
-                .GetAsync("https://sandbox.iexapis.com/stable/ref-data/symbols?token=Tpk_aae23baa9af74779993006fb85d15f0f");
-
-            var res = await response.Content.ReadAsAsync<IEnumerable<SymbolInfo>>();
-
-            return Ok(res);
-        }
-
         [HttpGet("{symbol}/dividends")]
         public async Task<IActionResult> GetDividendsAsync(string symbol)
         {
