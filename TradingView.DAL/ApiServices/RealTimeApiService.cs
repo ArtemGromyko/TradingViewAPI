@@ -14,6 +14,7 @@ public class RealTimeApiService : IRealTimeApiService
     private readonly IOHLCRepository _ioHLCRepository;
     private readonly IPreviousDayPriceRepository _previousDayPriceRepository;
     private readonly IVolumeByVenueRepository _volumeByVenueRepository;
+    private readonly ISymbolRepository _symbolsRepository;
 
     public RealTimeApiService(ISymbolRepository symbolsRepository,
         IDividendsRepository dividendsRepository,
@@ -35,5 +36,6 @@ public class RealTimeApiService : IRealTimeApiService
         _ioHLCRepository = ioHLCRepository ?? throw new ArgumentNullException(nameof(ioHLCRepository));
         _previousDayPriceRepository = previousDayPriceRepository ?? throw new ArgumentNullException(nameof(previousDayPriceRepository));
         _volumeByVenueRepository = volumeByVenueRepository ?? throw new ArgumentNullException(nameof(volumeByVenueRepository));
+        _symbolsRepository = symbolsRepository ?? throw new ArgumentNullException(nameof(symbolsRepository));
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using TradingView.DAL.Contracts;
 using TradingView.DAL.Contracts.ApiServices;
 using TradingView.DAL.Contracts.StockProfile;
 using TradingView.DAL.Entities.StockProfileEntities;
@@ -7,6 +8,7 @@ using TradingView.Models.Exceptions;
 namespace TradingView.DAL.ApiServices;
 public class StockProfileApiService : IStockProfileApiService
 {
+    private readonly ISymbolRepository _symbolRepository;
     private readonly ILogoRepository _logoRepository;
     private readonly ICEOCompensationRepository _ceoCompensationRepository;
     private readonly ICompanyRepository _companyRepository;
@@ -28,7 +30,8 @@ public class StockProfileApiService : IStockProfileApiService
         IInsiderTransactionsRepository insiderTransactionsRepository,
         IPeerGroupRepository peerGroupRepository,
         IHttpClientFactory httpClientFactory,
-        IConfiguration configuration)
+        IConfiguration configuration,
+        ISymbolRepository symbolRepository)
     {
         _logoRepository = logoRepository ?? throw new ArgumentNullException(nameof(logoRepository));
         _ceoCompensationRepository = ceoCompensationRepository ?? throw new ArgumentNullException(nameof(ceoCompensationRepository));
@@ -37,6 +40,7 @@ public class StockProfileApiService : IStockProfileApiService
         _insiderSummaryRepository = insiderSummaryRepository ?? throw new ArgumentNullException(nameof(insiderSummaryRepository));
         _insiderTransactionsRepository = insiderTransactionsRepository ?? throw new ArgumentNullException(nameof(insiderTransactionsRepository));
         _peerGroupRepository = peerGroupRepository ?? throw new ArgumentNullException(nameof(peerGroupRepository));
+        _symbolRepository = symbolRepository ?? throw new ArgumentNullException(nameof(symbolRepository));
 
         _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
@@ -44,150 +48,161 @@ public class StockProfileApiService : IStockProfileApiService
         _httpClient = _httpClientFactory.CreateClient(configuration["HttpClientName"]);
     }
 
-    public async Task<CEOCompensation> GetCEOCompensationApiAsync(CancellationToken ct = default)
+    public async Task GetCEOCompensationApiAsync(CancellationToken ct = default)
     {
-        string symbol = null;
-
-        var url = $"{_configuration["IEXCloudUrls:version"]}" +
-               $"{string.Format(_configuration["IEXCloudUrls:ceoCompensationUrl"], symbol)}" +
-               $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
-
-        var response = await _httpClient.GetAsync(url, ct);
-
-        if (!response.IsSuccessStatusCode)
+        var symbols = await _symbolRepository.GetAllAsync();
+        foreach (var symbol in symbols)
         {
-            throw new ApiException().Create(response);
+            var url = $"{_configuration["IEXCloudUrls:version"]}" +
+                   $"{string.Format(_configuration["IEXCloudUrls:ceoCompensationUrl"], symbol.Symbol)}" +
+                   $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
+
+            var response = await _httpClient.GetAsync(url, ct);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApiException().Create(response);
+            }
+
+            var res = await response.Content.ReadAsAsync<CEOCompensation>();
+            await _ceoCompensationRepository.DeleteAsync(x => x.Symbol == symbol.Symbol, ct);
+            await _ceoCompensationRepository.AddAsync(res);
         }
-        var res = await response.Content.ReadAsAsync<CEOCompensation>();
-
-        await _ceoCompensationRepository.AddAsync(res);
-
-        return res;
     }
 
-    public async Task<InsiderRoster> GetInsiderRosterApiAsync(CancellationToken ct = default)
+    public async Task GetInsiderRosterApiAsync(CancellationToken ct = default)
     {
-        string symbol = null;
-        var url = $"{_configuration["IEXCloudUrls:version"]}" +
-               $"{string.Format(_configuration["IEXCloudUrls:insiderRosterUrl"], symbol)}" +
+        var symbols = await _symbolRepository.GetAllAsync();
+        foreach (var symbol in symbols)
+        {
+            var url = $"{_configuration["IEXCloudUrls:version"]}" +
+               $"{string.Format(_configuration["IEXCloudUrls:insiderRosterUrl"], symbol.Symbol)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
 
-        var response = await _httpClient.GetAsync(url, ct);
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new ApiException().Create(response);
+            var response = await _httpClient.GetAsync(url, ct);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApiException().Create(response);
+            }
+
+            var res = await response.Content.ReadAsAsync<IEnumerable<InsiderRosterItem>>();
+            await _insiderRosterRepository.DeleteAsync(x => x.Symbol == symbol.Symbol, ct);
+            var roster = new InsiderRoster()
+            {
+                Symbol = symbol.Symbol,
+                Items = res.ToList()
+            };
+            await _insiderRosterRepository.AddAsync(roster);
         }
-
-        var res = await response.Content.ReadAsAsync<IEnumerable<InsiderRosterItem>>();
-
-        var roster = new InsiderRoster()
-        {
-            Symbol = symbol,
-            Items = res.ToList()
-        };
-        await _insiderRosterRepository.AddAsync(roster);
-
-        return roster;
     }
 
-    public async Task<List<InsiderSummaryItem>> GetInsiderSummaryApiAsync(CancellationToken ct = default)
+    public async Task GetInsiderSummaryApiAsync(CancellationToken ct = default)
     {
-        string symbol = null;
-        var url = $"{_configuration["IEXCloudUrls:version"]}" +
-               $"{string.Format(_configuration["IEXCloudUrls:insiderSummaryUrl"], symbol)}" +
-               $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
-
-        var response = await _httpClient.GetAsync(url, ct);
-        if (!response.IsSuccessStatusCode)
+        var symbols = await _symbolRepository.GetAllAsync();
+        foreach (var symbol in symbols)
         {
-            throw new ApiException().Create(response);
+            var url = $"{_configuration["IEXCloudUrls:version"]}" +
+                   $"{string.Format(_configuration["IEXCloudUrls:insiderSummaryUrl"], symbol.Symbol)}" +
+                   $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
+
+            var response = await _httpClient.GetAsync(url, ct);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApiException().Create(response);
+            }
+
+            var res = await response.Content.ReadAsAsync<List<InsiderSummaryItem>>();
+            await _insiderSummaryRepository.DeleteAsync(x => x.Symbol == symbol.Symbol, ct);
+            await _insiderSummaryRepository.AddCollectionAsync(res);
         }
-        var res = await response.Content.ReadAsAsync<List<InsiderSummaryItem>>();
-
-        await _insiderSummaryRepository.AddCollectionAsync(res);
-
-        return res;
     }
 
-    public async Task<List<InsiderTransactionsItem>> GetInsiderTransactionsApiAsync(CancellationToken ct = default)
+    public async Task GetInsiderTransactionsApiAsync(CancellationToken ct = default)
     {
-        string symbol = null;
-        var url = $"{_configuration["IEXCloudUrls:version"]}" +
-               $"{string.Format(_configuration["IEXCloudUrls:insiderTransactionsUrl"], symbol)}" +
+        var symbols = await _symbolRepository.GetAllAsync();
+        foreach (var symbol in symbols)
+        {
+            var url = $"{_configuration["IEXCloudUrls:version"]}" +
+               $"{string.Format(_configuration["IEXCloudUrls:insiderTransactionsUrl"], symbol.Symbol)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
 
-        var response = await _httpClient.GetAsync(url, ct);
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new ApiException().Create(response);
+            var response = await _httpClient.GetAsync(url, ct);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApiException().Create(response);
+            }
+
+            var res = await response.Content.ReadAsAsync<List<InsiderTransactionsItem>>();
+            await _insiderTransactionsRepository.DeleteAsync(x => x.Symbol == symbol.Symbol, ct);
+            await _insiderTransactionsRepository.AddCollectionAsync(res);
         }
-        var res = await response.Content.ReadAsAsync<List<InsiderTransactionsItem>>();
-
-        await _insiderTransactionsRepository.AddCollectionAsync(res);
-
-        return res;
     }
 
-    public async Task<Logo> GetLogoApiAsync(CancellationToken ct = default)
+    public async Task GetLogoApiAsync(CancellationToken ct = default)
     {
-        string symbol = null;
-        var url = $"{_configuration["IEXCloudUrls:version"]}" +
-               $"{string.Format(_configuration["IEXCloudUrls:logoUrl"], symbol)}" +
+        var symbols = await _symbolRepository.GetAllAsync();
+        foreach (var symbol in symbols)
+        {
+            var url = $"{_configuration["IEXCloudUrls:version"]}" +
+               $"{string.Format(_configuration["IEXCloudUrls:logoUrl"], symbol.Symbol)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
 
-        var response = await _httpClient.GetAsync(url, ct);
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new ApiException().Create(response);
+            var response = await _httpClient.GetAsync(url, ct);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApiException().Create(response);
+            }
+
+            var res = await response.Content.ReadAsAsync<Logo>();
+            await _logoRepository.DeleteAsync(x => x.Symbol == symbol.Symbol, ct);
+            res.Symbol = symbol.Symbol.ToUpper();
+            await _logoRepository.AddAsync(res);
         }
-        var res = await response.Content.ReadAsAsync<Logo>();
-
-        res.Symbol = symbol.ToUpper();
-        await _logoRepository.AddAsync(res);
-
-        return res;
     }
 
-    public async Task<PeerGroup> GetPeerGroupApiAsync(CancellationToken ct = default)
+    public async Task GetPeerGroupApiAsync(CancellationToken ct = default)
     {
-        string symbol = null;
-        var url = $"{_configuration["IEXCloudUrls:version"]}" +
-               $"{string.Format(_configuration["IEXCloudUrls:peerGroupsUrl"], symbol)}" +
+        var symbols = await _symbolRepository.GetAllAsync();
+        foreach (var symbol in symbols)
+        {
+            var url = $"{_configuration["IEXCloudUrls:version"]}" +
+               $"{string.Format(_configuration["IEXCloudUrls:peerGroupsUrl"], symbol.Symbol)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
 
-        var response = await _httpClient.GetAsync(url, ct);
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new ApiException().Create(response);
+            var response = await _httpClient.GetAsync(url, ct);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApiException().Create(response);
+            }
+
+            var res = await response.Content.ReadAsAsync<IEnumerable<string>>();
+            await _peerGroupRepository.DeleteAsync(x => x.Symbol == symbol.Symbol, ct);
+            var roster = new PeerGroup()
+            {
+                Symbol = symbol.Symbol,
+                Items = res.ToList()
+            };
+            await _peerGroupRepository.AddAsync(roster);
         }
-        var res = await response.Content.ReadAsAsync<IEnumerable<string>>();
-
-        var roster = new PeerGroup()
-        {
-            Symbol = symbol,
-            Items = res.ToList()
-        };
-        await _peerGroupRepository.AddAsync(roster);
-
-        return roster;
     }
 
-    public async Task<Company> GetCompanyApiAsync(CancellationToken ct = default)
+    public async Task GetCompanyApiAsync(CancellationToken ct = default)
     {
-        string symbol = null;
-        var url = $"{_configuration["IEXCloudUrls:version"]}" +
-               $"{string.Format(_configuration["IEXCloudUrls:companyUrl"], symbol)}" +
+        var symbols = await _symbolRepository.GetAllAsync();
+        foreach (var symbol in symbols)
+        {
+            var url = $"{_configuration["IEXCloudUrls:version"]}" +
+               $"{string.Format(_configuration["IEXCloudUrls:companyUrl"], symbol.Symbol)}" +
                $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
 
-        var response = await _httpClient.GetAsync(url, ct);
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new ApiException().Create(response);
+            var response = await _httpClient.GetAsync(url, ct);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApiException().Create(response);
+            }
+
+            var res = await response.Content.ReadAsAsync<Company>();
+            await _companyRepository.DeleteAsync(x => x.Symbol == symbol.Symbol, ct);
+            await _companyRepository.AddAsync(res);
         }
-        var res = await response.Content.ReadAsAsync<Company>();
-
-        await _companyRepository.AddAsync(res);
-
-        return res;
     }
 }
