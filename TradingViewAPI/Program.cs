@@ -8,6 +8,7 @@ var configuration = builder.Configuration;
 var host = builder.Host;
 // Add services to the container.
 
+services.ConfigureCors();
 services.ConfigureMongoDBConnection(configuration);
 services.ConfigureRepositories();
 services.ConfigureServices(configuration);
@@ -25,6 +26,8 @@ services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseCors("CorsPolicy");
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
