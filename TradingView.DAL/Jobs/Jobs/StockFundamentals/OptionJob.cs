@@ -2,12 +2,12 @@
 using Quartz;
 using TradingView.DAL.Contracts.ApiServices;
 
-namespace TradingView.DAL.Jobs.Jobs;
-public class CEOCompensationJob : IJob
+namespace TradingView.DAL.Jobs.Jobs.StockFundamentals;
+public class OptionJob : IJob
 {
     private readonly IServiceScopeFactory _serviceScopeFactory;
 
-    public CEOCompensationJob(IServiceScopeFactory serviceScopeFactory)
+    public OptionJob(IServiceScopeFactory serviceScopeFactory)
     {
         _serviceScopeFactory = serviceScopeFactory;
     }
@@ -16,11 +16,8 @@ public class CEOCompensationJob : IJob
     {
         using (var scope = _serviceScopeFactory.CreateScope())
         {
-            var ApiService = scope.ServiceProvider.GetService<IStockProfileApiService>();
-
-            // await ApiService.GetLogoApiAsync()
-            Console.WriteLine("fshkdsj_----------------------------------------------" + DateTime.Now);
-
+            var apiService = scope.ServiceProvider.GetService<IStockFundamentalsApiService>();
+            await apiService.GetOptionApiAsync();
         }
     }
 }

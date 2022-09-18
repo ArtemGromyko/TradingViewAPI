@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using TradingView.BLL.Contracts.RealTime;
 using TradingView.DAL.Contracts.RealTime;
-using TradingView.DAL.Entities.RealTime;
 using TradingView.DAL.Entities.RealTime.LargestTrade;
 
 namespace TradingView.BLL.Services.RealTime;
@@ -32,10 +31,10 @@ public class LargestTradesService : ILargestTradesService
 
             var response = await _httpClient.GetAsync(url);
             var largestTradeItems = await response.Content.ReadAsAsync<List<LargestTradeItem>>();
-            
+
             var newLargestTrade = new LargestTrade { Symbol = symbol, Items = largestTradeItems };
             await _largestTradesRepository.AddAsync(newLargestTrade);
-            
+
             return largestTradeItems;
         }
 

@@ -38,7 +38,7 @@ public class IntradayPricesService : IIntradayPricesService
 
             var newIntradayPrice = new IntradayPrice { Symbol = symbol, Items = intradayPriceItems };
             await _intradayPricesRepository.AddAsync(newIntradayPrice);
-            
+
             return intradayPriceItems;
         }
 

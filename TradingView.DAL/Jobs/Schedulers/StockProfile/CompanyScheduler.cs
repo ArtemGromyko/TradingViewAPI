@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 using Quartz.Impl;
-using TradingView.DAL.Jobs.Jobs;
+using TradingView.DAL.Jobs.Jobs.StockProfile;
 
-namespace TradingView.DAL.Jobs.Schedulers;
-public static class CEOCompensationScheduler
+namespace TradingView.DAL.Jobs.Schedulers.StockProfile;
+public static class CompanyScheduler
 {
     public static async void Start(IServiceProvider serviceProvider)
     {
@@ -12,13 +12,11 @@ public static class CEOCompensationScheduler
         scheduler.JobFactory = serviceProvider.GetService<JobFactory>();
         await scheduler.Start();
 
-        IJobDetail jobDetail = JobBuilder.Create<CEOCompensationJob>().Build();
+        IJobDetail jobDetail = JobBuilder.Create<CompanyJob>().Build();
         ITrigger trigger = TriggerBuilder.Create()
-            .WithIdentity("MailingTrigger", "default")
-            //.StartNow()
-            .WithSimpleSchedule(x => x
-            .WithIntervalInSeconds(5)
-            .RepeatForever())
+            .WithIdentity("CompanyTrigger", "default")
+            .StartNow()
+            .WithCronSchedule("0 0 4,5 ? * * *", x => x.InTimeZone(TimeZoneInfo.Utc)) //Updates at 4am and 5am UTC every day
             .Build();
 
         await scheduler.ScheduleJob(jobDetail, trigger);

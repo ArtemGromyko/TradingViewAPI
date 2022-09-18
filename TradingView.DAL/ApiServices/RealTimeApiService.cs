@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TradingView.DAL.Contracts;
+﻿using TradingView.DAL.Contracts;
 using TradingView.DAL.Contracts.ApiServices;
 using TradingView.DAL.Contracts.RealTime;
 
@@ -19,15 +14,17 @@ public class RealTimeApiService : IRealTimeApiService
     private readonly IOHLCRepository _ioHLCRepository;
     private readonly IPreviousDayPriceRepository _previousDayPriceRepository;
     private readonly IVolumeByVenueRepository _volumeByVenueRepository;
+    private readonly ISymbolRepository _symbolsRepository;
 
-    public RealTimeApiService(IDividendsRepository dividendsRepository, 
+    public RealTimeApiService(ISymbolRepository symbolsRepository,
+        IDividendsRepository dividendsRepository,
         IExchangesRepository exchangesRepository,
-        IHistoricalPricesRepository historicalPricesRepository, 
-        IQuotesRepository quotesRepository, 
+        IHistoricalPricesRepository historicalPricesRepository,
+        IQuotesRepository quotesRepository,
         IIntradayPricesRepository intradayPricesRepository,
-        ILargestTradesRepository largestTradesRepository, 
+        ILargestTradesRepository largestTradesRepository,
         IOHLCRepository ioHLCRepository,
-        IPreviousDayPriceRepository previousDayPriceRepository, 
+        IPreviousDayPriceRepository previousDayPriceRepository,
         IVolumeByVenueRepository volumeByVenueRepository)
     {
         _dividendsRepository = dividendsRepository ?? throw new ArgumentNullException(nameof(dividendsRepository));
@@ -39,5 +36,6 @@ public class RealTimeApiService : IRealTimeApiService
         _ioHLCRepository = ioHLCRepository ?? throw new ArgumentNullException(nameof(ioHLCRepository));
         _previousDayPriceRepository = previousDayPriceRepository ?? throw new ArgumentNullException(nameof(previousDayPriceRepository));
         _volumeByVenueRepository = volumeByVenueRepository ?? throw new ArgumentNullException(nameof(volumeByVenueRepository));
+        _symbolsRepository = symbolsRepository ?? throw new ArgumentNullException(nameof(symbolsRepository));
     }
 }

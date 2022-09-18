@@ -12,7 +12,7 @@ public class PriceOnlyService : IPriceOnlyService
     private readonly HttpClient _httpClient;
 
     public PriceOnlyService(IConfiguration configuration,
-        IHttpClientFactory httpClientFactory,IPriceOnlyRepository priceOnlyRepository)
+        IHttpClientFactory httpClientFactory, IPriceOnlyRepository priceOnlyRepository)
     {
         _priceOnlyRepository = priceOnlyRepository;
         _configuration = configuration;
@@ -24,7 +24,7 @@ public class PriceOnlyService : IPriceOnlyService
     public async Task<double> GetPriceOnlyAsync(string symbol)
     {
         var priceOnly = await _priceOnlyRepository.GetAsync((po) => (po.Symbol!.ToUpper()).Equals(symbol.ToUpper()));
-        if(priceOnly is null)
+        if (priceOnly is null)
         {
             var url = $"{_configuration["IEXCloudUrls:version"]}" +
                 $"{string.Format(_configuration["IEXCloudUrls:priceOnlyUrl"], symbol)}" +
@@ -38,7 +38,7 @@ public class PriceOnlyService : IPriceOnlyService
 
             priceOnly = newPriceOnly;
         }
-        
+
 
         return priceOnly.Price!;
     }
