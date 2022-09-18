@@ -157,7 +157,7 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
             }
 
             var res = await response.Content.ReadAsAsync<EarningsEntity>();
-           // await _earningsRepository.DeleteAsync(x => x.Symbol == symbol.Symbol, ct); //---------------------
+            // await _earningsRepository.DeleteAsync(x => x.Symbol == symbol.Symbol, ct); //---------------------
             await _earningsRepository.AddAsync(res);
         }
     }
