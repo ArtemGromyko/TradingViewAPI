@@ -13,8 +13,10 @@ using TradingView.DAL.Contracts.RealTime;
 using TradingView.DAL.Contracts.StockFundamentals;
 using TradingView.DAL.Contracts.StockProfile;
 using TradingView.DAL.Jobs;
+using TradingView.DAL.Jobs.Jobs;
 using TradingView.DAL.Jobs.Jobs.StockFundamentals;
 using TradingView.DAL.Jobs.Jobs.StockProfile;
+using TradingView.DAL.Jobs.Schedulers;
 using TradingView.DAL.Jobs.Schedulers.StockFundamentals;
 using TradingView.DAL.Jobs.Schedulers.StockProfile;
 using TradingView.DAL.Repositories;
@@ -30,6 +32,7 @@ public static class ServiceExtensions
     public static void ConfigureJobs(this IServiceCollection services)
     {
         services.AddTransient<JobFactory>();
+        services.AddScoped<SymbolJob>();
 
         services.AddScoped<CEOCompensationJob>();
         services.AddScoped<PeerGroupJob>();
@@ -59,23 +62,24 @@ public static class ServiceExtensions
             var serviceProvider = scope.ServiceProvider;
             try
             {
-                CEOCompensationScheduler.Start(serviceProvider);
-                PeerGroupScheduler.Start(serviceProvider);
-                LogoScheduler.Start(serviceProvider);
-                InsiderSummaryScheduler.Start(serviceProvider);
-                InsiderTransactionsScheduler.Start(serviceProvider);
-                InsiderRosterScheduler.Start(serviceProvider);
+                //SymbolScheduler.Start(serviceProvider);
+                //CEOCompensationScheduler.Start(serviceProvider);
+                //PeerGroupScheduler.Start(serviceProvider);
+                //LogoScheduler.Start(serviceProvider);
+                //InsiderSummaryScheduler.Start(serviceProvider);
+                //InsiderTransactionsScheduler.Start(serviceProvider);
+                //InsiderRosterScheduler.Start(serviceProvider);
                 CompanyScheduler.Start(serviceProvider);
 
-                ReportedFinancialsScheduler.Start(serviceProvider);
-                IncomeStatementScheduler.Start(serviceProvider);
-                OptionScheduler.Start(serviceProvider);
-                FinancialsScheduler.Start(serviceProvider);
-                ExpirationScheduler.Start(serviceProvider);
-                CashFlowScheduler.Start(serviceProvider);
-                DividendScheduler.Start(serviceProvider);
-                EarningsScheduler.Start(serviceProvider);
-                SplitScheduler.Start(serviceProvider);
+                //ReportedFinancialsScheduler.Start(serviceProvider);
+                //IncomeStatementScheduler.Start(serviceProvider);
+                //OptionScheduler.Start(serviceProvider);
+                //FinancialsScheduler.Start(serviceProvider);
+                //ExpirationScheduler.Start(serviceProvider);
+                //CashFlowScheduler.Start(serviceProvider);
+                //DividendScheduler.Start(serviceProvider);
+                //EarningsScheduler.Start(serviceProvider);
+                //SplitScheduler.Start(serviceProvider);
             }
             catch (Exception)
             {

@@ -51,6 +51,7 @@ public class StockProfileApiService : IStockProfileApiService
     public async Task GetCEOCompensationApiAsync(CancellationToken ct = default)
     {
         var symbols = await _symbolRepository.GetAllAsync();
+        int i = 0;
         foreach (var symbol in symbols)
         {
             var url = $"{_configuration["IEXCloudUrls:version"]}" +
@@ -62,7 +63,7 @@ public class StockProfileApiService : IStockProfileApiService
             {
                 throw new ApiException().Create(response);
             }
-
+            i++;
             var res = await response.Content.ReadAsAsync<CEOCompensation>();
             await _ceoCompensationRepository.DeleteAsync(x => x.Symbol == symbol.Symbol, ct);
             await _ceoCompensationRepository.AddAsync(res);
@@ -188,6 +189,7 @@ public class StockProfileApiService : IStockProfileApiService
     public async Task GetCompanyApiAsync(CancellationToken ct = default)
     {
         var symbols = await _symbolRepository.GetAllAsync();
+        int i = 0;
         foreach (var symbol in symbols)
         {
             var url = $"{_configuration["IEXCloudUrls:version"]}" +
@@ -199,7 +201,7 @@ public class StockProfileApiService : IStockProfileApiService
             {
                 throw new ApiException().Create(response);
             }
-
+            i++;
             var res = await response.Content.ReadAsAsync<Company>();
             await _companyRepository.DeleteAsync(x => x.Symbol == symbol.Symbol, ct);
             await _companyRepository.AddAsync(res);

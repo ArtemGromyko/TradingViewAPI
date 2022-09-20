@@ -13,11 +13,7 @@ public static class InsiderSummaryScheduler
         await scheduler.Start();
 
         IJobDetail job = JobBuilder.Create<InsiderSummaryJob>()
-            .WithIdentity("J_InsiderSummary", "J_StockProfile")
-            .StoreDurably()
             .Build();
-
-        await scheduler.AddJob(job, true);
 
         ITrigger trigger = TriggerBuilder.Create()
             .WithIdentity("InsiderSummaryTrigger", "default")
@@ -25,15 +21,6 @@ public static class InsiderSummaryScheduler
             .WithCronSchedule("30 0 9,10 ? * * *", x => x.InTimeZone(TimeZoneInfo.Utc)) //Updates at 5am, 6am ET every day
             .Build();
 
-        ITrigger triggerStart = TriggerBuilder.Create()
-            .WithIdentity("InsiderSummaryStart", "default")
-            .ForJob(job)
-            .WithSimpleSchedule(x => x
-                .WithIntervalInSeconds(1)
-                .WithRepeatCount(0))
-            .Build();
-
         await scheduler.ScheduleJob(trigger);
-        await scheduler.ScheduleJob(triggerStart);
     }
 }

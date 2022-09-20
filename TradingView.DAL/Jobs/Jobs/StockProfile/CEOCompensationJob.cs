@@ -14,10 +14,12 @@ public class CEOCompensationJob : IJob
 
     public async Task Execute(IJobExecutionContext context)
     {
+        Console.WriteLine("CEOCompensationJob " + DateTime.Now);
         using (var scope = _serviceScopeFactory.CreateScope())
         {
             var apiService = scope.ServiceProvider.GetService<IStockProfileApiService>();
             await apiService.GetCEOCompensationApiAsync();
         }
+        Console.WriteLine("End CEOCompensationJob " + DateTime.Now);
     }
 }

@@ -14,7 +14,7 @@ public class PeerGroupJob : IJob
 
     public async Task Execute(IJobExecutionContext context)
     {
-        Console.WriteLine("Test");
+        Console.WriteLine("PeerGroupJob " + DateTime.Now);
         using (var scope = _serviceScopeFactory.CreateScope())
         {
 

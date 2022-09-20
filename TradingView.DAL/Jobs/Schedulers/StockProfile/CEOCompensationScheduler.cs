@@ -13,8 +13,6 @@ public static class CEOCompensationScheduler
         await scheduler.Start();
 
         IJobDetail job = JobBuilder.Create<CEOCompensationJob>()
-             .WithIdentity("J_CEOCompensation", "J_StockProfile")
-            .StoreDurably()
             .Build();
 
         await scheduler.AddJob(job, true);
@@ -25,15 +23,6 @@ public static class CEOCompensationScheduler
             .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(13, 1)) //1am daily
             .Build();
 
-        ITrigger triggerStart = TriggerBuilder.Create()
-            .WithIdentity("CEOCompensationStart", "default")
-            .ForJob(job)
-            .WithSimpleSchedule(x => x
-                .WithIntervalInSeconds(1)
-                .WithRepeatCount(0))
-            .Build();
-
         await scheduler.ScheduleJob(trigger);
-        await scheduler.ScheduleJob(triggerStart);
     }
 }

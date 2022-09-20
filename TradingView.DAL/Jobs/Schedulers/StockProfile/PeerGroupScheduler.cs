@@ -31,7 +31,7 @@ public static class PeerGroupScheduler
              .WithIdentity("PeerGroupTriggerStart", "default")
              .ForJob(job)
              .WithSimpleSchedule(x => x
-                 .WithIntervalInSeconds(1)
+                 .WithIntervalInSeconds(6)
                  .WithRepeatCount(0))
              .Build();
 

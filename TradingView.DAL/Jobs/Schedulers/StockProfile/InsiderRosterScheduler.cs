@@ -13,11 +13,7 @@ public static class InsiderRosterScheduler
         await scheduler.Start();
 
         IJobDetail job = JobBuilder.Create<InsiderRosterJob>()
-            .WithIdentity("J_InsiderRoster", "J_StockProfile")
-            .StoreDurably()
             .Build();
-
-        await scheduler.AddJob(job, true);
 
         ITrigger trigger = TriggerBuilder.Create()
             .WithIdentity("InsiderRosterTrigger", "default")
@@ -34,6 +30,5 @@ public static class InsiderRosterScheduler
              .Build();
 
         await scheduler.ScheduleJob(trigger);
-        await scheduler.ScheduleJob(triggerStart);
     }
 }

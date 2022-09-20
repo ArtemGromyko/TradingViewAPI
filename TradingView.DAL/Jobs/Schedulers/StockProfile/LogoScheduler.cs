@@ -13,11 +13,7 @@ public static class LogoScheduler
         await scheduler.Start();
 
         IJobDetail job = JobBuilder.Create<LogoJob>()
-            .WithIdentity("J_Logo", "J_StockProfile")
-            .StoreDurably()
             .Build();
-
-        await scheduler.AddJob(job, true);
 
         ITrigger trigger = TriggerBuilder.Create()
             .WithIdentity("LogoTrigger", "default")
@@ -25,15 +21,6 @@ public static class LogoScheduler
             .WithCronSchedule("0 0 8 ? * * *", x => x.InTimeZone(TimeZoneInfo.Utc)) //8am UTC daily
             .Build();
 
-        ITrigger triggerStart = TriggerBuilder.Create()
-             .WithIdentity("LogoTriggerStart", "default")
-             .ForJob(job)
-             .WithSimpleSchedule(x => x
-                 .WithIntervalInSeconds(1)
-                 .WithRepeatCount(0))
-             .Build();
-
         await scheduler.ScheduleJob(trigger);
-        await scheduler.ScheduleJob(triggerStart);
     }
 }

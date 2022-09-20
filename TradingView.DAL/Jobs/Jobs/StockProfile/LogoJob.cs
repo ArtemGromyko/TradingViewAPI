@@ -14,10 +14,11 @@ public class LogoJob : IJob
 
     public async Task Execute(IJobExecutionContext context)
     {
+        Console.WriteLine("LogoJob " + DateTime.Now);
         using (var scope = _serviceScopeFactory.CreateScope())
         {
             var apiService = scope.ServiceProvider.GetService<IStockProfileApiService>();
-            await apiService.GetLogoApiAsync();
+            //await apiService.GetLogoApiAsync();
         }
     }
 }

@@ -13,9 +13,7 @@ public static class CompanyScheduler
         await scheduler.Start();
 
         IJobDetail job = JobBuilder.Create<CompanyJob>()
-            .WithIdentity("J_Company", "J_StockProfile")
-        .StoreDurably()
-        .Build();
+            .Build();
 
         await scheduler.AddJob(job, true);
 
@@ -25,15 +23,6 @@ public static class CompanyScheduler
             .WithCronSchedule("0 0 4,5 ? * * *", x => x.InTimeZone(TimeZoneInfo.Utc)) //Updates at 4am and 5am UTC every day
             .Build();
 
-        ITrigger triggerStart = TriggerBuilder.Create()
-             .WithIdentity("CompanyStart", "default")
-             .ForJob(job)
-             .WithSimpleSchedule(x => x
-                 .WithIntervalInSeconds(1)
-                 .WithRepeatCount(0))
-             .Build();
-
         await scheduler.ScheduleJob(trigger);
-        await scheduler.ScheduleJob(triggerStart);
     }
 }
