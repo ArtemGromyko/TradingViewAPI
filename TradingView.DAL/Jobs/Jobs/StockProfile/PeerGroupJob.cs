@@ -14,10 +14,12 @@ public class PeerGroupJob : IJob
 
     public async Task Execute(IJobExecutionContext context)
     {
+        Console.WriteLine("Test");
         using (var scope = _serviceScopeFactory.CreateScope())
         {
+
             var apiService = scope.ServiceProvider.GetService<IStockProfileApiService>();
-            await apiService.GetPeerGroupApiAsync();
+            // await apiService.GetPeerGroupApiAsync();
         }
     }
 }

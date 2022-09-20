@@ -12,13 +12,30 @@ public static class PeerGroupScheduler
         scheduler.JobFactory = serviceProvider.GetService<JobFactory>();
         await scheduler.Start();
 
-        IJobDetail jobDetail = JobBuilder.Create<PeerGroupJob>().Build();
-        ITrigger trigger = TriggerBuilder.Create()
-            .WithIdentity("PeerGroupTrigger", "default")
-            .StartNow()
-            .WithCronSchedule("0 0 8 ? * * *", x => x.InTimeZone(TimeZoneInfo.Utc)) //8am UTC daily
+        IJobDetail job = JobBuilder.Create<PeerGroupJob>()
+            .WithIdentity("J_PeerGroup", "J_StockProfile")
+            .StoreDurably()
             .Build();
 
-        await scheduler.ScheduleJob(jobDetail, trigger);
+        await scheduler.AddJob(job, true);
+
+        ITrigger trigger = TriggerBuilder.Create()
+            .WithIdentity("PeerGroupTrigger", "default")
+            .ForJob(job)
+            .WithSchedule(CronScheduleBuilder
+            .DailyAtHourAndMinute(8, 0)
+            .InTimeZone(TimeZoneInfo.Utc))
+            .Build();
+
+        ITrigger triggerStart = TriggerBuilder.Create()
+             .WithIdentity("PeerGroupTriggerStart", "default")
+             .ForJob(job)
+             .WithSimpleSchedule(x => x
+                 .WithIntervalInSeconds(1)
+                 .WithRepeatCount(0))
+             .Build();
+
+        await scheduler.ScheduleJob(trigger);
+        await scheduler.ScheduleJob(triggerStart);
     }
 }

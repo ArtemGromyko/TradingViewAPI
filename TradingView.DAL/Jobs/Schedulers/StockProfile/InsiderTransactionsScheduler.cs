@@ -12,13 +12,28 @@ public static class InsiderTransactionsScheduler
         scheduler.JobFactory = serviceProvider.GetService<JobFactory>();
         await scheduler.Start();
 
-        IJobDetail jobDetail = JobBuilder.Create<InsiderTransactionsJob>().Build();
+        IJobDetail job = JobBuilder.Create<InsiderTransactionsJob>()
+            .WithIdentity("J_InsiderTransactions", "J_StockProfile")
+            .StoreDurably()
+            .Build();
+
+        await scheduler.AddJob(job, true);
+
         ITrigger trigger = TriggerBuilder.Create()
             .WithIdentity("InsiderTransactionsTrigger", "default")
-            .StartNow()
+            .ForJob(job)
             .WithCronSchedule("30 0 9,10 ? * * *", x => x.InTimeZone(TimeZoneInfo.Utc)) //Updates at UTC every day
             .Build();
 
-        await scheduler.ScheduleJob(jobDetail, trigger);
+        ITrigger triggerStart = TriggerBuilder.Create()
+             .WithIdentity("InsiderTransactionsTriggerStart", "default")
+             .ForJob(job)
+             .WithSimpleSchedule(x => x
+                 .WithIntervalInSeconds(1)
+                 .WithRepeatCount(0))
+             .Build();
+
+        await scheduler.ScheduleJob(trigger);
+        await scheduler.ScheduleJob(triggerStart);
     }
 }
