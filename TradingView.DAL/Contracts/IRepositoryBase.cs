@@ -10,4 +10,5 @@ public interface IRepositoryBase<TEntity>
     Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> expression, CancellationToken ct = default);
     Task<List<TEntity>> GetCollectionAsync(Expression<Func<TEntity, bool>> expression, CancellationToken ct = default);
     Task DeleteAsync(Expression<Func<TEntity, bool>> expression, CancellationToken ct = default);
+    Task DeleteAllAsync(CancellationToken ct = default);
 }

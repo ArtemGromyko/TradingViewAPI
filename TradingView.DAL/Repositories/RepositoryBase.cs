@@ -39,4 +39,7 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : 
 
     public async Task DeleteAsync(Expression<Func<TEntity, bool>> expression, CancellationToken ct = default) =>
        await _collection.DeleteManyAsync(expression, ct);
+
+    public async Task DeleteAllAsync(CancellationToken ct = default) =>
+      await _collection.DeleteManyAsync(x => x == x, ct);
 }

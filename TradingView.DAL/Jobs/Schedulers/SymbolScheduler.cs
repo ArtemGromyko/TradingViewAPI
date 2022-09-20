@@ -1,12 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Quartz.Impl;
 using Quartz;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TradingView.DAL.Jobs.Jobs.StockProfile;
+using Quartz.Impl;
 using TradingView.DAL.Jobs.Jobs;
 
 namespace TradingView.DAL.Jobs.Schedulers

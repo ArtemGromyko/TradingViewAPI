@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Quartz;
-using TradingView.DAL.Contracts.ApiServices;
 
 namespace TradingView.DAL.Jobs.Jobs.StockFundamentals;
 public class ReportedFinancialsJob : IJob
@@ -14,10 +13,6 @@ public class ReportedFinancialsJob : IJob
 
     public async Task Execute(IJobExecutionContext context)
     {
-        using (var scope = _serviceScopeFactory.CreateScope())
-        {
-            var apiService = scope.ServiceProvider.GetService<IStockFundamentalsApiService>();
-            await apiService.GetReportedFinancialsApiAsync();
-        }
+        Console.WriteLine("ReportedFinancialsJob " + DateTime.Now);
     }
 }

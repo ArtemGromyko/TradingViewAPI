@@ -71,24 +71,24 @@ public static class ServiceExtensions
             var serviceProvider = scope.ServiceProvider;
             try
             {
-                //SymbolScheduler.Start(serviceProvider);
-                //CEOCompensationScheduler.Start(serviceProvider);
-                //PeerGroupScheduler.Start(serviceProvider);
-                //LogoScheduler.Start(serviceProvider);
-                //InsiderSummaryScheduler.Start(serviceProvider);
-                //InsiderTransactionsScheduler.Start(serviceProvider);
-                //InsiderRosterScheduler.Start(serviceProvider);
+                SymbolScheduler.Start(serviceProvider);
+                CEOCompensationScheduler.Start(serviceProvider);
+                PeerGroupScheduler.Start(serviceProvider);
+                LogoScheduler.Start(serviceProvider);
+                InsiderSummaryScheduler.Start(serviceProvider);
+                InsiderTransactionsScheduler.Start(serviceProvider);
+                InsiderRosterScheduler.Start(serviceProvider);
                 CompanyScheduler.Start(serviceProvider);
 
-                //ReportedFinancialsScheduler.Start(serviceProvider);
-                //IncomeStatementScheduler.Start(serviceProvider);
-                //OptionScheduler.Start(serviceProvider);
-                //FinancialsScheduler.Start(serviceProvider);
-                //ExpirationScheduler.Start(serviceProvider);
-                //CashFlowScheduler.Start(serviceProvider);
-                //DividendScheduler.Start(serviceProvider);
-                //EarningsScheduler.Start(serviceProvider);
-                //SplitScheduler.Start(serviceProvider);
+                ReportedFinancialsScheduler.Start(serviceProvider);
+                IncomeStatementScheduler.Start(serviceProvider);
+                OptionScheduler.Start(serviceProvider);
+                FinancialsScheduler.Start(serviceProvider);
+                ExpirationScheduler.Start(serviceProvider);
+                CashFlowScheduler.Start(serviceProvider);
+                DividendScheduler.Start(serviceProvider);
+                EarningsScheduler.Start(serviceProvider);
+                SplitScheduler.Start(serviceProvider);
             }
             catch (Exception)
             {

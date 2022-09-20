@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Quartz;
-using TradingView.DAL.Contracts.ApiServices;
 
 namespace TradingView.DAL.Jobs.Jobs.StockProfile;
 public class InsiderRosterJob : IJob
@@ -14,11 +13,6 @@ public class InsiderRosterJob : IJob
 
     public async Task Execute(IJobExecutionContext context)
     {
-        using (var scope = _serviceScopeFactory.CreateScope())
-        {
-            var apiService = scope.ServiceProvider.GetService<IStockProfileApiService>();
-
-            await apiService.GetInsiderRosterApiAsync();
-        }
+        Console.WriteLine("InsiderRosterJob " + DateTime.Now);
     }
 }
