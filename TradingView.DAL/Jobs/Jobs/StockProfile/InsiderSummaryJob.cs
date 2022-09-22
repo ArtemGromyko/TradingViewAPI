@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Quartz;
+using TradingView.DAL.Contracts.StockProfile;
 
 namespace TradingView.DAL.Jobs.Jobs.StockProfile;
 public class InsiderSummaryJob : IJob
@@ -13,6 +14,10 @@ public class InsiderSummaryJob : IJob
 
     public async Task Execute(IJobExecutionContext context)
     {
-        Console.WriteLine("InsiderSummaryJob " + DateTime.Now);
+        using (var scope = _serviceScopeFactory.CreateScope())
+        {
+            var repository = scope.ServiceProvider.GetService<IInsiderSummaryRepository>();
+            await repository.DeleteAllAsync();
+        }
     }
 }

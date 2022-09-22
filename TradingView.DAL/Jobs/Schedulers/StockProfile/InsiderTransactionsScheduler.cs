@@ -17,10 +17,9 @@ public static class InsiderTransactionsScheduler
 
         ITrigger trigger = TriggerBuilder.Create()
             .WithIdentity("InsiderTransactionsTrigger", "default")
-            .ForJob(job)
-            .WithCronSchedule("30 0 9,10 ? * * *", x => x.InTimeZone(TimeZoneInfo.Utc)) //Updates at UTC every day
+            .WithCronSchedule("0 0 0 ? * * *", x => x.InTimeZone(TimeZoneInfo.Utc)) //Updates at UTC every day
             .Build();
 
-        await scheduler.ScheduleJob(trigger);
+        await scheduler.ScheduleJob(job, trigger);
     }
 }

@@ -57,7 +57,7 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
         _httpClient = _httpClientFactory.CreateClient(configuration["HttpClientName"]);
     }
 
-    public async Task GetBalanceSheetApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<BalanceSheetEntity> GetBalanceSheetApiAsync(string symbol, CancellationToken ct = default)
     {
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
            $"{string.Format(_configuration["IEXCloudUrls:balanceSheetUrl"], symbol)}" +
@@ -70,12 +70,13 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
         }
 
         var res = await response.Content.ReadAsAsync<BalanceSheetEntity>();
-
         await _balanceSheetRepository.AddAsync(res);
+
+        return res;
     }
 
 
-    public async Task GetCashFlowApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<CashFlowEntity> GetCashFlowApiAsync(string symbol, CancellationToken ct = default)
     {
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
            $"{string.Format(_configuration["IEXCloudUrls:cashFlowUrl"], symbol)}" +
@@ -89,10 +90,12 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
 
         var res = await response.Content.ReadAsAsync<CashFlowEntity>();
         await _cashFlowRepository.AddAsync(res);
+
+        return res;
     }
 
 
-    public async Task GeDividendtApiAsync(string symbol, string range, CancellationToken ct = default)
+    public async Task<List<Dividend>> GeDividendtApiAsync(string symbol, string range, CancellationToken ct = default)
     {
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
            $"{string.Format(_configuration["IEXCloudUrls:dividendUrl"], symbol, range)}" +
@@ -106,9 +109,11 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
 
         var res = await response.Content.ReadAsAsync<List<Dividend>>();
         await _dividendRepository.AddCollectionAsync(res);
+
+        return res;
     }
 
-    public async Task GetEarningsApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<EarningsEntity> GetEarningsApiAsync(string symbol, CancellationToken ct = default)
     {
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
            $"{string.Format(_configuration["IEXCloudUrls:earningsUrl"], symbol)}" +
@@ -122,9 +127,11 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
 
         var res = await response.Content.ReadAsAsync<EarningsEntity>();
         await _earningsRepository.AddAsync(res);
+
+        return res;
     }
 
-    public async Task GetEarningsApiAsync(string symbol, int last, CancellationToken ct = default)//------------------------
+    public async Task<EarningsEntity> GetEarningsApiAsync(string symbol, int last, CancellationToken ct = default)
     {
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
            $"{string.Format(_configuration["IEXCloudUrls:earningsRangeUrl"], symbol, last)}" +
@@ -138,9 +145,11 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
 
         var res = await response.Content.ReadAsAsync<EarningsEntity>();
         await _earningsRepository.AddAsync(res);
+
+        return res;
     }
 
-    public async Task GetFinancialsApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<FinancialsEntity> GetFinancialsApiAsync(string symbol, CancellationToken ct = default)
     {
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
            $"{string.Format(_configuration["IEXCloudUrls:financialsUrl"], symbol)}" +
@@ -155,9 +164,11 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
         var res = await response.Content.ReadAsAsync<FinancialsEntity>();
 
         await _financialsRepository.AddAsync(res);
+
+        return res;
     }
 
-    public async Task GetIncomeStatementApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<IncomeStatement> GetIncomeStatementApiAsync(string symbol, CancellationToken ct = default)
     {
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
            $"{string.Format(_configuration["IEXCloudUrls:incomeStatementUrl"], symbol)}" +
@@ -171,9 +182,11 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
 
         var res = await response.Content.ReadAsAsync<IncomeStatement>();
         await _incomeStatementRepository.AddAsync(res);
+
+        return res;
     }
 
-    public async Task GetOptionApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<OptionEntity> GetOptionApiAsync(string symbol, CancellationToken ct = default)
     {
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
            $"{string.Format(_configuration["IEXCloudUrls:optionUrl"], symbol)}" +
@@ -192,9 +205,11 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
             Options = res
         };
         await _optionRepository.AddAsync(option);
+
+        return option;
     }
 
-    public async Task/*<List<Expiration>>*/ GetExpirationApiAsync(string symbol, string expiration, CancellationToken ct = default)//---------------------------
+    public async Task<List<Expiration>> GetExpirationApiAsync(string symbol, string expiration, CancellationToken ct = default)
     {
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
                $"{string.Format(_configuration["IEXCloudUrls:optionExpirationUrl"], symbol, expiration)}" +
@@ -210,10 +225,10 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
 
         await _expirationRepository.AddCollectionAsync(res);
 
-        //return res;
+        return res;
     }
 
-    public async Task GetReportedFinancialsApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<List<ReportedFinancials>> GetReportedFinancialsApiAsync(string symbol, CancellationToken ct = default)
     {
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
            $"{string.Format(_configuration["IEXCloudUrls:reportedFinancialsUrl"], symbol)}" +
@@ -228,9 +243,10 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
         var res = await response.Content.ReadAsAsync<List<ReportedFinancials>>();
         await _reportedFinancialsRepository.AddCollectionAsync(res);
 
+        return res;
     }
 
-    public async Task GetSplitApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<List<SplitEntity>> GetSplitApiAsync(string symbol, CancellationToken ct = default)
     {
 
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
@@ -245,10 +261,11 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
 
         var res = await response.Content.ReadAsAsync<List<SplitEntity>>();
         await _splitRepository.AddCollectionAsync(res);
+        return res;
     }
 
 
-    public async Task GetSplitApiAsync(string symbol, string range, CancellationToken ct = default)
+    public async Task<List<SplitEntity>> GetSplitApiAsync(string symbol, string range, CancellationToken ct = default)
     {
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
            $"{string.Format(_configuration["IEXCloudUrls:splitRangeUrl"], symbol, range)}" +
@@ -262,5 +279,6 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
 
         var res = await response.Content.ReadAsAsync<List<SplitEntity>>();
         await _splitRepository.AddCollectionAsync(res);
+        return res;
     }
 }

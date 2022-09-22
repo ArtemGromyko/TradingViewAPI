@@ -1,11 +1,13 @@
-﻿namespace TradingView.DAL.Contracts.ApiServices;
+﻿using TradingView.DAL.Entities.StockProfileEntities;
+
+namespace TradingView.DAL.Contracts.ApiServices;
 public interface IStockProfileApiService
 {
-    Task GetCEOCompensationApiAsync(string symbol, CancellationToken ct = default);
-    Task GetInsiderRosterApiAsync(string symbol, CancellationToken ct = default);
-    Task GetInsiderSummaryApiAsync(string symbol, CancellationToken ct = default);
-    Task GetInsiderTransactionsApiAsync(string symbol, CancellationToken ct = default);
-    Task GetLogoApiAsync(string symbol, CancellationToken ct = default);
-    Task GetPeerGroupApiAsync(string symbol, CancellationToken ct = default);
-    Task GetCompanyApiAsync(string symbol, CancellationToken ct = default);
+    Task<CEOCompensation> GetCEOCompensationApiAsync(string symbol, CancellationToken ct = default);
+    Task<InsiderRoster> GetInsiderRosterApiAsync(string symbol, CancellationToken ct = default);
+    Task<List<InsiderSummaryItem>> GetInsiderSummaryApiAsync(string symbol, CancellationToken ct = default);
+    Task<List<InsiderTransactionsItem>> GetInsiderTransactionsApiAsync(string symbol, CancellationToken ct = default);
+    Task<Logo> GetLogoApiAsync(string symbol, CancellationToken ct = default);
+    Task<PeerGroup> GetPeerGroupApiAsync(string symbol, CancellationToken ct = default);
+    Task<Company> GetCompanyApiAsync(string symbol, CancellationToken ct = default);
 }

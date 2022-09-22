@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
+using System.Linq;
 using TradingView.BLL.Contracts.StockProfile;
+using TradingView.DAL.Contracts.ApiServices;
 using TradingView.DAL.Contracts.StockProfile;
 using TradingView.DAL.Entities.StockProfileEntities;
 using TradingView.Models.Exceptions;
@@ -8,6 +10,7 @@ namespace TradingView.BLL.Services.StockProfile;
 public class InsiderSummaryService : IInsiderSummaryService
 {
     private readonly IInsiderSummaryRepository _insiderSummaryRepository;
+    private readonly IStockProfileApiService _stockProfileApiService;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IConfiguration _configuration;
 
@@ -15,8 +18,10 @@ public class InsiderSummaryService : IInsiderSummaryService
 
     public InsiderSummaryService(IInsiderSummaryRepository insiderSummaryRepository,
         IHttpClientFactory httpClientFactory,
-        IConfiguration configuration)
+        IConfiguration configuration,
+        IStockProfileApiService stockProfileApiService)
     {
+        _stockProfileApiService = stockProfileApiService ?? throw new ArgumentNullException(nameof(stockProfileApiService));
         _insiderSummaryRepository = insiderSummaryRepository ?? throw new ArgumentNullException(nameof(insiderSummaryRepository));
         _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
@@ -29,10 +34,11 @@ public class InsiderSummaryService : IInsiderSummaryService
         var result = await _insiderSummaryRepository.GetCollectionAsync(x => x.Symbol.ToUpper() == symbol.ToUpper(), ct);
         if (result.Count == 0)
         {
-            return await GetCompanyApiAsync(symbol, ct);
+            //return await GetCompanyApiAsync(symbol, ct);
+            return await _stockProfileApiService.GetInsiderSummaryApiAsync(symbol, ct);
         }
 
-        return result;
+        return result.OrderBy(x => x.Updated).ToList();
     }
 
     private async Task<List<InsiderSummaryItem>> GetCompanyApiAsync(string symbol, CancellationToken ct = default)

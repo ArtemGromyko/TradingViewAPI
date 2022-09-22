@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using TradingView.BLL.Contracts.StockProfile;
+using TradingView.DAL.Contracts.ApiServices;
 using TradingView.DAL.Contracts.StockProfile;
 using TradingView.DAL.Entities.StockProfileEntities;
 using TradingView.DAL.Repositories.StockProfile;
@@ -11,17 +12,18 @@ public class LogoService : ILogoService
     private readonly ILogoRepository _logoRepository;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IConfiguration _configuration;
-
+    private readonly IStockProfileApiService _stockProfileApiService;
     private readonly HttpClient _httpClient;
 
     public LogoService(ILogoRepository logoRepository,
         IHttpClientFactory httpClientFactory,
-        IConfiguration configuration)
+        IConfiguration configuration,
+        IStockProfileApiService stockProfileApiService)
     {
         _logoRepository = logoRepository ?? throw new ArgumentNullException(nameof(CEOCompensationRepository));
         _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-
+        _stockProfileApiService = stockProfileApiService ?? throw new ArgumentNullException(nameof(stockProfileApiService));
         _httpClient = _httpClientFactory.CreateClient(configuration["HttpClientName"]);
     }
 
@@ -30,7 +32,8 @@ public class LogoService : ILogoService
         var result = await _logoRepository.GetAsync(x => x.Symbol.ToUpper() == symbol.ToUpper(), ct);
         if (result == null)
         {
-            return await GetApiAsync(symbol, ct);
+            //return await GetApiAsync(symbol, ct);
+            return await _stockProfileApiService.GetLogoApiAsync(symbol, ct);
         }
 
         return result;

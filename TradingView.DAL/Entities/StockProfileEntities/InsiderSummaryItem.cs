@@ -10,5 +10,5 @@ public class InsiderSummaryItem
     public string Id { get; set; }
     public string Key { get; set; }
     public string Subkey { get; set; }
-    public string Updated { get; set; }
+    public long Updated { get; set; }
 }

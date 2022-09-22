@@ -8,7 +8,6 @@ using TradingView.Models.Exceptions;
 namespace TradingView.DAL.ApiServices;
 public class StockProfileApiService : IStockProfileApiService
 {
-    private readonly ISymbolRepository _symbolRepository;
     private readonly ILogoRepository _logoRepository;
     private readonly ICEOCompensationRepository _ceoCompensationRepository;
     private readonly ICompanyRepository _companyRepository;
@@ -40,7 +39,6 @@ public class StockProfileApiService : IStockProfileApiService
         _insiderSummaryRepository = insiderSummaryRepository ?? throw new ArgumentNullException(nameof(insiderSummaryRepository));
         _insiderTransactionsRepository = insiderTransactionsRepository ?? throw new ArgumentNullException(nameof(insiderTransactionsRepository));
         _peerGroupRepository = peerGroupRepository ?? throw new ArgumentNullException(nameof(peerGroupRepository));
-        _symbolRepository = symbolRepository ?? throw new ArgumentNullException(nameof(symbolRepository));
 
         _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
@@ -48,7 +46,7 @@ public class StockProfileApiService : IStockProfileApiService
         _httpClient = _httpClientFactory.CreateClient(configuration["HttpClientName"]);
     }
 
-    public async Task GetCEOCompensationApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<CEOCompensation> GetCEOCompensationApiAsync(string symbol, CancellationToken ct = default)
     {
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
                $"{string.Format(_configuration["IEXCloudUrls:ceoCompensationUrl"], symbol)}" +
@@ -62,9 +60,11 @@ public class StockProfileApiService : IStockProfileApiService
 
         var res = await response.Content.ReadAsAsync<CEOCompensation>();
         await _ceoCompensationRepository.AddAsync(res);
+
+        return res;
     }
 
-    public async Task GetInsiderRosterApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<InsiderRoster> GetInsiderRosterApiAsync(string symbol, CancellationToken ct = default)
     {
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
            $"{string.Format(_configuration["IEXCloudUrls:insiderRosterUrl"], symbol)}" +
@@ -79,13 +79,16 @@ public class StockProfileApiService : IStockProfileApiService
         var res = await response.Content.ReadAsAsync<IEnumerable<InsiderRosterItem>>();
         var roster = new InsiderRoster()
         {
-            Symbol = symbol,
-            Items = res.ToList()
+            Symbol = symbol.ToUpper(),
+            Items = res.OrderBy(x => x.ReportDate).ToList()
         };
+        await _insiderRosterRepository.DeleteAsync(x => x.Symbol.ToUpper() == symbol.ToUpper(), ct);
         await _insiderRosterRepository.AddAsync(roster);
+
+        return roster;
     }
 
-    public async Task GetInsiderSummaryApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<List<InsiderSummaryItem>> GetInsiderSummaryApiAsync(string symbol, CancellationToken ct = default)
     {
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
                $"{string.Format(_configuration["IEXCloudUrls:insiderSummaryUrl"], symbol)}" +
@@ -99,10 +102,10 @@ public class StockProfileApiService : IStockProfileApiService
 
         var res = await response.Content.ReadAsAsync<List<InsiderSummaryItem>>();
         await _insiderSummaryRepository.AddCollectionAsync(res);
-
+        return res.OrderBy(x => x.Updated).ToList();
     }
 
-    public async Task GetInsiderTransactionsApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<List<InsiderTransactionsItem>> GetInsiderTransactionsApiAsync(string symbol, CancellationToken ct = default)
     {
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
            $"{string.Format(_configuration["IEXCloudUrls:insiderTransactionsUrl"], symbol)}" +
@@ -116,9 +119,10 @@ public class StockProfileApiService : IStockProfileApiService
 
         var res = await response.Content.ReadAsAsync<List<InsiderTransactionsItem>>();
         await _insiderTransactionsRepository.AddCollectionAsync(res);
+        return res.OrderBy(x => x.Updated).ToList();
     }
 
-    public async Task GetLogoApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<Logo> GetLogoApiAsync(string symbol, CancellationToken ct = default)
     {
 
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
@@ -135,9 +139,10 @@ public class StockProfileApiService : IStockProfileApiService
         res.Symbol = symbol.ToUpper();
         await _logoRepository.AddAsync(res);
 
+        return res;
     }
 
-    public async Task GetPeerGroupApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<PeerGroup> GetPeerGroupApiAsync(string symbol, CancellationToken ct = default)
     {
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
            $"{string.Format(_configuration["IEXCloudUrls:peerGroupsUrl"], symbol)}" +
@@ -156,9 +161,11 @@ public class StockProfileApiService : IStockProfileApiService
             Items = res.ToList()
         };
         await _peerGroupRepository.AddAsync(roster);
+
+        return roster;
     }
 
-    public async Task GetCompanyApiAsync(string symbol, CancellationToken ct = default)
+    public async Task<Company> GetCompanyApiAsync(string symbol, CancellationToken ct = default)
     {
         var url = $"{_configuration["IEXCloudUrls:version"]}" +
            $"{string.Format(_configuration["IEXCloudUrls:companyUrl"], symbol)}" +
@@ -172,5 +179,7 @@ public class StockProfileApiService : IStockProfileApiService
 
         var res = await response.Content.ReadAsAsync<Company>();
         await _companyRepository.AddAsync(res);
+
+        return res;
     }
 }

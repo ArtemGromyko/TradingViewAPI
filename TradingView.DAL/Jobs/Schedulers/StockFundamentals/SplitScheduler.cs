@@ -16,7 +16,7 @@ public static class SplitScheduler
         ITrigger trigger = TriggerBuilder.Create()
             .WithIdentity("SplitTrigger", "default")
             .StartNow()
-            .WithCronSchedule("30 0 9 ? * * *", x => x.InTimeZone(TimeZoneInfo.Utc)) //Updated at 9am UTC every day
+            .WithCronSchedule("0 0 9 ? * * *", x => x.InTimeZone(TimeZoneInfo.Utc)) //Updated at 9am UTC every day
             .Build();
 
         await scheduler.ScheduleJob(jobDetail, trigger);

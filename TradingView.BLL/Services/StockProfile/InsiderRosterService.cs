@@ -1,13 +1,16 @@
 ﻿using Microsoft.Extensions.Configuration;
 using TradingView.BLL.Contracts.StockProfile;
+using TradingView.DAL.Contracts.ApiServices;
 using TradingView.DAL.Contracts.StockProfile;
 using TradingView.DAL.Entities.StockProfileEntities;
 using TradingView.Models.Exceptions;
+using System.Linq;
 
 namespace TradingView.BLL.Services.StockProfile;
 public class InsiderRosterService : IInsiderRosterService
 {
     private readonly IInsiderRosterRepository _insiderRosterRepository;
+    private readonly IStockProfileApiService _stockProfileApiService;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IConfiguration _configuration;
 
@@ -15,9 +18,11 @@ public class InsiderRosterService : IInsiderRosterService
 
     public InsiderRosterService(IInsiderRosterRepository insiderRosterRepository,
         IHttpClientFactory httpClientFactory,
-        IConfiguration configuration)
+        IConfiguration configuration,
+        IStockProfileApiService stockProfileApiService)
     {
         _insiderRosterRepository = insiderRosterRepository ?? throw new ArgumentNullException(nameof(insiderRosterRepository));
+        _stockProfileApiService = stockProfileApiService ?? throw new ArgumentNullException(nameof(stockProfileApiService));
         _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
@@ -29,7 +34,8 @@ public class InsiderRosterService : IInsiderRosterService
         var result = await _insiderRosterRepository.GetAsync(x => x.Symbol.ToUpper() == symbol.ToUpper(), ct);
         if (result == null)
         {
-            return await GetInsiderRosterApiAsync(symbol, ct);
+            //return await GetInsiderRosterApiAsync(symbol, ct);
+            return await _stockProfileApiService.GetInsiderRosterApiAsync(symbol, ct);
         }
 
         return result;

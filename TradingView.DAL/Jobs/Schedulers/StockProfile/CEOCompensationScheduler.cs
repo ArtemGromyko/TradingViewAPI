@@ -15,14 +15,11 @@ public static class CEOCompensationScheduler
         IJobDetail job = JobBuilder.Create<CEOCompensationJob>()
             .Build();
 
-        await scheduler.AddJob(job, true);
-
         ITrigger trigger = TriggerBuilder.Create()
             .WithIdentity("CEOCompensationTrigger", "default")
-            .ForJob(job)
-            .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(13, 1)) //1am daily
+             .WithCronSchedule("0 0 1 ? * * *", x => x.InTimeZone(TimeZoneInfo.Utc))//1am daily
             .Build();
 
-        await scheduler.ScheduleJob(trigger);
+        await scheduler.ScheduleJob(job, trigger);
     }
 }

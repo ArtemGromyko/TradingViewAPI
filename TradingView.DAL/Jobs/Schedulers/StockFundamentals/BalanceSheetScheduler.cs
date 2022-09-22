@@ -16,7 +16,7 @@ public static class BalanceSheetScheduler
         ITrigger trigger = TriggerBuilder.Create()
             .WithIdentity("InsiderSummaryTrigger", "default")
             .StartNow()
-            .WithCronSchedule("30 0 8,9 ? * * *", x => x.InTimeZone(TimeZoneInfo.Utc)) //Updates at 8am, 9am UTC daily
+            .WithCronSchedule("0 0 8,9 ? * * *", x => x.InTimeZone(TimeZoneInfo.Utc)) //Updates at 8am, 9am UTC daily
             .Build();
 
         await scheduler.ScheduleJob(jobDetail, trigger);

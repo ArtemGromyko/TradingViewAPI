@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Quartz;
+using TradingView.DAL.Contracts.StockProfile;
 
 namespace TradingView.DAL.Jobs.Jobs.StockFundamentals;
 public class ExpirationJob : IJob
@@ -13,6 +14,10 @@ public class ExpirationJob : IJob
 
     public async Task Execute(IJobExecutionContext context)
     {
-        Console.WriteLine("ExpirationJob " + DateTime.Now);
+        using (var scope = _serviceScopeFactory.CreateScope())
+        {
+            var repository = scope.ServiceProvider.GetService<ICEOCompensationRepository>();
+            await repository.DeleteAllAsync();
+        }
     }
 }

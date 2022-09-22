@@ -17,18 +17,9 @@ public static class InsiderRosterScheduler
 
         ITrigger trigger = TriggerBuilder.Create()
             .WithIdentity("InsiderRosterTrigger", "default")
-            .ForJob(job)
-            .WithCronSchedule("30 0 9,10 ? * * *", x => x.InTimeZone(TimeZoneInfo.Utc)) //Updates at 5am, 6am ET every day
+            .WithCronSchedule("0 0 9,10 ? * * *", x => x.InTimeZone(TimeZoneInfo.Utc)) //Updates at 5am, 6am ET every day
             .Build();
 
-        ITrigger triggerStart = TriggerBuilder.Create()
-             .WithIdentity("InsiderRosterStart", "default")
-             .ForJob(job)
-             .WithSimpleSchedule(x => x
-                 .WithIntervalInSeconds(1)
-                 .WithRepeatCount(0))
-             .Build();
-
-        await scheduler.ScheduleJob(trigger);
+        await scheduler.ScheduleJob(job, trigger);
     }
 }

@@ -16,7 +16,7 @@ public static class ExpirationScheduler
         ITrigger trigger = TriggerBuilder.Create()
             .WithIdentity("ExpirationTrigger", "default")
             .StartNow()
-            .WithCronSchedule("30 30 13 ? * MON,TUE,WED,THU,FRI *", x => x.InTimeZone(TimeZoneInfo.Utc)) //9:30am ET Mon-Fri
+            .WithCronSchedule("0 30 13 ? * MON,TUE,WED,THU,FRI *", x => x.InTimeZone(TimeZoneInfo.Utc)) //9:30am ET Mon-Fri
             .Build();
 
         await scheduler.ScheduleJob(jobDetail, trigger);

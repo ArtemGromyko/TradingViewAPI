@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using System.Linq.Expressions;
@@ -10,6 +11,7 @@ namespace TradingView.DAL.Repositories;
 public class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : class
 {
     private readonly IMongoCollection<TEntity> _collection;
+    private string _collectionName;
 
     public RepositoryBase(IOptions<DatabaseSettings> settings, string collectionName)
     {
@@ -20,6 +22,7 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : 
             settings.Value.DatabaseName);
 
         _collection = mongoDatabase.GetCollection<TEntity>(collectionName);
+        _collectionName = collectionName;
     }
 
     public async Task AddCollectionAsync(IEnumerable<TEntity> collection, CancellationToken ct = default) =>
@@ -40,6 +43,8 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : 
     public async Task DeleteAsync(Expression<Func<TEntity, bool>> expression, CancellationToken ct = default) =>
        await _collection.DeleteManyAsync(expression, ct);
 
-    public async Task DeleteAllAsync(CancellationToken ct = default) =>
-      await _collection.DeleteManyAsync(x => x == x, ct);
+    public async Task DeleteAllAsync(CancellationToken ct = default)
+    {
+        await _collection.Database.DropCollectionAsync(_collectionName);
+    }
 }

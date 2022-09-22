@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using TradingView.BLL.Contracts.StockProfile;
+using TradingView.DAL.Contracts.ApiServices;
 using TradingView.DAL.Contracts.StockProfile;
 using TradingView.DAL.Entities.StockProfileEntities;
 using TradingView.Models.Exceptions;
@@ -8,6 +9,7 @@ namespace TradingView.BLL.Services.StockProfile;
 public class InsiderTransactionsService : IInsiderTransactionsService
 {
     private readonly IInsiderTransactionsRepository _insiderTransactionsRepository;
+    private readonly IStockProfileApiService _stockProfileApiService;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IConfiguration _configuration;
 
@@ -15,12 +17,13 @@ public class InsiderTransactionsService : IInsiderTransactionsService
 
     public InsiderTransactionsService(IInsiderTransactionsRepository insiderTransactionsRepository,
         IHttpClientFactory httpClientFactory,
-        IConfiguration configuration)
+        IConfiguration configuration,
+        IStockProfileApiService stockProfileApiService)
     {
         _insiderTransactionsRepository = insiderTransactionsRepository ?? throw new ArgumentNullException(nameof(insiderTransactionsRepository));
         _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-
+        _stockProfileApiService = stockProfileApiService ?? throw new ArgumentNullException(nameof(stockProfileApiService));
         _httpClient = _httpClientFactory.CreateClient(configuration["HttpClientName"]);
     }
 
@@ -29,7 +32,8 @@ public class InsiderTransactionsService : IInsiderTransactionsService
         var result = await _insiderTransactionsRepository.GetCollectionAsync(x => x.Symbol.ToUpper() == symbol.ToUpper(), ct);
         if (result.Count == 0)
         {
-            return await GetCompanyApiAsync(symbol, ct);
+            // return await GetCompanyApiAsync(symbol, ct);
+            return await _stockProfileApiService.GetInsiderTransactionsApiAsync(symbol, ct);
         }
 
         return result;

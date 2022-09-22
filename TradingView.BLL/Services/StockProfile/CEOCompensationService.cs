@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using TradingView.BLL.Contracts.StockProfile;
+using TradingView.DAL.Contracts.ApiServices;
 using TradingView.DAL.Contracts.StockProfile;
 using TradingView.DAL.Entities.StockProfileEntities;
 using TradingView.Models.Exceptions;
@@ -7,6 +8,7 @@ using TradingView.Models.Exceptions;
 namespace TradingView.BLL.Services.StockProfile;
 public class CEOCompensationService : ICEOCompensationService
 {
+    private readonly IStockProfileApiService _stockProfileApiService;
     private readonly ICEOCompensationRepository _CEOCompensationRepository;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IConfiguration _configuration;
@@ -15,9 +17,11 @@ public class CEOCompensationService : ICEOCompensationService
 
     public CEOCompensationService(ICEOCompensationRepository CEOCompensationRepository,
         IHttpClientFactory httpClientFactory,
-        IConfiguration configuration)
+        IConfiguration configuration,
+        IStockProfileApiService stockProfileApiService)
     {
         _CEOCompensationRepository = CEOCompensationRepository ?? throw new ArgumentNullException(nameof(CEOCompensationRepository));
+        _stockProfileApiService = stockProfileApiService ?? throw new ArgumentNullException(nameof(stockProfileApiService));
         _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
@@ -26,10 +30,11 @@ public class CEOCompensationService : ICEOCompensationService
 
     public async Task<CEOCompensation> GetAsync(string symbol, CancellationToken ct = default)
     {
-        CEOCompensation result = null;// await _CEOCompensationRepository.GetAsync(x => x.Symbol.ToUpper() == symbol.ToUpper(), ct);
+        CEOCompensation result = await _CEOCompensationRepository.GetAsync(x => x.Symbol.ToUpper() == symbol.ToUpper(), ct);
         if (result == null)
         {
-            return await GetApiAsync(symbol, ct);
+            //return await GetApiAsync(symbol, ct);
+            return await _stockProfileApiService.GetCEOCompensationApiAsync(symbol, ct);
         }
 
         return result;
@@ -49,8 +54,7 @@ public class CEOCompensationService : ICEOCompensationService
         }
         var res = await response.Content.ReadAsAsync<CEOCompensation>();
 
-        //await _CEOCompensationRepository.AddAsync(res);   
-
+        await _CEOCompensationRepository.AddAsync(res);
         return res;
     }
 }

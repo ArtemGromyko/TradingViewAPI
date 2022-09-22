@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Quartz;
+using TradingView.DAL.Contracts.StockProfile;
 
 namespace TradingView.DAL.Jobs.Jobs.StockFundamentals;
 public class SplitJob : IJob
@@ -13,6 +14,10 @@ public class SplitJob : IJob
 
     public async Task Execute(IJobExecutionContext context)
     {
-        Console.WriteLine("SplitJob " + DateTime.Now);
+        using (var scope = _serviceScopeFactory.CreateScope())
+        {
+            var repository = scope.ServiceProvider.GetService<ICEOCompensationRepository>();
+            await repository.DeleteAllAsync();
+        }
     }
 }

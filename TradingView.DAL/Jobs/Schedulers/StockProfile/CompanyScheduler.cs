@@ -15,14 +15,11 @@ public static class CompanyScheduler
         IJobDetail job = JobBuilder.Create<CompanyJob>()
             .Build();
 
-        await scheduler.AddJob(job, true);
-
         ITrigger trigger = TriggerBuilder.Create()
             .WithIdentity("CompanyTrigger", "default")
-            .ForJob(job)
             .WithCronSchedule("0 0 4,5 ? * * *", x => x.InTimeZone(TimeZoneInfo.Utc)) //Updates at 4am and 5am UTC every day
             .Build();
 
-        await scheduler.ScheduleJob(trigger);
+        await scheduler.ScheduleJob(job, trigger);
     }
 }

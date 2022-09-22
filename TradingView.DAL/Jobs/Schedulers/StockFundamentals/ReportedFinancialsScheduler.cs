@@ -16,7 +16,7 @@ public static class ReportedFinancialsScheduler
         ITrigger trigger = TriggerBuilder.Create()
             .WithIdentity("ReportedFinancialsTrigger", "default")
             .StartNow()
-            .WithCronSchedule("0 0 4,8 ? * * *", x => x.InTimeZone(TimeZoneInfo.Utc)) //Quarterly------------------
+            .WithCronSchedule("0 0 0 1 */3 ?", x => x.InTimeZone(TimeZoneInfo.Utc)) //Quarterly
             .Build();
 
         await scheduler.ScheduleJob(jobDetail, trigger);

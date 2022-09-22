@@ -17,10 +17,10 @@ public static class InsiderSummaryScheduler
 
         ITrigger trigger = TriggerBuilder.Create()
             .WithIdentity("InsiderSummaryTrigger", "default")
-            .ForJob(job)
-            .WithCronSchedule("30 0 9,10 ? * * *", x => x.InTimeZone(TimeZoneInfo.Utc)) //Updates at 5am, 6am ET every day
+            //.ForJob(job)
+            .WithCronSchedule("0 0 9,10 ? * * *", x => x.InTimeZone(TimeZoneInfo.Utc)) //Updates at 5am, 6am ET every day
             .Build();
 
-        await scheduler.ScheduleJob(trigger);
+        await scheduler.ScheduleJob(job, trigger);
     }
 }
