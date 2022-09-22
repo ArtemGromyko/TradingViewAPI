@@ -22,6 +22,6 @@ public static class PeerGroupScheduler
             .InTimeZone(TimeZoneInfo.Utc))
             .Build();
 
-        await scheduler.ScheduleJob(job,trigger);
+        await scheduler.ScheduleJob(job, trigger);
     }
 }

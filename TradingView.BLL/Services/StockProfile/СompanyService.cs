@@ -32,7 +32,7 @@ public class СompanyService : IСompanyService
         var company = await _companyRepository.GetAsync(x => x.Symbol.ToUpper() == symbol.ToUpper(), ct);
         if (company == null)
         {
-           // return await GetCompanyApiAsync(symbol, ct);
+            // return await GetCompanyApiAsync(symbol, ct);
             return await _stockProfileApiService.GetCompanyApiAsync(symbol, ct);
         }
 

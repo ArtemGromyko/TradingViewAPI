@@ -4,7 +4,6 @@ using TradingView.DAL.Contracts.ApiServices;
 using TradingView.DAL.Contracts.StockProfile;
 using TradingView.DAL.Entities.StockProfileEntities;
 using TradingView.Models.Exceptions;
-using System.Linq;
 
 namespace TradingView.BLL.Services.StockProfile;
 public class InsiderRosterService : IInsiderRosterService

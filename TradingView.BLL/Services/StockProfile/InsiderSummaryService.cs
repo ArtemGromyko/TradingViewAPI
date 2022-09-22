@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Configuration;
-using System.Linq;
 using TradingView.BLL.Contracts.StockProfile;
 using TradingView.DAL.Contracts.ApiServices;
 using TradingView.DAL.Contracts.StockProfile;

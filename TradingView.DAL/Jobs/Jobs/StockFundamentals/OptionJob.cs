@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Quartz;
-using TradingView.DAL.Contracts.StockProfile;
+using TradingView.DAL.Contracts.StockFundamentals;
 
 namespace TradingView.DAL.Jobs.Jobs.StockFundamentals;
 public class OptionJob : IJob
@@ -16,7 +16,7 @@ public class OptionJob : IJob
     {
         using (var scope = _serviceScopeFactory.CreateScope())
         {
-            var repository = scope.ServiceProvider.GetService<ICEOCompensationRepository>();
+            var repository = scope.ServiceProvider.GetService<IOptionRepository>();
             await repository.DeleteAllAsync();
         }
     }
