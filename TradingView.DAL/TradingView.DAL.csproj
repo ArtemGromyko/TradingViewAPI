@@ -20,8 +20,4 @@
     <PackageReference Include="VSLee.IEXSharp" Version="2.9.4" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Jobs\Jobs\RealTime\" />
-  </ItemGroup>
-
 </Project>

@@ -14,9 +14,11 @@ using TradingView.DAL.Contracts.StockFundamentals;
 using TradingView.DAL.Contracts.StockProfile;
 using TradingView.DAL.Jobs;
 using TradingView.DAL.Jobs.Jobs;
+using TradingView.DAL.Jobs.Jobs.RealTime;
 using TradingView.DAL.Jobs.Jobs.StockFundamentals;
 using TradingView.DAL.Jobs.Jobs.StockProfile;
 using TradingView.DAL.Jobs.Schedulers;
+using TradingView.DAL.Jobs.Schedulers.RealTime;
 using TradingView.DAL.Jobs.Schedulers.StockFundamentals;
 using TradingView.DAL.Jobs.Schedulers.StockProfile;
 using TradingView.DAL.Repositories;
@@ -62,6 +64,13 @@ public static class ServiceExtensions
         services.AddScoped<EarningsJob>();
         services.AddScoped<SplitJob>();
 
+        services.AddScoped<BookJob>();
+        services.AddScoped<DelayedQuoteJob>();
+        services.AddScoped<LargestTradesJob>();
+        services.AddScoped<OHLCJob>();
+        services.AddScoped<QuotesJob>();
+        services.AddScoped<VolumeByVenueJob>();
+        services.AddScoped<DelayedQuoteJob>();
     }
 
     public static void StartJobs(this WebApplication host)
@@ -89,6 +98,14 @@ public static class ServiceExtensions
                 DividendScheduler.Start(serviceProvider);
                 EarningsScheduler.Start(serviceProvider);
                 SplitScheduler.Start(serviceProvider);
+
+                BookScheduler.Start(serviceProvider);
+                DelayedQuoteScheduler.Start(serviceProvider);
+                LargestTradesScheduler.Start(serviceProvider);
+                OHLCScheduler.Start(serviceProvider);
+                QuotesScheduler.Start(serviceProvider);
+                VolumeByVenueScheduler.Start(serviceProvider);
+                DelayedQuoteScheduler.Start(serviceProvider);
             }
             catch (Exception)
             {
