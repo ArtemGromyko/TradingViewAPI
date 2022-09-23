@@ -105,7 +105,6 @@ public static class ServiceExtensions
                 OHLCScheduler.Start(serviceProvider);
                 QuotesScheduler.Start(serviceProvider);
                 VolumeByVenueScheduler.Start(serviceProvider);
-                DelayedQuoteScheduler.Start(serviceProvider);
             }
             catch (Exception)
             {

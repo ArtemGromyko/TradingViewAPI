@@ -15,9 +15,9 @@ namespace TradingView.DAL.Jobs.Schedulers.RealTime
 
             IJobDetail jobDetail = JobBuilder.Create<VolumeByVenueJob>().Build();
             ITrigger trigger = TriggerBuilder.Create()
-                .WithIdentity("CashFlowTrigger", "default")
+                .WithIdentity("VolumeByVenueTrigger", "RealTime")
                 .StartNow()
-                .WithCronSchedule("0 30 13 ? * MON,TUE,WED,THU,FRI *\"", x => x.InTimeZone(TimeZoneInfo.Utc)) //Updates at 8am, 9am UTC daily
+                .WithCronSchedule("0 15/15 13-20 ? * MON,TUE,WED,THU,FRI *", x => x.InTimeZone(TimeZoneInfo.Utc)) //Updates at 8am, 9am UTC daily
                 .Build();
 
             await scheduler.ScheduleJob(jobDetail, trigger);

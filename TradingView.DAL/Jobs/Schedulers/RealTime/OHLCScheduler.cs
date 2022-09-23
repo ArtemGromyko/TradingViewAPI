@@ -15,9 +15,9 @@ namespace TradingView.DAL.Jobs.Schedulers.RealTime
 
             IJobDetail jobDetail = JobBuilder.Create<OHLCJob>().Build();
             ITrigger trigger = TriggerBuilder.Create()
-                .WithIdentity("CashFlowTrigger", "default")
+                .WithIdentity("OHLCTrigger", "RealTime")
                 .StartNow()
-                .WithCronSchedule("0 30 13 ? * MON,TUE,WED,THU,FRI *\"", x => x.InTimeZone(TimeZoneInfo.Utc)) //Updates at 8am, 9am UTC daily
+                .WithCronSchedule("0 15/15 13-21 ? * MON,TUE,WED,THU,FRI *", x => x.InTimeZone(TimeZoneInfo.Utc)) //Updates at  9.30am-5pm ET M-F
                 .Build();
 
             await scheduler.ScheduleJob(jobDetail, trigger);
