@@ -4,5 +4,5 @@ namespace TradingView.BLL.Contracts.RealTime;
 
 public interface IHistoricalPricesService
 {
-    Task<List<HistoricalPrice>> GetHistoricalPricesListAsync(string symbol);
+    Task<List<HistoricalPriceItem>> GetHistoricalPricesListAsync(string symbol);
 }

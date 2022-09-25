@@ -5,7 +5,7 @@ using TradingView.DAL.Jobs.Jobs.RealTime;
 
 namespace TradingView.DAL.Jobs.Schedulers.RealTime
 {
-    public static class DelayedQuoteScheduler
+    public static class IntradayPricesScheduler
     {
         public static async void Start(IServiceProvider serviceProvider)
         {
@@ -13,11 +13,11 @@ namespace TradingView.DAL.Jobs.Schedulers.RealTime
             scheduler.JobFactory = serviceProvider.GetService<JobFactory>();
             await scheduler.Start();
 
-            IJobDetail jobDetail = JobBuilder.Create<DelayedQuoteJob>().Build();
+            IJobDetail jobDetail = JobBuilder.Create<IntradayPricesJob>().Build();
             ITrigger trigger = TriggerBuilder.Create()
-                .WithIdentity("DelayedQuoteTrigger", "RealTime")
+                .WithIdentity("IntradayPricesTrigger", "RealTime")
                 .StartNow()
-                .WithCronSchedule("0 0 9-0 ? * MON,TUE,WED,THU,FRI *", x => x.InTimeZone(TimeZoneInfo.Utc)) //Updates at 8am, 9am UTC daily
+                .WithCronSchedule("0 0 14-20 ? * MON,TUE,WED,THU,FRI *", x => x.InTimeZone(TimeZoneInfo.Utc)) //Updates at 8am, 9am UTC daily
                 .Build();
 
             await scheduler.ScheduleJob(jobDetail, trigger);

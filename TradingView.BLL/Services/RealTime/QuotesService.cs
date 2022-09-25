@@ -26,7 +26,7 @@ public class QuotesService : IQuotesService
 
     public async Task<Quote> GetQuoteAsync(string symbol)
     {
-        var quote = await _quotesRepository.GetAsync((q) => q.Symbol!.Equals(symbol));
+        var quote = await _quotesRepository.GetAsync((q) => q.Symbol!.ToUpper() == symbol.ToUpper());
         if (quote is null)
         {
             var url = $"{_configuration["IEXCloudUrls:version"]}" +

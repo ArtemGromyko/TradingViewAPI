@@ -26,7 +26,7 @@ public class DelayedQuoteService : IDelayedQuoteService
 
     public async Task<DelayedQuote> GetDelayedQuoteAsync(string symbol)
     {
-        var delayedQuote = await _delayedQuoteRepository.GetAsync((d) => d.Symbol!.Equals(symbol.ToUpper()));
+        var delayedQuote = await _delayedQuoteRepository.GetAsync((d) => d.Symbol!.ToUpper() == symbol.ToUpper());
         if (delayedQuote is null)
         {
             var url = $"{_configuration["IEXCloudUrls:version"]}" +

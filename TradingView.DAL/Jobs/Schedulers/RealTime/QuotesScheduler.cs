@@ -17,7 +17,7 @@ namespace TradingView.DAL.Jobs.Schedulers.RealTime
             ITrigger trigger = TriggerBuilder.Create()
                 .WithIdentity("QuotesTrigger", "RealTime")
                 .StartNow()
-                .WithCronSchedule("0 15/15 8-23 ? * MON,TUE,WED,THU,FRI *", x => x.InTimeZone(TimeZoneInfo.Utc)) //4:30am-8pm ET Mon-Fri
+                .WithCronSchedule("0 0 9-0 ? * MON,TUE,WED,THU,FRI *", x => x.InTimeZone(TimeZoneInfo.Utc)) //4:30am-8pm ET Mon-Fri
                 .Build();
 
             await scheduler.ScheduleJob(jobDetail, trigger);

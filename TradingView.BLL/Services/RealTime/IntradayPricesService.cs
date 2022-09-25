@@ -26,7 +26,7 @@ public class IntradayPricesService : IIntradayPricesService
 
     public async Task<List<IntradayPriceItem>> GetIntradayPricesListAsync(string symbol)
     {
-        var intradayPrice = await _intradayPricesRepository.GetAsync((ip) => ip.Symbol!.Equals(symbol));
+        var intradayPrice = await _intradayPricesRepository.GetAsync((ip) => ip.Symbol!.ToUpper() == symbol.ToUpper());
         if (intradayPrice is null)
         {
             var url = $"{_configuration["IEXCloudUrls:version"]}" +

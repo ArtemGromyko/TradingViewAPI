@@ -22,7 +22,7 @@ public class LargestTradesService : ILargestTradesService
 
     public async Task<List<LargestTradeItem>> GetLargestTradesListAsync(string symbol)
     {
-        var largestTrade = await _largestTradesRepository.GetAsync((lt) => lt.Symbol!.Equals(symbol));
+        var largestTrade = await _largestTradesRepository.GetAsync((lt) => lt.Symbol!.ToUpper() == symbol.ToUpper());
         if (largestTrade is null)
         {
             var url = $"{_configuration["IEXCloudUrls:version"]}" +

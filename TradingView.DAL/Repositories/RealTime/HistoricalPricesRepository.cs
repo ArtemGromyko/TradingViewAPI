@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using TradingView.DAL.Contracts.RealTime;
 using TradingView.DAL.Entities.RealTime;
 using TradingView.DAL.Settings;
@@ -11,5 +12,11 @@ public class HistoricalPricesRepository : RepositoryBase<HistoricalPrice>, IHist
     public HistoricalPricesRepository(IOptions<DatabaseSettings> settings, IConfiguration configuration)
         : base(settings, configuration["MongoDBCollectionNames:HistoricalPricesCollectionName"])
     {
+    }
+
+    public async Task UpdateAsync(HistoricalPrice historicalPrice)
+    {
+        var filter = Builders<HistoricalPrice>.Filter.Eq(s => s.Symbol, historicalPrice.Symbol);
+        var result = await _collection.ReplaceOneAsync(filter, historicalPrice);
     }
 }

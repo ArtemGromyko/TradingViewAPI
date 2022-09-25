@@ -17,7 +17,7 @@ namespace TradingView.DAL.Jobs.Schedulers.RealTime
             ITrigger trigger = TriggerBuilder.Create()
                 .WithIdentity("BookTrigger", "RealTime")
                 .StartNow()
-                .WithCronSchedule("0 30 13 ? * MON,TUE,WED,THU,FRI *", x => x.InTimeZone(TimeZoneInfo.Utc)) //Updates at 8am, 9am UTC daily
+                .WithCronSchedule("0 0 * ? * MON,TUE,WED,THU,FRI *", x => x.InTimeZone(TimeZoneInfo.Utc)) //Updates every hour
                 .Build();
 
             await scheduler.ScheduleJob(jobDetail, trigger);

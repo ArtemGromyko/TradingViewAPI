@@ -22,7 +22,7 @@ public class PreviousDayPriceService : IPreviousDayPriceService
 
     public async Task<PreviousDayPrice> GetPreviousDayPriceAsync(string symbol)
     {
-        var previousDayPrice = await _previousDayPriceRepository.GetAsync((pdp) => true);
+        var previousDayPrice = await _previousDayPriceRepository.GetAsync((pdp) => pdp.Symbol!.ToUpper() == symbol.ToUpper());
         if (previousDayPrice is null)
         {
             var url = $"{_configuration["IEXCloudUrls:version"]}" +

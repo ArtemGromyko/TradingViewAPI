@@ -9,7 +9,7 @@ namespace TradingView.DAL.Repositories;
 
 public class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : class
 {
-    private readonly IMongoCollection<TEntity> _collection;
+    protected readonly IMongoCollection<TEntity> _collection;
     private string _collectionName;
 
     public RepositoryBase(IOptions<DatabaseSettings> settings, string collectionName)

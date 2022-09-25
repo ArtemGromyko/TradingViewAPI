@@ -65,12 +65,14 @@ public static class ServiceExtensions
         services.AddScoped<SplitJob>();
 
         services.AddScoped<BookJob>();
-        services.AddScoped<DelayedQuoteJob>();
         services.AddScoped<LargestTradesJob>();
         services.AddScoped<OHLCJob>();
         services.AddScoped<QuotesJob>();
         services.AddScoped<VolumeByVenueJob>();
         services.AddScoped<DelayedQuoteJob>();
+        services.AddScoped<IntradayPricesJob>();
+        services.AddScoped<PriceOnlyJob>();
+        services.AddScoped<PreviousDayPriceJob>();
     }
 
     public static void StartJobs(this WebApplication host)
@@ -98,6 +100,7 @@ public static class ServiceExtensions
                 DividendScheduler.Start(serviceProvider);
                 EarningsScheduler.Start(serviceProvider);
                 SplitScheduler.Start(serviceProvider);
+                BalanceSheetScheduler.Start(serviceProvider);
 
                 BookScheduler.Start(serviceProvider);
                 DelayedQuoteScheduler.Start(serviceProvider);
@@ -105,6 +108,9 @@ public static class ServiceExtensions
                 OHLCScheduler.Start(serviceProvider);
                 QuotesScheduler.Start(serviceProvider);
                 VolumeByVenueScheduler.Start(serviceProvider);
+                IntradayPricesScheduler.Start(serviceProvider);
+                PriceOnlyScheduler.Start(serviceProvider);
+                PreviousDayPriceScheduler.Start(serviceProvider);
             }
             catch (Exception)
             {
@@ -158,7 +164,6 @@ public static class ServiceExtensions
             client.BaseAddress = new Uri(configuration["IEXCloudUrls:baseUrl"]);
         });
 
-        services.AddScoped<IRealTimeService, RealTimeService>();
         services.AddScoped<IHistoricalPricesService, HistoricalPricesService>();
         services.AddScoped<IQuotesService, QuotesService>();
         services.AddScoped<IIntradayPricesService, IntradayPricesService>();

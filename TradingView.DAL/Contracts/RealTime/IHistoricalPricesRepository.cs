@@ -4,4 +4,5 @@ namespace TradingView.DAL.Contracts.RealTime;
 
 public interface IHistoricalPricesRepository : IRepositoryBase<HistoricalPrice>
 {
+    Task UpdateAsync(HistoricalPrice historicalPrice);
 }

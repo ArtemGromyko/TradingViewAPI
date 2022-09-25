@@ -70,7 +70,7 @@ public class OptionService : IOptionService
         };
         await _optionRepository.AddAsync(option);
 
-        foreach(var temp in res)
+        foreach (var temp in res)
         {
             try
             {

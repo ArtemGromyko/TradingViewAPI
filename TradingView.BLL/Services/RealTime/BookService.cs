@@ -26,7 +26,7 @@ public class BookService : IBookService
 
     public async Task<BookItem> GetBookAsync(string symbol)
     {
-        var book = await _bookRepository.GetAsync((b) => b.Symbol!.Equals(symbol));
+        var book = await _bookRepository.GetAsync((b) => b.Symbol!.ToUpper() == symbol.ToUpper());
         if (book is null)
         {
             var url = $"{_configuration["IEXCloudUrls:version"]}" +

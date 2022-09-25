@@ -21,7 +21,7 @@ public class VolumeByVenueService : IVolumeByVenueService
     }
     public async Task<List<VolumeByVenueItem>> GetVolumesByVenueAsync(string symbol)
     {
-        var volumeByVenue = await _volumeByVenueRepository.GetAsync(v => v.Symbol!.Equals(symbol));
+        var volumeByVenue = await _volumeByVenueRepository.GetAsync(v => v.Symbol!.ToUpper() == symbol.ToUpper());
         if (volumeByVenue is null)
         {
             var url = $"{_configuration["IEXCloudUrls:version"]}" +

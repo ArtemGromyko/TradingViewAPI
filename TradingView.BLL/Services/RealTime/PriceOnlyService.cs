@@ -23,7 +23,7 @@ public class PriceOnlyService : IPriceOnlyService
 
     public async Task<double> GetPriceOnlyAsync(string symbol)
     {
-        var priceOnly = await _priceOnlyRepository.GetAsync((po) => (po.Symbol!.ToUpper()).Equals(symbol.ToUpper()));
+        var priceOnly = await _priceOnlyRepository.GetAsync((po) => po.Symbol!.ToUpper() == symbol.ToUpper());
         if (priceOnly is null)
         {
             var url = $"{_configuration["IEXCloudUrls:version"]}" +
