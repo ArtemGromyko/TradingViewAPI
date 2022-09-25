@@ -116,19 +116,6 @@ namespace TradingViewAPI.Controllers
             return Ok(delayedQuote);
         }
 
-        [HttpGet("{symbol}/dividends")]
-        public async Task<IActionResult> GetDividendsAsync(string symbol)
-        {
-            using var client = new HttpClient();
-
-            var response = await client
-                .GetAsync($"https://sandbox.iexapis.com/stable/time-series/advanced_dividends/{symbol}?token=Tpk_aae23baa9af74779993006fb85d15f0f");
-
-            var res = await response.Content.ReadAsAsync<IEnumerable<DividendInfo>>();
-
-            return Ok(res);
-        }
-
         [HttpGet("exchanges")]
         public async Task<IActionResult> GetAllExchanges()
         {

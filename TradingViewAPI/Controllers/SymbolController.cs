@@ -21,5 +21,13 @@ namespace TradingViewAPI.Controllers
 
             return Ok(symbols);
         }
+
+        [HttpGet("strings")]
+        public async Task<IActionResult> GetSymbolStringsAsync()
+        {
+            var symbols = await _symbolService.GetSymbolsAsync();
+
+            return Ok(symbols.Select(s => s.Symbol));
+        }
     }
 }
