@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using TradingView.BLL.Contracts.StockFundamentals;
 
 namespace TradingViewAPI.Controllers;
@@ -93,17 +94,10 @@ public class StockFundamentalsController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("{symbol}/options/{expiration}")]
-    public async Task<IActionResult> GetExpirationAsync(string symbol, string expiration, CancellationToken ct = default)
+    [HttpGet("{symbol}/options/expiration")]
+    public async Task<IActionResult> GetExpirationAsync(string symbol, CancellationToken ct = default)
     {
-        var result = await _optionService.GetExpirationAsync(symbol, expiration, ct);
-        return Ok(result);
-    }
-
-    [HttpGet("{symbol}/options/{expiration}/{optionSide}")]
-    public async Task<IActionResult> GetExpirationAsync(string symbol, string expiration, string optionSide, CancellationToken ct = default)
-    {
-        var result = await _optionService.GetExpirationAsync(symbol, expiration, optionSide, ct);
+        var result = await _optionService.GetExpirationAsync(symbol, ct);
         return Ok(result);
     }
 

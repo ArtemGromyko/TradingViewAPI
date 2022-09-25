@@ -38,23 +38,13 @@ public class OptionService : IOptionService
         return result;
     }
 
-    public async Task<List<Expiration>> GetExpirationAsync(string symbol, string expiration, CancellationToken ct = default)
+    public async Task<List<Expiration>> GetExpirationAsync(string symbol, CancellationToken ct = default)
     {
-        var result = await _expirationRepository.GetCollectionAsync(x => x.Symbol.ToUpper() == symbol.ToUpper() && x.ExpirationDate == expiration, ct);
+        var result = await _expirationRepository.GetCollectionAsync(x => x.Symbol.ToUpper() == symbol.ToUpper(), ct);
         if (result == null)
         {
-            return await GetApiAsync(symbol, expiration, ct);
-        }
-
-        return result;
-    }
-
-    public async Task<List<Expiration>> GetExpirationAsync(string symbol, string expiration, string optionSide, CancellationToken ct = default)
-    {
-        var result = await _expirationRepository.GetCollectionAsync(x => x.Symbol.ToUpper() == symbol.ToUpper() && x.ExpirationDate == expiration && x.Side == optionSide, ct);
-        if (result == null)
-        {
-            return await GetApiAsync(symbol, expiration, ct);
+            await GetApiAsync(symbol, ct);
+            result = await _expirationRepository.GetCollectionAsync(x => x.Symbol.ToUpper() == symbol.ToUpper(), ct);
         }
 
         return result;
@@ -79,6 +69,15 @@ public class OptionService : IOptionService
             Options = res
         };
         await _optionRepository.AddAsync(option);
+
+        foreach(var temp in res)
+        {
+            try
+            {
+                await GetApiAsync(symbol, temp, ct);
+            }
+            catch { }
+        }
 
         return option;
     }
