@@ -29,7 +29,7 @@ public class DividendService : IDividendService
         var result = await _dividendRepository.GetCollectionAsync(x => x.Symbol.ToUpper() == symbol.ToUpper(), ct);
         if (result.Count == 0)
         {
-            return await GetApiAsync(symbol, range, ct);
+            return await GetApiAsync(symbol, range ?? "5y", ct);
         }
 
         return result;

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 using Quartz.Impl;
-using TradingView.DAL.Jobs.Jobs.StockProfile;
+using TradingView.DAL.Jobs.Jobs.StockFundamentals;
 
 namespace TradingView.DAL.Jobs.Schedulers.StockFundamentals;
 public static class BalanceSheetScheduler
@@ -12,9 +12,9 @@ public static class BalanceSheetScheduler
         scheduler.JobFactory = serviceProvider.GetService<JobFactory>();
         await scheduler.Start();
 
-        IJobDetail jobDetail = JobBuilder.Create<InsiderSummaryJob>().Build();
+        IJobDetail jobDetail = JobBuilder.Create<BalanceSheetJob>().Build();
         ITrigger trigger = TriggerBuilder.Create()
-            .WithIdentity("InsiderSummaryTrigger", "default")
+            .WithIdentity("BalanceSheetTrigger", "default")
             .StartNow()
             .WithCronSchedule("0 0 8,9 ? * * *", x => x.InTimeZone(TimeZoneInfo.Utc)) //Updates at 8am, 9am UTC daily
             .Build();

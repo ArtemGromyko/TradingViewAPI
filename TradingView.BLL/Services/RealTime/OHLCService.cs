@@ -22,7 +22,7 @@ public class OHLCService : IOHLCService
 
     public async Task<OHLC> GetOHLCAsync(string symbol)
     {
-        var ohlc = await _ohlcRepository.GetAsync((ohlc) => true);
+        var ohlc = await _ohlcRepository.GetAsync((ohlc) => ohlc.Symbol!.ToLower() == symbol.ToLower());
         if (ohlc is null)
         {
             var url = $"{_configuration["IEXCloudUrls:version"]}" +

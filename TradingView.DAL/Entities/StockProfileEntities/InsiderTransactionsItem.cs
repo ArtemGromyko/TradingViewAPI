@@ -1,5 +1,9 @@
-﻿namespace TradingView.DAL.Entities.StockProfileEntities;
-public class InsiderTransactionsItem
+﻿using MongoDB.Bson.Serialization.Attributes;
+
+namespace TradingView.DAL.Entities.StockProfileEntities;
+
+[BsonNoId]
+public class InsiderTransactionsItem : EntityBase
 {
     public double? ConversionOrExercisePrice { get; set; }
     public char DirectIndirect { get; set; }
@@ -15,6 +19,7 @@ public class InsiderTransactionsItem
     public double? TransactionPrice { get; set; }
     public double? TransactionShares { get; set; }
     public double? TransactionValue { get; set; }
+    [BsonElement("InsiderTransactionId")]
     public string Id { get; set; }
     public string Key { get; set; }
     public string Subkey { get; set; }

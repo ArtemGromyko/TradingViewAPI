@@ -116,9 +116,16 @@ public class StockFundamentalsController : ControllerBase
     }
 
     [HttpGet("{symbol}/dividends/{range}")]
-    public async Task<IActionResult> GetDividendsAsync(string symbol, string range, CancellationToken ct = default)
+    public async Task<IActionResult> GetDividendsRangeAsync(string symbol, string range = "5y", CancellationToken ct = default)
     {
         var result = await _idividendService.GetAsync(symbol, range, ct);
+        return Ok(result);
+    }
+
+    [HttpGet("{symbol}/dividends")]
+    public async Task<IActionResult> GetDividendsAsync(string symbol, CancellationToken ct = default)
+    {
+        var result = await _idividendService.GetAsync(symbol, null, ct);
         return Ok(result);
     }
 }
