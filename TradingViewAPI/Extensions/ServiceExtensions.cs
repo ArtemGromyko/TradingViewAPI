@@ -13,11 +13,9 @@ using TradingView.DAL.Contracts.RealTime;
 using TradingView.DAL.Contracts.StockFundamentals;
 using TradingView.DAL.Contracts.StockProfile;
 using TradingView.DAL.Jobs;
-using TradingView.DAL.Jobs.Jobs;
 using TradingView.DAL.Jobs.Jobs.RealTime;
 using TradingView.DAL.Jobs.Jobs.StockFundamentals;
 using TradingView.DAL.Jobs.Jobs.StockProfile;
-using TradingView.DAL.Jobs.Schedulers;
 using TradingView.DAL.Jobs.Schedulers.RealTime;
 using TradingView.DAL.Jobs.Schedulers.StockFundamentals;
 using TradingView.DAL.Jobs.Schedulers.StockProfile;
@@ -43,7 +41,6 @@ public static class ServiceExtensions
     public static void ConfigureJobs(this IServiceCollection services)
     {
         services.AddTransient<JobFactory>();
-        services.AddScoped<SymbolJob>();
 
         services.AddScoped<CEOCompensationJob>();
         services.AddScoped<PeerGroupJob>();
@@ -52,7 +49,6 @@ public static class ServiceExtensions
         services.AddScoped<InsiderTransactionsJob>();
         services.AddScoped<InsiderRosterJob>();
         services.AddScoped<CompanyJob>();
-
 
         services.AddScoped<ReportedFinancialsJob>();
         services.AddScoped<IncomeStatementJob>();
@@ -82,7 +78,6 @@ public static class ServiceExtensions
             var serviceProvider = scope.ServiceProvider;
             try
             {
-                SymbolScheduler.Start(serviceProvider);
                 CEOCompensationScheduler.Start(serviceProvider);
                 PeerGroupScheduler.Start(serviceProvider);
                 LogoScheduler.Start(serviceProvider);
@@ -197,6 +192,8 @@ public static class ServiceExtensions
         services.AddScoped<IStockProfileApiService, StockProfileApiService>();
 
         services.AddScoped<ISymbolService, SymbolService>();
+        services.AddScoped<IStockProfileService, StockProfileService>();
+        services.AddScoped<IStockFundamentalsService, StockFundamentalsService>();
     }
 
     public static void ConfigureMongoDBConnection(this IServiceCollection services, IConfiguration configuration)

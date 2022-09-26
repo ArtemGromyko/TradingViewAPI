@@ -95,8 +95,10 @@ public class OptionService : IOptionService
         }
 
         var res = await response.Content.ReadAsAsync<List<Expiration>>();
-
-        await _expirationRepository.AddCollectionAsync(res);
+        if (res.Count != 0)
+        {
+            await _expirationRepository.AddCollectionAsync(res);
+        }
 
         return res;
     }
