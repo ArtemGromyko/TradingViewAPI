@@ -152,7 +152,7 @@ namespace TradingView.BLL.Services
                 Financials = financials?.Financials ?? null,
                 IncomeStatement = incomeStatement?.Income ?? null,
                 ReportedFinancials = reportedFinancials ?? null,
-                SplitEntity = splitEntity ?? null
+                Splits = splitEntity ?? null
             };
 
             return stockFundamentalsDto;

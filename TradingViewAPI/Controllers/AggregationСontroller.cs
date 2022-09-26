@@ -5,12 +5,12 @@ namespace TradingViewAPI.Controllers
 {
     [Route("api")]
     [ApiController]
-    public class AgrationСontroller : ControllerBase
+    public class AggregationСontroller : ControllerBase
     {
         private readonly IStockProfileService _stockProfileService;
         private readonly IStockFundamentalsService _stockFundamentalsService;
 
-        public AgrationСontroller(IStockProfileService stockProfileService, IStockFundamentalsService stockFundamentalsService)
+        public AggregationСontroller(IStockProfileService stockProfileService, IStockFundamentalsService stockFundamentalsService)
         {
             _stockProfileService = stockProfileService;
             _stockFundamentalsService = stockFundamentalsService;

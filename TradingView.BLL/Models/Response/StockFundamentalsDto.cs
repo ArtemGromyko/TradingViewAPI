@@ -13,6 +13,6 @@ namespace TradingView.BLL.Models.Response
         public List<FinancialsItem>? Financials { get; set; }
         public List<Income>? IncomeStatement { get; set; }
         public List<ReportedFinancials>? ReportedFinancials { get; set; }
-        public List<SplitEntity>? SplitEntity { get; set; }
+        public List<SplitEntity>? Splits { get; set; }
     }
 }
