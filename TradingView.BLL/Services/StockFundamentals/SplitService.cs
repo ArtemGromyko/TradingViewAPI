@@ -77,7 +77,8 @@ public class SplitService : ISplitService
         }
         var res = await response.Content.ReadAsAsync<List<SplitEntity>>();
 
-        await _splitRepository.AddCollectionAsync(res);
+        if (res.Count != 0)
+            await _splitRepository.AddCollectionAsync(res);
 
         return res;
     }

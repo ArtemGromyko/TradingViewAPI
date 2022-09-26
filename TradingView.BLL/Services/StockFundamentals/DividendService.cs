@@ -49,7 +49,8 @@ public class DividendService : IDividendService
 
         var res = await response.Content.ReadAsAsync<List<Dividend>>();
 
-        await _dividendRepository.AddCollectionAsync(res);
+        if (res.Count != 0)
+            await _dividendRepository.AddCollectionAsync(res);
 
         return res;
     }

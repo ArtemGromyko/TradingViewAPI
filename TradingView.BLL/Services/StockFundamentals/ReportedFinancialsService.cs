@@ -49,7 +49,8 @@ public class ReportedFinancialsService : IReportedFinancialsService
 
         var res = await response.Content.ReadAsAsync<List<ReportedFinancials>>();
 
-        await _reportedFinancialsRepository.AddCollectionAsync(res);
+        if (res.Count != 0)
+            await _reportedFinancialsRepository.AddCollectionAsync(res);
 
         return res;
     }

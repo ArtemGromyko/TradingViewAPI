@@ -33,8 +33,8 @@ public class InsiderRosterService : IInsiderRosterService
         var result = await _insiderRosterRepository.GetAsync(x => x.Symbol.ToUpper() == symbol.ToUpper(), ct);
         if (result == null)
         {
-            //return await GetInsiderRosterApiAsync(symbol, ct);
-            return await _stockProfileApiService.GetInsiderRosterApiAsync(symbol, ct);
+            return await GetInsiderRosterApiAsync(symbol, ct);
+            //return await _stockProfileApiService.GetInsiderRosterApiAsync(symbol, ct);
         }
 
         return result;
