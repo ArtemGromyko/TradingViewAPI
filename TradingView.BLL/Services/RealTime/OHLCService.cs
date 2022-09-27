@@ -2,6 +2,7 @@
 using TradingView.BLL.Contracts.RealTime;
 using TradingView.DAL.Contracts.RealTime;
 using TradingView.DAL.Entities.RealTime.OHLC;
+using TradingView.Models.Exceptions;
 
 namespace TradingView.BLL.Services.RealTime;
 
@@ -30,6 +31,11 @@ public class OHLCService : IOHLCService
                 $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
 
             var response = await _httpClient.GetAsync(url);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApiException().Create(response);
+            }
+
             ohlc = await response.Content.ReadAsAsync<OHLC>();
 
             await _ohlcRepository.AddAsync(ohlc);

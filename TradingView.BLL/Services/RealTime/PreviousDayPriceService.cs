@@ -2,6 +2,7 @@
 using TradingView.BLL.Contracts.RealTime;
 using TradingView.DAL.Contracts.RealTime;
 using TradingView.DAL.Entities.RealTime;
+using TradingView.Models.Exceptions;
 
 namespace TradingView.BLL.Services.RealTime;
 
@@ -30,6 +31,11 @@ public class PreviousDayPriceService : IPreviousDayPriceService
                 $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
 
             var response = await _httpClient.GetAsync(url);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApiException().Create(response);
+            }
+
             previousDayPrice = await response.Content.ReadAsAsync<PreviousDayPrice>();
 
             await _previousDayPriceRepository.AddAsync(previousDayPrice);

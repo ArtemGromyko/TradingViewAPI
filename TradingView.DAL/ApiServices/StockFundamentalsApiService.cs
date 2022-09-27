@@ -108,7 +108,11 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
         }
 
         var res = await response.Content.ReadAsAsync<List<Dividend>>();
-        await _dividendRepository.AddCollectionAsync(res);
+        if(res.Count != 0)
+        {
+            await _dividendRepository.AddCollectionAsync(res);
+        }
+        
 
         return res;
     }
@@ -222,8 +226,11 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
         }
 
         var res = await response.Content.ReadAsAsync<List<Expiration>>();
-
-        await _expirationRepository.AddCollectionAsync(res);
+        
+        if(res.Count != 0)
+        {
+            await _expirationRepository.AddCollectionAsync(res);
+        }
 
         return res;
     }
@@ -241,7 +248,11 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
         }
 
         var res = await response.Content.ReadAsAsync<List<ReportedFinancials>>();
-        await _reportedFinancialsRepository.AddCollectionAsync(res);
+        
+        if(res.Count != 0)
+        {
+            await _reportedFinancialsRepository.AddCollectionAsync(res);
+        }
 
         return res;
     }
@@ -260,7 +271,12 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
         }
 
         var res = await response.Content.ReadAsAsync<List<SplitEntity>>();
-        await _splitRepository.AddCollectionAsync(res);
+        
+        if(res.Count != 0)
+        {
+            await _splitRepository.AddCollectionAsync(res);
+        }
+
         return res;
     }
 
@@ -278,7 +294,12 @@ public class StockFundamentalsApiService : IStockFundamentalsApiService
         }
 
         var res = await response.Content.ReadAsAsync<List<SplitEntity>>();
-        await _splitRepository.AddCollectionAsync(res);
+        
+        if(res.Count != 0)
+        {
+            await _splitRepository.AddCollectionAsync(res);
+        }
+
         return res;
     }
 }

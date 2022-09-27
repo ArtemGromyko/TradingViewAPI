@@ -2,6 +2,7 @@
 using TradingView.BLL.Contracts.RealTime;
 using TradingView.DAL.Contracts.RealTime;
 using TradingView.DAL.Entities.RealTime.VolumeByVenue;
+using TradingView.Models.Exceptions;
 
 namespace TradingView.BLL.Services.RealTime;
 
@@ -29,6 +30,11 @@ public class VolumeByVenueService : IVolumeByVenueService
                 $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
 
             var response = await _httpClient.GetAsync(url);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApiException().Create(response);
+            }
+
             var volumesByVenue = await response.Content.ReadAsAsync<List<VolumeByVenueItem>>();
 
             var newVolumeByVenue = new VolumeByVenue { Symbol = symbol, Items = volumesByVenue };

@@ -101,7 +101,12 @@ public class StockProfileApiService : IStockProfileApiService
         }
 
         var res = await response.Content.ReadAsAsync<List<InsiderSummaryItem>>();
-        await _insiderSummaryRepository.AddCollectionAsync(res);
+        
+        if(res.Count != 0)
+        {
+            await _insiderSummaryRepository.AddCollectionAsync(res);
+        }
+
         return res.OrderBy(x => x.Updated).ToList();
     }
 
@@ -118,7 +123,12 @@ public class StockProfileApiService : IStockProfileApiService
         }
 
         var res = await response.Content.ReadAsAsync<List<InsiderTransactionsItem>>();
-        await _insiderTransactionsRepository.AddCollectionAsync(res);
+        
+        if(res.Count != 0)
+        {
+            await _insiderTransactionsRepository.AddCollectionAsync(res);
+        }
+
         return res.OrderBy(x => x.Updated).ToList();
     }
 

@@ -2,6 +2,7 @@
 using TradingView.BLL.Contracts.RealTime;
 using TradingView.DAL.Contracts.RealTime;
 using TradingView.DAL.Entities.RealTime;
+using TradingView.Models.Exceptions;
 
 namespace TradingView.BLL.Services.RealTime;
 
@@ -34,6 +35,11 @@ public class DelayedQuoteService : IDelayedQuoteService
                 $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
 
             var response = await _httpClient.GetAsync(url);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApiException().Create(response);
+            }
+
             delayedQuote = await response.Content.ReadAsAsync<DelayedQuote>();
 
             await _delayedQuoteRepository.AddAsync(delayedQuote);

@@ -2,6 +2,7 @@
 using TradingView.BLL.Contracts.RealTime;
 using TradingView.DAL.Contracts.RealTime;
 using TradingView.DAL.Entities.RealTime;
+using TradingView.Models.Exceptions;
 
 namespace TradingView.BLL.Services.RealTime;
 
@@ -31,6 +32,11 @@ public class PriceOnlyService : IPriceOnlyService
                 $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
 
             var response = await _httpClient.GetAsync(url);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApiException().Create(response);
+            }
+
             var price = await response.Content.ReadAsAsync<double>();
 
             var newPriceOnly = new PriceOnly { Symbol = symbol, Price = price };

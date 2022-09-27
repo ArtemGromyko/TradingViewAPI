@@ -52,7 +52,10 @@ public class InsiderTransactionsService : IInsiderTransactionsService
         }
         var res = await response.Content.ReadAsAsync<List<InsiderTransactionsItem>>();
 
-        await _insiderTransactionsRepository.AddCollectionAsync(res);
+        if(res.Count != 0)
+        {
+            await _insiderTransactionsRepository.AddCollectionAsync(res);
+        }
 
         return res;
     }

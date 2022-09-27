@@ -2,6 +2,7 @@
 using TradingView.BLL.Contracts.RealTime;
 using TradingView.DAL.Contracts.RealTime;
 using TradingView.DAL.Entities.RealTime.IntradayPrice;
+using TradingView.Models.Exceptions;
 
 namespace TradingView.BLL.Services.RealTime;
 
@@ -34,6 +35,11 @@ public class IntradayPricesService : IIntradayPricesService
                 $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
 
             var response = await _httpClient.GetAsync(url);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApiException().Create(response);
+            }
+
             var intradayPriceItems = await response.Content.ReadAsAsync<List<IntradayPriceItem>>();
 
             var newIntradayPrice = new IntradayPrice { Symbol = symbol, Items = intradayPriceItems };
