@@ -15,7 +15,7 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "PUBLISHABLE_TOKEN": "Tpk_aae23baa9af74779993006fb85d15f0f",
+        "PUBLISHABLE_TOKEN": "pk_e684ebfc894e47ca81978ff28b9b1ed3",
         "SECRET_TOKEN": "Tsk_8b25dd39c0814f408f80d35c3ae48c0c"
       },
       "applicationUrl": "https://localhost:7287;http://localhost:5287",

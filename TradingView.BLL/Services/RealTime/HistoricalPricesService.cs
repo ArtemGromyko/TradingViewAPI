@@ -31,7 +31,7 @@ public class HistoricalPricesService : IHistoricalPricesService
         if (historicalPrice is null)
         {
             var url = $"{_configuration["IEXCloudUrls:version"]}" +
-                $"{string.Format(_configuration["IEXCloudUrls:historicalPricesUrl"], symbol)}" +
+                $"{string.Format(_configuration["IEXCloudUrls:historicalPricesMaxUrl"], symbol)}" +
                 $"?token={Environment.GetEnvironmentVariable("PUBLISHABLE_TOKEN")}";
 
             var response = await _httpClient.GetAsync(url);
@@ -46,11 +46,12 @@ public class HistoricalPricesService : IHistoricalPricesService
             await _historicalPricesRepository.AddAsync(historicalPrice);
         }
 
-        var lastPrice = historicalPrice.Items[^3];
+        var lastPrice = historicalPrice.Items[^1];
         var date = Convert.ToDateTime(lastPrice.Date);
         var currentDate = DateTime.Today;
+        var previousDate = currentDate.AddDays(-1);
 
-        if (!date.Equals(currentDate))
+        if (!date.Equals(previousDate))
         {
             var range = "5d";
 

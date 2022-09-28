@@ -150,6 +150,8 @@ public static class ServiceExtensions
         services.AddScoped<IDividendRepository, DividendRepository>();
 
         services.AddScoped<ISymbolRepository, SymbolRepository>();
+
+        services.AddScoped<IExchangeRepository, ExchangeRepository>();
     }
 
     public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
@@ -194,6 +196,8 @@ public static class ServiceExtensions
         services.AddScoped<ISymbolService, SymbolService>();
         services.AddScoped<IStockProfileService, StockProfileService>();
         services.AddScoped<IStockFundamentalsService, StockFundamentalsService>();
+
+        services.AddScoped<IExchangeService, ExchangeService>();
     }
 
     public static void ConfigureMongoDBConnection(this IServiceCollection services, IConfiguration configuration)
