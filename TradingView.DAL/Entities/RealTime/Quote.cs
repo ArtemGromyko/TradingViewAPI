@@ -6,11 +6,11 @@ namespace TradingView.DAL.Entities.RealTime;
 [BsonNoId]
 public class Quote : EntityBase
 {
-    public int AvgTotalVolume { get; set; }
+    public int? AvgTotalVolume { get; set; }
     public string? CalculationPrice { get; set; }
-    public float Change { get; set; }
-    public float ChangePercent { get; set; }
-    public double Close { get; set; }
+    public float? Change { get; set; }
+    public float? ChangePercent { get; set; }
+    public double? Close { get; set; }
     public string? CloseSource { get; set; }
     public decimal? CloseTime { get; set; }
     public string? CompanyName { get; set; }
@@ -21,15 +21,15 @@ public class Quote : EntityBase
     public decimal? ExtendedChangePercent { get; set; }
     public decimal? ExtendedPrice { get; set; }
     public decimal? ExtendedPriceTime { get; set; }
-    public double High { get; set; }
+    public double? High { get; set; }
     public string? HighSource { get; set; }
     public decimal? HighTime { get; set; }
     public decimal? IexAskPrice { get; set; }
     public int? IexAskSize { get; set; }
     public decimal? IexBidPrice { get; set; }
     public int? IexBidSize { get; set; }
-    public float IexClose { get; set; }
-    public long IexCloseTime { get; set; }
+    public float? IexClose { get; set; }
+    public long? IexCloseTime { get; set; }
     public long? IexLastUpdated { get; set; }
     public float? IexMarketPercent { get; set; }
     public float? IexOpen { get; set; }
